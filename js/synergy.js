@@ -667,14 +667,14 @@ function pagetop()
 
 }
 
-var content_url = "itccontent.pitsco.com"
-var cloudfront_url = "cloudfront.pitsco.com"
+var content_url = "itccontent.nolaedu.net"
+var cloudfront_url = "cloudfront.nolaedu.net"
 
 if(location.host == "localhost") {
     content_url = "localhost";
 }
 else {
-    document.domain = 'pitsco.com';
+    document.domain = 'nolaedu.net';
 }
 /*
  Function to escape string
@@ -1134,7 +1134,7 @@ function showfullscreenlessonpd(fldrname,fldpdlessonid,pdfname){
 }
 /* student level start created by chandru */
 function showstudentlessonpd(fldrname,fldpdlessonid,pdfname,schid){
-    window.open('http://itc.pitsco.com/library/pdlessons/library-pdlessons-studentviewscreen.php?fldrname='+fldrname+'&fldpdlessonid='+fldpdlessonid+'&pdfname='+pdfname+'&schid='+schid);
+    window.open('http://itc.nolaedu.net/library/pdlessons/library-pdlessons-studentviewscreen.php?fldrname='+fldrname+'&fldpdlessonid='+fldpdlessonid+'&pdfname='+pdfname+'&schid='+schid);
 }
 /* student level end */
 

@@ -32,7 +32,7 @@ $licenseid = isset($_REQUEST['id']) ? $_REQUEST['id'] : '0';
                         <div id="body-outer">
                         	 <div class="mt-box"></div>
                         	 <p>To test drive our<span class="text-bold"> Signature Math </span>curriculum and get a whole new angle on algebra, complete the form below and we'll send you the companion culminating, hands-on group activity for the Angles unit of <span class="text-bold">Signature Math.</span> These hands-on activities give students a real-world learning experience that makes the algebra concepts they are learning online meaningful and relevant.</p>
-			                <p> If you are in need of technical assistance, don't hesitate to contact our industry-leading customer support line at 800-774-4552. </p>
+			                <p> If you are in need of technical assistance, don't hesitate to contact our industry-leading customer support line at 800-526-5173. </p>
             			    <p>Welcome to <span class="text-bold">Signature Math,</span> a whole new angle on algebra! </p><br />
                             <form id="newuserform" name="newuserform"  enctype="multipart/form-data">
                                 <table width="66%" cellspacing="0" cellpadding="0" class="box">

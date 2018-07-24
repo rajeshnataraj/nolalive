@@ -16,10 +16,10 @@ $qry=$ObjDB->QueryObject("SELECT  fld_sec_std_add_summary,
 						  fld_sec_corr_by_std,
 						  fld_sec_corr_by_title,
 						  fld_sec_std_not_add,
-						  fld_sec_prod_description 
+						  fld_sec_prod_description
 						FROM
-						  itc_correlation_report_data 
-						WHERE fld_id = '".$id."' 
+						  itc_correlation_report_data
+						WHERE fld_id = '".$id."'
 						  AND fld_delstatus = '0' ");
 if($qry->num_rows > 0){
 		$rowqry = $qry->fetch_assoc();
@@ -33,15 +33,15 @@ if($qry->num_rows > 0){
 // Extend the TCPDF class to create custom Header and Footer
 class MYPDF extends TCPDF {
 
-	
+
 	public function Header() {
 		$this->SetFont('helvetica', '', 20);
 		$this->SetTextColor(80,80,80);
-		$this->SetFont('helvetica', '', 11);		
-		$this->Cell(87, 10, 'Pitsco Education Standards Correlation Report', 0, false, 'C', 0, '', 0, false, 'T', 'M');
+		$this->SetFont('helvetica', '', 11);
+		$this->Cell(87, 10, 'NOLA Education Standards Correlation Report', 0, false, 'C', 0, '', 0, false, 'T', 'M');
 		 $this->top_margin = $this->GetY() + 20; // padding for second page
 	}
-	
+
 // Page footer
 	public function Footer() {
 		// Position at 15 mm from bottom
@@ -51,8 +51,8 @@ class MYPDF extends TCPDF {
 		// Set font
 		$this->SetFont('helvetica', '', 8);
 		// Page number
-		
-		$this->Cell(57, 10, '© 2013 Pitsco Education. All rights reserved', 0, false, 'C', 0, '', 0, false, 'T', 'M');
+
+		$this->Cell(57, 10, '© 2013 NOLA Education. All rights reserved', 0, false, 'C', 0, '', 0, false, 'T', 'M');
 		$this->Cell(250, 10, $this->getAliasNumPage(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
 	}
 
@@ -72,7 +72,7 @@ $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 // set font
 $pdf->SetPrintHeader(false);
-$pdf->SetPrintFooter(false); 
+$pdf->SetPrintFooter(false);
 // add a page
 $pdf->AddPage();
 
@@ -81,7 +81,7 @@ $html = file_get_contents($url.'reports/correlation/CorrelationReport-Output.php
 // print a block of text using Write()
 $pdf->writeHTMLCell($w=0, $h=0, $x='', $y='', $html, $border=0, $ln=1, $fill=0, $reseth=true, $align='', $autopadding=true);
 $pdf->SetPrintHeader(true);
-$pdf->SetPrintFooter(true); 
+$pdf->SetPrintFooter(true);
 
 $pdf->AddPage();
 $html = file_get_contents($url.'reports/correlation/CorrelationReport-Output.php?id='.$id.'&uid='.$uid.'&sessmasterprfid='.$sessmasterprfid.'&oper=page2');
@@ -99,4 +99,4 @@ $pdf->Output('correlationreports/correlation_report_'.$id.'.pdf', 'F');
 
 ?>
 
-</section>    
+</section>

@@ -223,8 +223,8 @@ class UserManager
             echo "Student accounts are not allowed to request a password reset e-mail. Please contact a teacher or instructor for assistance in resetting your password.";
             exit();
         }
-        elseif(strlen($this->email) < 8 || $this->email == "support@pitsco.com" || $this->email == "systems_support@pitsco.com" || $this->email == "info@pitsco.com"){
-            echo "We could not find an e-mail address associated with this account. Please contact PITSCO Customer Support at 800-774-4552 for assistance in resetting your password.";
+        elseif(strlen($this->email) < 8 || $this->email == "support@nolaedu.net" || $this->email == "systems_support@nolaedu.net" || $this->email == "info@nolaedu.net"){
+            echo "We could not find an e-mail address associated with this account. Please contact NOLA Customer Support at 800-526-5173 for assistance in resetting your password.";
             exit();
         }
         else{

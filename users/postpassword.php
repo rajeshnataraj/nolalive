@@ -56,7 +56,7 @@ box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.5);">
 									<img src="<?=ITC_URL?>/img/synergy.logo.png" width="225" height="50"  alt="Synergy ITC" border="0"  /></font></a>
 					</td>
 					<td align="right">
-				<!--[endif]--><!-- 
+				<!--[endif]--><!--
 
 			</td>
 			</tr>
@@ -85,7 +85,7 @@ box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.2); border-radius: 5px;" >
 					<font face="Arial, Helvetica, sans-serif" size="4" color="#57697e" style="font-size: 12.5px;">
 					<span style="font-family: Arial, Helvetica, sans-serif; font-size: 12.5px; color: #356;">
 						<p>You recently requested to reset your password for your Synergy Account. <br>Click the link below to set a new password.</p><br>
-						
+
 					</span></font>
 				</div>
 				<!-- padding --><div style="height: 4px; line-height: 4px; font-size: 4px;"></div>
@@ -96,7 +96,7 @@ box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.2); border-radius: 5px;" >
 				</div>
 				<!-- padding --><div style="height: 40px; line-height: 40px; font-size: 10px;"></div>
 			</td></tr>
-		</table>		
+		</table>
 	</td></tr>
 	<!--content 1 END-->
 
@@ -104,13 +104,13 @@ box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.2); border-radius: 5px;" >
 	<!--footer -->
 	<tr><td class="iage_footer" align="center" bgcolor="#ffffff" style="border-radius: 0 0 5px 5px;">
 
-		
+
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
-			<tr><td align="center" style="padding:36px 18px;float:left;width:100%; text-align:center;"><font face="Arial, Helvetica, sans-serif" size="3" color="#96a5b5" style="font-size: 13px;"><span style="font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #79B;">&#169; PITSCO Education. ALL Rights Reserved.
-				</span></font>				
-			</td></tr>			
+			<tr><td align="center" style="padding:36px 18px;float:left;width:100%; text-align:center;"><font face="Arial, Helvetica, sans-serif" size="3" color="#96a5b5" style="font-size: 13px;"><span style="font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #79B;">&#169; NOLA Education. ALL Rights Reserved.
+				</span></font>
+			</td></tr>
 		</table>
-		
+
 
 	</td></tr>
 	<!--footer END-->
@@ -122,7 +122,7 @@ box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.2); border-radius: 5px;" >
 </td></tr>
 </table>
 <![endif]-->
- 
+
 </td></tr>
 </table>
 			';
@@ -131,7 +131,7 @@ box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.2); border-radius: 5px;" >
     try{
         $param = array(
             'SiteID' => '30',
-            'fromAddress' => 'info@pitsco.com',
+            'fromAddress' => 'info@nolaedu.net',
             'fromName' => 'Synergy ITC',
             'toAddress' => $user->email,
             'subject' => "ITC Synergy Password Reset Request",

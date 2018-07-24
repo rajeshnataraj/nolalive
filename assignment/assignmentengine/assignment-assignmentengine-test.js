@@ -5,13 +5,13 @@
 	Function to use the test can doing later
 **/
 
-document.domain = "pitsco.com";
+document.domain = "nolaedu.net";
 function fn_later()
 {
 	setTimeout('removesections("#home");',500);
 	setTimeout('showpages("assignment","assignment/assignment.php");',500);
 }
- 
+
 /***
 	fn_questions()
 	Function to show the question
@@ -20,8 +20,8 @@ function fn_questions(testid,mapid,schid,schtype){
 	var val=testid+","+mapid+","+schid+","+schtype;
 	setTimeout('removesections("#assignment-assignmentengine-test");',500);
 	setTimeout('showpages("assignment-assignmentengine-questions","assignment/assignmentengine/assignment-assignmentengine-questions.php?id='+val+'");',500);
-	
-} 
+
+}
 
 /***
 	fn_anscheck()
@@ -30,7 +30,7 @@ function fn_questions(testid,mapid,schid,schtype){
 function fn_anscheck(testid,classid,fid,oid,temptest,schid,schtype,maxstudatmpt)
 {
 
-    document.domain = "pitsco.com";
+    document.domain = "nolaedu.net";
 		var iframe = document.getElementById('ifrm_'+oid);
 		var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
 
@@ -44,31 +44,31 @@ function fn_anscheck(testid,classid,fid,oid,temptest,schid,schtype,maxstudatmpt)
 
 		var input = innerDoc.getElementById('boxcount');
 		var boxcount=input.value;
-    var answer ='';	
+    var answer ='';
     var qorder=$('#qorder').val();
-    var cqorder=$('#current_qorder').val();		
-    
+    var cqorder=$('#current_qorder').val();
+
     var clsid= $("#hidclassid").val();
-    
+
     if(anstype==2 || anstype==7 || anstype==9)
     {
 			var answer = innerDoc.getElementById('txtsingleanswer');
 			answer=encodeURIComponent(answer.value);
-                        
+
     }
     else if(anstype==3)
-    {		
-            for(i=0;i<boxcount;i++){			
+    {
+            for(i=0;i<boxcount;i++){
 				var input = innerDoc.getElementById('ans'+i);
                     if(i==(boxcount-1))
 					answer+=encodeURIComponent(input.value);
                     else
 					answer+=encodeURIComponent(input.value)+'~';
-            }											
+            }
     }
     else if(anstype==4)
-    {		
-            for(i=1;i<=boxcount;i++){                        
+    {
+            for(i=1;i<=boxcount;i++){
 					var input = innerDoc.getElementById('txt_'+i);
 					value1 = input.value;
                             value1 = value1.replace(",", "&#130 ");
@@ -76,12 +76,12 @@ function fn_anscheck(testid,classid,fid,oid,temptest,schid,schtype,maxstudatmpt)
 							answer+=encodeURIComponent(value1);
                             else
 							answer+=encodeURIComponent(value1)+'~';
-            }    			
+            }
     }
     else if(anstype==5 || anstype==1 || anstype==8)
     {
 			var input = innerDoc.getElementById('answer');
-			var answer = input.value;			
+			var answer = input.value;
     }
     else if(anstype==6)
     {
@@ -92,29 +92,29 @@ function fn_anscheck(testid,classid,fid,oid,temptest,schid,schtype,maxstudatmpt)
 			var input = innerDoc.getElementById('ext1');
 			answer+= encodeURIComponent(input.value)+'~';
 			var input = innerDoc.getElementById('ext2');
-			answer+= encodeURIComponent(input.value);			
+			answer+= encodeURIComponent(input.value);
     }
     else if(anstype==10)
     {
-            for(i=1;i<=boxcount;i++){			
-				var input = innerDoc.getElementById('ans'+i);				
+            for(i=1;i<=boxcount;i++){
+				var input = innerDoc.getElementById('ans'+i);
                     if(i==boxcount)
 					answer+=input.value;
                     else
 					answer+=input.value+'~';
-            }				
+            }
     }
     else if(anstype==11)
     {
 			var boxcount = innerDoc.getElementById('boxcount');
 			boxcount = boxcount.value;
-            for(i=1;i<=boxcount;i++){			
-				var input = innerDoc.getElementById('pullans'+i);				
+            for(i=1;i<=boxcount;i++){
+				var input = innerDoc.getElementById('pullans'+i);
                     if(i==boxcount)
 					answer+=input.value;
                     else
 					answer+=input.value+'~';
-            }				
+            }
     }
     else if(anstype==12)
     {
@@ -125,13 +125,13 @@ function fn_anscheck(testid,classid,fid,oid,temptest,schid,schtype,maxstudatmpt)
     {
 			var pointcount = innerDoc.getElementById('hidepointcount');
 			pointcount = pointcount.value;
-            for(i=1;i<=pointcount;i++){			
-				var input = innerDoc.getElementById('hideimagedragpos'+i);				
+            for(i=1;i<=pointcount;i++){
+				var input = innerDoc.getElementById('hideimagedragpos'+i);
                     if(i==pointcount)
 					answer+=input.value;
                     else
 					answer+=input.value+'~';
-            }				
+            }
     }
     else if(anstype==14)
     {
@@ -140,19 +140,19 @@ function fn_anscheck(testid,classid,fid,oid,temptest,schid,schtype,maxstudatmpt)
     else if(anstype==15)
     {
 			var answer = innerDoc.getElementById('txtopenresponse');
-			answer=encodeURIComponent(answer.value);	
+			answer=encodeURIComponent(answer.value);
     }
 
-     
-            /************Custom Materices Code Start Here Developed by Mohan M 30-7-2015************/  
+
+            /************Custom Materices Code Start Here Developed by Mohan M 30-7-2015************/
                 else if(anstype==16)
 		{
                     var mrow = innerDoc.getElementById('rowval');
-                    mrow=encodeURIComponent(mrow.value);	
-                    
+                    mrow=encodeURIComponent(mrow.value);
+
                     var mcol = innerDoc.getElementById('columnval');
                     mcol=encodeURIComponent(mcol.value);
-                    
+
                     var k=0;
 
                     for(var i=1;i<=mrow;i++)
@@ -160,18 +160,18 @@ function fn_anscheck(testid,classid,fid,oid,temptest,schid,schtype,maxstudatmpt)
                         for(var j=0;j<mcol;j++)
                         {
                             var input = innerDoc.getElementById('txt_'+i+"_"+j);
-				
+
                             if(i==mrow && j==(mcol-1))
                                     answer+=input.value;
                             else
                                     answer+=input.value+",";
                         }
                     }
-                   
+
 		}
-		 
-            /************Custom Materices Code End Here Developed by Mohan M 30-7-2015************/  
-    
+
+            /************Custom Materices Code End Here Developed by Mohan M 30-7-2015************/
+
     var dataparam="oper=answercheck&testid="+testid+"&anstype="+anstype+"&quesid="+questionid+"&answer="+answer+"&timecount="+$('#times').val()+"&schid="+schid+"&schtype="+schtype+"&maxstudatmpt="+maxstudatmpt+"&classid="+clsid;
     $.ajax({
     type: "POST",
@@ -186,7 +186,7 @@ function fn_anscheck(testid,classid,fid,oid,temptest,schid,schtype,maxstudatmpt)
                     $('#bottommenu').hide();
             }
             }
-    });	
+    });
 }
 /***
 	fn_showquestion()
@@ -213,21 +213,21 @@ function fn_laststep(testid,temp,schid,schtype,classid){
 	var val=testid+","+temp+","+schid+","+schtype+","+classid;
 	setTimeout('removesections("#assignment");',500);
 	setTimeout('showpages("assignment-assignmentengine-finialstep","assignment/assignmentengine/assignment-assignmentengine-finialstep.php?id='+val+'");',500);
-	
+
 }
 /***
 	fn_closetest()
 	Function to close the test.
 **/
 function fn_closetest(){
-	fn_closescreen();	
+	fn_closescreen();
 }
 /***
 	timeend()
 	Function to time out the test.
 **/
 function timeend(testid,timex){
-	
+
 	$('body').css('overflow','auto');
 	$('#divcustomlightbox').remove();
 	$('#divlbcontent').remove();
@@ -236,21 +236,21 @@ function timeend(testid,timex){
 	alert ("Your time is Expired");
 		setTimeout('removesections("#assignment");',500);
 		setTimeout('showpages("assignment-assignmentengine-finialstep","assignment/assignmentengine/assignment-assignmentengine-finialstep.php?id='+val+'");',500);
-	
+
 }
 
 function fn_loadquestion(testid,schid,schtype,maxcount){
-	var dataparam="oper=loadquestion&testid="+testid+"&schid="+schid+"&schtype="+schtype+"&maxcount="+maxcount;     
+	var dataparam="oper=loadquestion&testid="+testid+"&schid="+schid+"&schtype="+schtype+"&maxcount="+maxcount;
 	$.ajax({
 		type: "POST",
 		url: "assignment/assignmentengine/assignment-assignmentengine-questionsdb.php",
 		data: dataparam,
-		beforeSend: function(){			
+		beforeSend: function(){
 		},
 		success: function(ajaxdata){
 			$("#divlbcontent").html(ajaxdata);
 		}
-	});	
+	});
 }
 /***
 	fn_takequestion()
@@ -258,15 +258,15 @@ function fn_loadquestion(testid,schid,schtype,maxcount){
 **/
 function fn_takequestion(testid,temptest,schid,schtype){
 	var qusorder= $("#hidquestionorder").val();
-        
-        var maxstudatmptcount= $("#maxstudatmptcount").val();//mohan m	
+
+        var maxstudatmptcount= $("#maxstudatmptcount").val();//mohan m
 	var classid= $("#hidclassid").val();
 	var iframe = document.getElementById('ifrm_'+qusorder);
 	var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
-	
+
 	var input = innerDoc.getElementById('hidqorderquesid_'+qusorder);
 	var qusid=input.value;
-	$('.diviplbottom').hide();	
+	$('.diviplbottom').hide();
 	fn_anscheck(testid,qusid,0,qusorder,temptest,schid,schtype,maxstudatmptcount); //mohan m
         if(temptest !=1){
             timer1 = setTimeout('fn_laststep('+testid+',0,schid,schtype,'+classid+')',30000);
@@ -278,51 +278,51 @@ function fn_takequestion(testid,temptest,schid,schtype){
 	Function is used to close the iframe window.
 **/
 function fn_closescreen(testid,closetemp){
-	
+
 	if(closetemp == 1){
 		var dataparam="oper=cltestwopause&testid="+testid;
 		$.ajax({
 			type: "POST",
 			url: "assignment/assignmentengine/assignment-assignmentengine-testdb.php",
 			data: dataparam,
-		});	
-		
+		});
+
 	}
-	
+
 	$('body').css('overflow','auto');
 	$('#divcustomlightbox').remove();
 	$('#divlbcontent').remove();
 	$("html, body").animate({ scrollTop: $(document).height() }, "slow");
 	setTimeout('removesections("#home");',500);
 	setTimeout('showpages("assignment","assignment/assignment.php");',500);
-	
-	
+
+
 }
 /***
 	fn_pausetest()
 	Function is used to pause the test.
 **/
 function fn_pausetest(testid){
-	
+
 	var quesids= $("#hidquesids").val();
 	var currectquesids= $("#currectquesid").val();
-	var classid= $("#hidclassid").val();	
-	
+	var classid= $("#hidclassid").val();
+
 	$.Zebra_Dialog('Are you sure you want to pause the test.?',
 		{
 			'type': 'confirmation',
 			'buttons': [
 			{caption: 'No', callback: function() { $('#timecount').countdown('resume'); }},
-			{caption: 'Yes', callback: function() {	
-				
-				
+			{caption: 'Yes', callback: function() {
+
+
 			var dataparam="oper=pausetest&testid="+testid+"&quesids="+quesids+"&timepause="+$('#times').val()+"&currectquesids="+currectquesids+"&classid="+classid;
 				$.ajax({
 				type: "POST",
 				url: "assignment/assignmentengine/assignment-assignmentengine-testdb.php",
 				data: dataparam,
 				beforeSend: function(){
-					showloadingalert("please wait.");	
+					showloadingalert("please wait.");
 				},
 				success: function(data){
 					$('body').css('overflow','auto');
@@ -332,10 +332,8 @@ function fn_pausetest(testid){
 					setTimeout('removesections("#home");',500);
 					setTimeout('showpages("assignment","assignment/assignment.php");',500);
 					}
-				});	
+				});
 			}}
 		]
 	});
 }
-
-

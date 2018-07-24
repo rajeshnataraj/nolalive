@@ -29,7 +29,7 @@ http://sourceforge.net/adobe/cmap/wiki/License/
     <title>PDF.js viewer</title>
     <link rel="stylesheet" href="viewer.css"/>
     <script type="text/javascript">
-        //document.domain = "pitsco.com";
+        //document.domain = "nolaedu.net";
         var DEFAULT_URL = "<?php echo $hidpdf; ?>";
     </script>
     <script type="text/javascript" src="compatibility.js"></script>
@@ -39,7 +39,7 @@ http://sourceforge.net/adobe/cmap/wiki/License/
     <script type="text/javascript" src="../build/pdf.js"></script>
     <script type="text/javascript" src="debugger.js"></script>
     <script type="text/javascript" src="viewer.js"></script>
-    
+
   </head>
 
   <body tabindex="1">
@@ -129,7 +129,7 @@ http://sourceforge.net/adobe/cmap/wiki/License/
             <button id="toggleHandTool" class="secondaryToolbarButton handTool" title="Enable hand tool" tabindex="27" data-l10n-id="hand_tool_enable">
               <span data-l10n-id="hand_tool_enable_label">Enable hand tool</span>
             </button>
-            
+
             <div class="horizontalToolbarSeparator"></div>
 
             <button id="documentProperties" class="secondaryToolbarButton documentProperties" title="Document Properties…" tabindex="28" data-l10n-id="document_properties">
@@ -137,7 +137,7 @@ http://sourceforge.net/adobe/cmap/wiki/License/
             </button>
           </div>
         </div>  <!-- secondaryToolbar -->
-        
+
         <div class="toolbar">
           <div id="toolbarContainer">
             <div id="toolbarViewer">
@@ -184,10 +184,10 @@ http://sourceforge.net/adobe/cmap/wiki/License/
                 </a>-->
 
                 <div class="verticalToolbarSeparator hiddenSmallView"></div>
-                
+
                 <button id="secondaryToolbarToggle" class="toolbarButton" title="Tools" tabindex="17" data-l10n-id="tools">
                   <span data-l10n-id="tools_label">Tools</span>
-                </button> 
+                </button>
               </div>
               <div class="outerCenter">
                 <div class="innerCenter" id="toolbarViewerMiddle">
@@ -400,4 +400,3 @@ http://sourceforge.net/adobe/cmap/wiki/License/
 
   </body>
 </html>
-

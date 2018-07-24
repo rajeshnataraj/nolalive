@@ -1,4 +1,4 @@
-<?php 
+<?php
 	@include("sessioncheck.php");
 	$method=$_REQUEST;
 	$questionid=isset($method['id']) ? $method['id'] : '0';
@@ -23,25 +23,25 @@
 <script language="javascript" type="text/javascript" src="../../tiny_mce/tiny_mce.js"></script>
 <script language="javascript" type="text/javascript" src="../../tiny_mce/plugins/pdw/editor_plugin_src.js"></script>
 <script language="javascript" type="text/javascript" src="../../tiny_mce/plugins/asciimath/js/ASCIIMathMLwFallbackLarge.js"></script>
-<script language="javascript" type="text/javascript" src="../../tiny_mce/plugins/asciisvg/js/ASCIIsvg.js"></script> 
-<script language="javascript" type="text/javascript" src="../../js/bootstrap-formhelpers-selectbox.js"></script>    
+<script language="javascript" type="text/javascript" src="../../tiny_mce/plugins/asciisvg/js/ASCIIsvg.js"></script>
+<script language="javascript" type="text/javascript" src="../../js/bootstrap-formhelpers-selectbox.js"></script>
 <script type="text/javascript">
-	document.domain = 'pitsco.com';
-	var AScgiloc = '../../tiny_mce/php/svgimg.php';	
+	document.domain = 'nolaedu.net';
+	var AScgiloc = '../../tiny_mce/php/svgimg.php';
 	var AMTcgiloc = "../../cgi-bin/mathtex.cgi";
 </script>
 <link href='../../css/imports.css' rel='stylesheet' type="text/css" />
 <link href='../../css/question.css' rel='stylesheet' type="text/css" />
 <style type="text/css">
 body {
-	background-color:transparent;	
+	background-color:transparent;
 	min-width:0px;
 	height:80%;
 	width:100%;
 }
 p {
 	margin: 0;
-	float: left;	
+	float: left;
 	width: 100%;
 	font-size:2rem !important;
 }
@@ -68,11 +68,11 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
 </style>
 <?php
 }
-	
-		$qryquesdetails = $ObjDB->QueryObject("SELECT fld_question as question, fld_answer_type as answertypeid 
+
+		$qryquesdetails = $ObjDB->QueryObject("SELECT fld_question as question, fld_answer_type as answertypeid
 	                                      FROM itc_question_details WHERE fld_id='".$questionid."'");
-	
-	
+
+
 	if($qryquesdetails->num_rows>0){
 		$rowquesdetails = $qryquesdetails->fetch_assoc();
 		extract($rowquesdetails);
@@ -82,27 +82,27 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
         <div class='twelve columns'>
             <?php echo $question; ?>
         </div>
-    </div>    
+    </div>
     <div class='row rowspacer'>
         <div class='twelve columns'>
-          	<?php 
+          	<?php
 			/*--- Multiple Choise ---*/
-			if($answertypeid == 1) // Multiple Choice 
+			if($answertypeid == 1) // Multiple Choice
 			{
 				if($pause == 1){
-					$canswer = $ObjDB->SelectSingleValue("SELECT b.fld_answer AS canswer  
-												FROM itc_question_details AS a 
+					$canswer = $ObjDB->SelectSingleValue("SELECT b.fld_answer AS canswer
+												FROM itc_question_details AS a
 												LEFT JOIN itc_test_student_answer_track AS b ON b.fld_question_id=a.fld_id
-												LEFT JOIN itc_test_pause AS c ON c.fld_test_id= b.fld_test_id AND c.fld_student_id=b.fld_student_id 
-												WHERE a.fld_id='".$questionid."' AND c.fld_test_id='".$testid."' 
+												LEFT JOIN itc_test_pause AS c ON c.fld_test_id= b.fld_test_id AND c.fld_student_id=b.fld_student_id
+												WHERE a.fld_id='".$questionid."' AND c.fld_test_id='".$testid."'
 												AND c.fld_class_id='".$studentclassid."' AND c.fld_student_id='".$uid."'");
 				}
-				
-				$qry = $ObjDB->QueryObject("SELECT GROUP_CONCAT(IF(fld_attr_id = '1', fld_answer, NULL) SEPARATOR '~') AS 'choice', 
-				                           GROUP_CONCAT(IF(fld_attr_id = '2', fld_answer, NULL) SEPARATOR '~') AS 'correct' 
-										   FROM itc_question_answer_mapping WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."' 
+
+				$qry = $ObjDB->QueryObject("SELECT GROUP_CONCAT(IF(fld_attr_id = '1', fld_answer, NULL) SEPARATOR '~') AS 'choice',
+				                           GROUP_CONCAT(IF(fld_attr_id = '2', fld_answer, NULL) SEPARATOR '~') AS 'correct'
+										   FROM itc_question_answer_mapping WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."'
 										   AND fld_answer<>'' AND fld_flag='1'");
-				
+
 				$alphabet = array('A','B','C','D','E','F','G','H');
 				$anscnt = 0;
 				while($row = $qry->fetch_assoc())
@@ -113,38 +113,38 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
 				}
 				?>
 				<div id="c_b">
-					<?php 
+					<?php
 					for($i=0;$i<sizeof($anschoices);$i++){
 					?>
-					<div class="row rowspacer"> 
-					`	<div class="one columns" style="width:15px; float: left!important;"> 
+					<div class="row rowspacer">
+					`	<div class="one columns" style="width:15px; float: left!important;">
                     		<input class="checkbox" type="checkbox" name="mulchoice" id="mulchoice<?php echo ($i+1);?>" value="<?php echo ($i+1);?>" <?php if($canswer == $i+1){?> checked="checked" <?php } ?> />
-						</div>     	
+						</div>
 						<div class="one columns" style="width:30px; float: left!important;"><label for="mulchoice<?php echo ($i+1);?>"><?php echo $alphabet[$i]; ?>.</label></div>
 						<div class="eleven columns" style="margin-left:1%; float: left!important;">
 							<label for="mulchoice<?php echo ($i+1);?>"><?php echo trim($anschoices[$i]);?> </label>
 						</div>
 					</div>
 					<?php
-					} // end answer choice for	
+					} // end answer choice for
 					?>
 				</div>
-				<?php 	
-				
-			} // Multiple Choice  if ends	
-		
+				<?php
+
+			} // Multiple Choice  if ends
+
 			/*--- Single Answer id=2 ---*/
-			if($answertypeid == 2) // Single Answer 
+			if($answertypeid == 2) // Single Answer
 			{
 				if($pause == 1){
-					$canswer = $ObjDB->SelectSingleValue("SELECT b.fld_answer AS canswer  
-												FROM itc_question_details AS a 
+					$canswer = $ObjDB->SelectSingleValue("SELECT b.fld_answer AS canswer
+												FROM itc_question_details AS a
 												LEFT JOIN itc_test_student_answer_track AS b ON b.fld_question_id=a.fld_id
-												LEFT JOIN itc_test_pause AS c ON c.fld_test_id= b.fld_test_id AND c.fld_student_id=b.fld_student_id 
-												WHERE a.fld_id='".$questionid."' AND c.fld_test_id='".$testid."' 
+												LEFT JOIN itc_test_pause AS c ON c.fld_test_id= b.fld_test_id AND c.fld_student_id=b.fld_student_id
+												WHERE a.fld_id='".$questionid."' AND c.fld_test_id='".$testid."'
 												AND c.fld_class_id='".$studentclassid."' AND c.fld_student_id='".$uid."'");
 				}
-													
+
 				$qry = $ObjDB->QueryObject("SELECT GROUP_CONCAT(IF(fld_attr_id = '1', fld_answer, NULL) SEPARATOR ', ') AS 'choice', GROUP_CONCAT(IF(fld_attr_id = '3', fld_answer, NULL) SEPARATOR '~') AS 'prefix', GROUP_CONCAT(IF(fld_attr_id = '4', fld_answer, NULL) SEPARATOR '~') AS 'suffix' FROM itc_question_answer_mapping WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."' AND fld_answer<>'' AND fld_flag='1'");
 				$i=0;
 				while($row=$qry->fetch_assoc())
@@ -159,73 +159,73 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
 						<div class="outer-input-txt"><input class="ques-input qit-medium" type="text" id="txtsingleanswer" name="txtsingleanswer" value="<?php echo $canswer;?>" /></div>
 						<div class="outer-input-sym"><span class="ques-symbol"><?php echo $suffix; ?></span></div>
 					</div>
-				</div>		
-			<?php	
-			} // Single Answer if ends	
-			
-			/*--- Match the following id=3 ---*/ 
+				</div>
+			<?php
+			} // Single Answer if ends
+
+			/*--- Match the following id=3 ---*/
 			if($answertypeid == 3 ) // Match the following
-			{	
+			{
 				if($pause == 1){
-					$canswer = $ObjDB->SelectSingleValue("SELECT b.fld_answer AS canswer  
-												FROM itc_question_details AS a 
+					$canswer = $ObjDB->SelectSingleValue("SELECT b.fld_answer AS canswer
+												FROM itc_question_details AS a
 												LEFT JOIN itc_test_student_answer_track AS b ON b.fld_question_id=a.fld_id
-												LEFT JOIN itc_test_pause AS c ON c.fld_test_id= b.fld_test_id AND c.fld_student_id=b.fld_student_id 
-												WHERE a.fld_id='".$questionid."' AND c.fld_test_id='".$testid."' 
+												LEFT JOIN itc_test_pause AS c ON c.fld_test_id= b.fld_test_id AND c.fld_student_id=b.fld_student_id
+												WHERE a.fld_id='".$questionid."' AND c.fld_test_id='".$testid."'
 												AND c.fld_class_id='".$studentclassid."' AND c.fld_student_id='".$uid."'");
-				}			
-				$qrypresuf = $ObjDB->QueryObject("SELECT GROUP_CONCAT(IF(fld_attr_id = '3', fld_answer, NULL) SEPARATOR '~') AS 'prefix', 
-				                                 GROUP_CONCAT(IF(fld_attr_id = '4', fld_answer, NULL) SEPARATOR '~') AS 'suffix' FROM itc_question_answer_mapping 
+				}
+				$qrypresuf = $ObjDB->QueryObject("SELECT GROUP_CONCAT(IF(fld_attr_id = '3', fld_answer, NULL) SEPARATOR '~') AS 'prefix',
+				                                 GROUP_CONCAT(IF(fld_attr_id = '4', fld_answer, NULL) SEPARATOR '~') AS 'suffix' FROM itc_question_answer_mapping
 												 WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."' AND fld_answer<>'' AND fld_flag='1'");
 				$prefixarray=array();
 				$suffixarray=array();
-				
+
 				if($pause == 1){
 					$prefixarray1 = explode("~",$canswer);
 				}
-		
+
 				while($row = $qrypresuf->fetch_assoc())
 				{
 					extract($row);
 					$prefixarray = explode("~",$prefix);
 					$suffixarray = explode("~",$suffix);
 				}
-				
-				for($i=0;$i<sizeof($prefixarray);$i++){ 
+
+				for($i=0;$i<sizeof($prefixarray);$i++){
 				?>
 					<div class="row">
-						<div class='eight columns'>	
+						<div class='eight columns'>
 							<div class="outer-input-sym"><span class="ques-symbol" style="font-size: 20px;margin-right: 20px;"><?php echo $prefixarray[$i]; ?></span></div>
 							<div class="outer-input-txt"><input type="text" class="ques-input qit-medium" id="ans<?php echo $i;?>" value="<?php echo $prefixarray1[$i]; ?>" placeholder="Answer" /></div>
 						</div>
 					</div>
-				<?php 	
+				<?php
 				}
 				$count = $i;
 				echo '<div class="rowspacer"></div>';
-			}	// Match the following if ends	
-			
-			
+			}	// Match the following if ends
+
+
 			/*--- Custom answer type id=4 ---*/
 			if($answertypeid == 4)
 			{
 				if($pause == 1){
-					$canswer = $ObjDB->SelectSingleValue("SELECT b.fld_answer AS canswer  
-												FROM itc_question_details AS a 
+					$canswer = $ObjDB->SelectSingleValue("SELECT b.fld_answer AS canswer
+												FROM itc_question_details AS a
 												LEFT JOIN itc_test_student_answer_track AS b ON b.fld_question_id=a.fld_id
-												LEFT JOIN itc_test_pause AS c ON c.fld_test_id= b.fld_test_id AND c.fld_student_id=b.fld_student_id 
-												WHERE a.fld_id='".$questionid."' AND c.fld_test_id='".$testid."' 
+												LEFT JOIN itc_test_pause AS c ON c.fld_test_id= b.fld_test_id AND c.fld_student_id=b.fld_student_id
+												WHERE a.fld_id='".$questionid."' AND c.fld_test_id='".$testid."'
 												AND c.fld_class_id='".$studentclassid."' AND c.fld_student_id='".$uid."'");
 				}
-				$answer = $ObjDB->SelectSingleValue("SELECT fld_answer FROM itc_question_answer_mapping 
-				                                    WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."' 
-													AND fld_attr_id='6' AND fld_flag='1'");			
-				$answer = explode(',',$answer);	
-				$values = $ObjDB->SelectSingleValue("SELECT fld_answer FROM itc_question_answer_mapping 
-				                                    WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."' 
+				$answer = $ObjDB->SelectSingleValue("SELECT fld_answer FROM itc_question_answer_mapping
+				                                    WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."'
+													AND fld_attr_id='6' AND fld_flag='1'");
+				$answer = explode(',',$answer);
+				$values = $ObjDB->SelectSingleValue("SELECT fld_answer FROM itc_question_answer_mapping
+				                                    WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."'
 													AND fld_attr_id='7' AND fld_flag='1'");
-				$values = explode(',',$values);	
-				
+				$values = explode(',',$values);
+
 				$j=0;
 				$count=0;
 				 $anspattern = '';
@@ -234,11 +234,11 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
 						echo '<div class="outer-label"><span id="lab_'.$values[$j].'">'.$values[$j].'</span></div>';
 					}
 					else {
-						echo $ObjDB->SelectSingleValue("SELECT fld_html_code FROM itc_question_answer_pattern_master 
-						                               WHERE fld_id='".$answer[$i]."'");								
-					}					
+						echo $ObjDB->SelectSingleValue("SELECT fld_html_code FROM itc_question_answer_pattern_master
+						                               WHERE fld_id='".$answer[$i]."'");
+					}
 					if($answer[$i] == 5 or $answer[$i]==4 or $answer[$i]==20 or $answer[$i]==21 or $answer[$i]==22 or $answer[$i]==23 or $answer[$i]==24){
-						$j++;	
+						$j++;
 						if($answer[$i]!=5)
 						$count++;
 					}
@@ -251,36 +251,36 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
 						$count = $count + 3;
 					}
 				 }
-				 $tarray = explode('~',$canswer);				 
-				?> 
-					
-				<script>	
+				 $tarray = explode('~',$canswer);
+				?>
+
+				<script>
 					var j=1;
 					var tmparray =<?php echo json_encode($tarray); ?>;
-					$('input#txt').each(function(){							
-						$(this).attr('id','txt_'+j);						
+					$('input#txt').each(function(){
+						$(this).attr('id','txt_'+j);
 						if(tmparray[j-1]!='' && tmparray[j-1]!=undefined)
-						$('#txt_'+j).val(tmparray[j-1]);					
+						$('#txt_'+j).val(tmparray[j-1]);
 						j++;
 					});
-					
+
 				 </script>
-			<?php 
+			<?php
 			}
-			
+
 			/*--- Answer choice id=5 ---*/
 			if($answertypeid == 5)
 			{
 				if($pause == 1){
-					$canswer = $ObjDB->SelectSingleValue("SELECT b.fld_answer AS canswer  
-												FROM itc_question_details AS a 
+					$canswer = $ObjDB->SelectSingleValue("SELECT b.fld_answer AS canswer
+												FROM itc_question_details AS a
 												LEFT JOIN itc_test_student_answer_track AS b ON b.fld_question_id=a.fld_id
-												LEFT JOIN itc_test_pause AS c ON c.fld_test_id= b.fld_test_id AND c.fld_student_id=b.fld_student_id 
-												WHERE a.fld_id='".$questionid."' AND c.fld_test_id='".$testid."' 
+												LEFT JOIN itc_test_pause AS c ON c.fld_test_id= b.fld_test_id AND c.fld_student_id=b.fld_student_id
+												WHERE a.fld_id='".$questionid."' AND c.fld_test_id='".$testid."'
 												AND c.fld_class_id='".$studentclassid."' AND c.fld_student_id='".$uid."'");
 				}
-				$qry = $ObjDB->QueryObject("SELECT fld_answer AS answer FROM itc_question_answer_mapping 
-				                           WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."' 
+				$qry = $ObjDB->QueryObject("SELECT fld_answer AS answer FROM itc_question_answer_mapping
+				                           WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."'
 										   AND fld_flag='1' AND fld_attr_id='1' ORDER BY fld_boxid ASC ");
 				$answerarray=array();
 				$i=0;
@@ -290,7 +290,7 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
 					$answerarray[$i]=$answer;
 					$i++;
 				}
-				?>	
+				?>
 				<div id="c_b">
 					<table width="15%" cellpadding="0" cellspacing="0">
 						<tr height="70">
@@ -313,19 +313,19 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
 				</div>
 			<?php
 			}
-			
+
 			/*--- Menu & Extrems id=6 ---*/
 			if($answertypeid == 6)
-			{	
+			{
 				if($pause == 1){
-					$canswer = $ObjDB->SelectSingleValue("SELECT b.fld_answer AS canswer  
-												FROM itc_question_details AS a 
+					$canswer = $ObjDB->SelectSingleValue("SELECT b.fld_answer AS canswer
+												FROM itc_question_details AS a
 												LEFT JOIN itc_test_student_answer_track AS b ON b.fld_question_id=a.fld_id
-												LEFT JOIN itc_test_pause AS c ON c.fld_test_id= b.fld_test_id AND c.fld_student_id=b.fld_student_id 
-												WHERE a.fld_id='".$questionid."' AND c.fld_test_id='".$testid."' 
+												LEFT JOIN itc_test_pause AS c ON c.fld_test_id= b.fld_test_id AND c.fld_student_id=b.fld_student_id
+												WHERE a.fld_id='".$questionid."' AND c.fld_test_id='".$testid."'
 												AND c.fld_class_id='".$studentclassid."' AND c.fld_student_id='".$uid."'");
 					$ans = explode("~",$canswer);
-				}		
+				}
 				?>
 				<div class="row rowspacer">
 					<div class="six columns" align="center">
@@ -338,26 +338,26 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
 						<input name="ext1" type="text" class="mix-input" id="ext1" value="<?php echo $ans[2];?>" />&nbsp;
 						<input type="text" name="ext2" class="mix-input" id="ext2" value="<?php echo $ans[3];?>" />
 					</div>
-				</div>		
-				<?php	
+				</div>
+				<?php
 			}
-			
+
 			/*--- Single Range id=7 ---*/
-			
+
 			if($answertypeid == 7 ) // Single Range
 			{
 				if($pause == 1){
-					$canswer = $ObjDB->SelectSingleValue("SELECT b.fld_answer AS canswer  
-												FROM itc_question_details AS a 
+					$canswer = $ObjDB->SelectSingleValue("SELECT b.fld_answer AS canswer
+												FROM itc_question_details AS a
 												LEFT JOIN itc_test_student_answer_track AS b ON b.fld_question_id=a.fld_id
-												LEFT JOIN itc_test_pause AS c ON c.fld_test_id= b.fld_test_id AND c.fld_student_id=b.fld_student_id 
-												WHERE a.fld_id='".$questionid."' AND c.fld_test_id='".$testid."' 
+												LEFT JOIN itc_test_pause AS c ON c.fld_test_id= b.fld_test_id AND c.fld_student_id=b.fld_student_id
+												WHERE a.fld_id='".$questionid."' AND c.fld_test_id='".$testid."'
 												AND c.fld_class_id='".$studentclassid."' AND c.fld_student_id='".$uid."'");
 				}
 				$qry = $ObjDB->QueryObject("SELECT GROUP_CONCAT(IF(fld_attr_id = '1', fld_answer, NULL) SEPARATOR '~') AS 'choice',
 				                           GROUP_CONCAT(IF(fld_attr_id = '3', fld_answer, NULL) SEPARATOR '~') AS 'prefix',
-										   GROUP_CONCAT(IF(fld_attr_id = '4', fld_answer, NULL) SEPARATOR '~') AS 'suffix' 
-										   FROM itc_question_answer_mapping WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."' 
+										   GROUP_CONCAT(IF(fld_attr_id = '4', fld_answer, NULL) SEPARATOR '~') AS 'suffix'
+										   FROM itc_question_answer_mapping WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."'
 										   AND fld_answer<>'' AND fld_flag='1'");
 				$answerarray=array();
 				$i=0;
@@ -375,25 +375,25 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
 						<div class="outer-input-sym"><span class="ques-symbol"><?php echo $suffix;?></span></div>
 					</div>
 				</div>
-				<?php	
-			}	// Single Range if ends	
-			
+				<?php
+			}	// Single Range if ends
+
 			/*--- Mulitple choice image id=8 ---*/
-			if($answertypeid==8) // Multiple Image 
+			if($answertypeid==8) // Multiple Image
 			{
 				if($pause == 1){
-					$canswer = $ObjDB->SelectSingleValue("SELECT b.fld_answer AS canswer  
-												FROM itc_question_details AS a 
+					$canswer = $ObjDB->SelectSingleValue("SELECT b.fld_answer AS canswer
+												FROM itc_question_details AS a
 												LEFT JOIN itc_test_student_answer_track AS b ON b.fld_question_id=a.fld_id
-												LEFT JOIN itc_test_pause AS c ON c.fld_test_id= b.fld_test_id AND c.fld_student_id=b.fld_student_id 
-												WHERE a.fld_id='".$questionid."' AND c.fld_test_id='".$testid."' 
+												LEFT JOIN itc_test_pause AS c ON c.fld_test_id= b.fld_test_id AND c.fld_student_id=b.fld_student_id
+												WHERE a.fld_id='".$questionid."' AND c.fld_test_id='".$testid."'
 												AND c.fld_class_id='".$studentclassid."' AND c.fld_student_id='".$uid."'");
 				}
 				$qry = $ObjDB->QueryObject("SELECT GROUP_CONCAT(IF(fld_attr_id = '1', fld_answer, NULL) SEPARATOR '~') AS 'choice',
-				                           GROUP_CONCAT(IF(fld_attr_id = '2', fld_answer, NULL) SEPARATOR '~') AS 'correct' 
-										   FROM itc_question_answer_mapping WHERE fld_quesid='".$questionid."' 
+				                           GROUP_CONCAT(IF(fld_attr_id = '2', fld_answer, NULL) SEPARATOR '~') AS 'correct'
+										   FROM itc_question_answer_mapping WHERE fld_quesid='".$questionid."'
 										   AND fld_ans_type='".$answertypeid."' AND fld_answer<>'' AND fld_flag='1'");
-				
+
 				$alphabet = array('A','B','C','D','E','F','G','H');
 				$anscnt = 0;
 				while($row = $qry->fetch_assoc())
@@ -402,21 +402,21 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
 					$anschoices = explode("~",$choice);
 					$correctans = explode("~",$correct);
 				}
-				
-				echo '<div class="row rowspacer"> <div id="c_b">';		
+
+				echo '<div class="row rowspacer"> <div id="c_b">';
 				for($i=0;$i<sizeof($anschoices);$i++){
 					$imgid = $i + 1;
-					
+
 					if($anschoices[$i] != 'no-image.png' && $anschoices[$i] != '') {
 				?>
 					<div class="six columns" style="margin-left:1%;<?php if($i>1){ echo 'margin-top:30px;'; } ?>">
-						<div class="one columns">            		
-							<input class="checkbox" type="checkbox" name="mulchoice" id="mulchoice<?php echo ($i+1);?>" value="<?php echo ($i+1);?>" <?php if($canswer == $i+1){?> checked="checked" <?php } ?> />  
-						</div> 
+						<div class="one columns">
+							<input class="checkbox" type="checkbox" name="mulchoice" id="mulchoice<?php echo ($i+1);?>" value="<?php echo ($i+1);?>" <?php if($canswer == $i+1){?> checked="checked" <?php } ?> />
+						</div>
 						<div class="one columns" style="width:15px;float:left;"><?php echo $alphabet[$i]; ?>.</div>
 						<div style="float:left;margin-left:5%;margin-top:2%;width:83%;">
 						<?php //Get image width
-							list($width,$height) = getimagesize(_CONTENTURL_."question/ansimg/".$anschoices[$i]);							
+							list($width,$height) = getimagesize(_CONTENTURL_."question/ansimg/".$anschoices[$i]);
 						?>
                         	<img name="txtimageans<?php echo $imgid; ?>" id="txtimageans<?php echo $imgid; ?>" src="../../thumb.php?src=<?php echo _CONTENTURL_."question/ansimg/".$anschoices[$i]; if($width > 400){?>&w=400&h=400&zc=2<?php } else{ echo "&w=".$width."&h=".$height."&zc=2"; } ?>"/>
 						</div>
@@ -424,26 +424,26 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
 				<?php
 					}
 				} // end answer choice for
-				
-				echo '</div></div>';		
-			} // Multiple Image if ends	
-		
+
+				echo '</div></div>';
+			} // Multiple Image if ends
+
 			/*--- Single Multiple id=9 ---*/
-			
+
 			if($answertypeid == 9) // Single Multiple
 			{
 				if($pause == 1){
-					$canswer = $ObjDB->SelectSingleValue("SELECT b.fld_answer AS canswer  
-												FROM itc_question_details AS a 
+					$canswer = $ObjDB->SelectSingleValue("SELECT b.fld_answer AS canswer
+												FROM itc_question_details AS a
 												LEFT JOIN itc_test_student_answer_track AS b ON b.fld_question_id=a.fld_id
-												LEFT JOIN itc_test_pause AS c ON c.fld_test_id= b.fld_test_id AND c.fld_student_id=b.fld_student_id 
-												WHERE a.fld_id='".$questionid."' AND c.fld_test_id='".$testid."' 
+												LEFT JOIN itc_test_pause AS c ON c.fld_test_id= b.fld_test_id AND c.fld_student_id=b.fld_student_id
+												WHERE a.fld_id='".$questionid."' AND c.fld_test_id='".$testid."'
 												AND c.fld_class_id='".$studentclassid."' AND c.fld_student_id='".$uid."'");
 				}
-				$qry = $ObjDB->QueryObject("SELECT GROUP_CONCAT(IF(fld_attr_id = '1', fld_answer, NULL) SEPARATOR ', ') AS 'choice', 
-				                            GROUP_CONCAT(IF(fld_attr_id = '3', fld_answer, NULL) SEPARATOR '~') AS 'prefix', 
-											GROUP_CONCAT(IF(fld_attr_id = '4', fld_answer, NULL) SEPARATOR '~') AS 'suffix' 
-											FROM itc_question_answer_mapping WHERE fld_quesid='".$questionid."' 
+				$qry = $ObjDB->QueryObject("SELECT GROUP_CONCAT(IF(fld_attr_id = '1', fld_answer, NULL) SEPARATOR ', ') AS 'choice',
+				                            GROUP_CONCAT(IF(fld_attr_id = '3', fld_answer, NULL) SEPARATOR '~') AS 'prefix',
+											GROUP_CONCAT(IF(fld_attr_id = '4', fld_answer, NULL) SEPARATOR '~') AS 'suffix'
+											FROM itc_question_answer_mapping WHERE fld_quesid='".$questionid."'
 											AND fld_ans_type='".$answertypeid."' AND fld_answer<>'' AND fld_flag='1'");
 				while($row = $qry->fetch_assoc())
 				{
@@ -457,21 +457,21 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
 						<div class="outer-input-sym"><span class="ques-symbol"><?php echo $suffix; ?></span></div>
 					</div>
 				</div>
-			<?php    
-			}	// Single Multiple if ends	
-			
+			<?php
+			}	// Single Multiple if ends
+
 			if($answertypeid == 10) // Drag & Drop
 			{
 				if($pause == 1){
-					$ObjDB->NonQuery("UPDATE `itc_test_student_answer_track` SET fld_answer=' ', fld_correct_answer=0, fld_show=0, fld_time_track='00:00:00' 
+					$ObjDB->NonQuery("UPDATE `itc_test_student_answer_track` SET fld_answer=' ', fld_correct_answer=0, fld_show=0, fld_time_track='00:00:00'
                   					WHERE fld_student_id='".$uid."' AND fld_test_id='".$testid."' AND fld_question_id='".$questionid."'");
 				}
-				
-				$dropqus=$ObjDB->QueryObject("SELECT fld_answer AS answer FROM itc_question_answer_mapping 
+
+				$dropqus=$ObjDB->QueryObject("SELECT fld_answer AS answer FROM itc_question_answer_mapping
 				                              WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."'AND fld_attr_id='10' AND fld_flag='1'");
-				$dropans=$ObjDB->QueryObject("SELECT fld_answer AS answer FROM itc_question_answer_mapping 
+				$dropans=$ObjDB->QueryObject("SELECT fld_answer AS answer FROM itc_question_answer_mapping
 				                              WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."'AND fld_attr_id='2' AND fld_flag='1'");
-				
+
 				$i=0;$j=0;
 				while($qus=$dropqus->fetch_assoc())
 				{
@@ -488,13 +488,13 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
 				}
 				$count=$j;
 				?>
-				<div class="eleven columns">   
-					<div class='row'>                
-					<?php 
+				<div class="eleven columns">
+					<div class='row'>
+					<?php
 					for($i=0;$i<sizeof($questionarray);$i++)
-					{ 
-						?>                        
-						<span class="ques-symbol drag" id="option_<?php echo $i; ?>" style="cursor:pointer"><?php echo $questionarray[$i]; ?></span> 
+					{
+						?>
+						<span class="ques-symbol drag" id="option_<?php echo $i; ?>" style="cursor:pointer"><?php echo $questionarray[$i]; ?></span>
 						<script>
 							$("#option_<?php echo $i; ?>").draggable({
 								containment: 'document',
@@ -502,18 +502,18 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
 								start: function() {
 									dragvalue = $(this).html();
 								}
-							});         
-						</script>                 
-						<?php 
-					} ?> 
+							});
+						</script>
+						<?php
+					} ?>
 					</div>
 				</div>
-				<div class="eleven columns"> 
-					<?php 
+				<div class="eleven columns">
+					<?php
 					for($i=0;$i<sizeof($answerarray);$i++)
-					{ 
+					{
 						?>
-						<input type="text" class="ques-input" id="ans<?php echo $i+1;?>" style="width:10%; margin:5px;" value="" placeholder="Answer" readonly />&nbsp;           
+						<input type="text" class="ques-input" id="ans<?php echo $i+1;?>" style="width:10%; margin:5px;" value="" placeholder="Answer" readonly />&nbsp;
 						<script>
 							$("#ans<?php echo $i+1;?>").droppable({
 								accept: '.drag',
@@ -522,22 +522,22 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
 									$('#ans<?php echo $i+1;?>').val(dragvalue);
 								}
 							});
-						</script>             
-						<?php 
-					} ?> 
+						</script>
+						<?php
+					} ?>
 				</div>
 				<?php
-			} 
-			
+			}
+
 			if($answertypeid == 11 )
 			{
-				$pullqus=$ObjDB->QueryObject("SELECT fld_answer AS answer FROM itc_question_answer_mapping 
+				$pullqus=$ObjDB->QueryObject("SELECT fld_answer AS answer FROM itc_question_answer_mapping
 				                             WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."'AND fld_attr_id='1' AND fld_flag='1'");
-			$pullans=$ObjDB->QueryObject("SELECT fld_answer AS answer, fld_boxid as boxid FROM itc_question_answer_mapping 
+			$pullans=$ObjDB->QueryObject("SELECT fld_answer AS answer, fld_boxid as boxid FROM itc_question_answer_mapping
 			                             WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."'AND fld_attr_id='2' AND fld_flag='1'");
- 			$ansopt=$ObjDB->QueryObject("SELECT fld_answer AS answer FROM itc_question_answer_mapping 
+ 			$ansopt=$ObjDB->QueryObject("SELECT fld_answer AS answer FROM itc_question_answer_mapping
 			                             WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."'AND fld_attr_id='10' AND fld_flag='1'");
-			
+
 			$i=0;$j=0;$k=0;
 				while($qus=$pullqus->fetch_assoc())
 				{
@@ -555,56 +555,56 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
 				while($opt=$ansopt->fetch_assoc())
 				{
 					extract($opt);
-					$optionarray[$k]=$answer;				
+					$optionarray[$k]=$answer;
 					$k++;
 				}
 				$count=$i;
 				if($pause == 1){
-					$canswer = $ObjDB->SelectSingleValue("SELECT b.fld_answer AS canswer  
-												FROM itc_question_details AS a 
+					$canswer = $ObjDB->SelectSingleValue("SELECT b.fld_answer AS canswer
+												FROM itc_question_details AS a
 												LEFT JOIN itc_test_student_answer_track AS b ON b.fld_question_id=a.fld_id
-												LEFT JOIN itc_test_pause AS c ON c.fld_test_id= b.fld_test_id AND c.fld_student_id=b.fld_student_id 
-												WHERE a.fld_id='".$questionid."' AND c.fld_test_id='".$testid."' 
+												LEFT JOIN itc_test_pause AS c ON c.fld_test_id= b.fld_test_id AND c.fld_student_id=b.fld_student_id
+												WHERE a.fld_id='".$questionid."' AND c.fld_test_id='".$testid."'
 												AND c.fld_class_id='".$studentclassid."' AND c.fld_student_id='".$uid."'");
 					$ans = explode("~",$canswer);
 				}
 				?>
-				<div class="eleven columns">                   
+				<div class="eleven columns">
 					<?php for ($i=0;$i<sizeof($questionarray);$i++){ ?>
-                    	<?php $pauseans = $ObjDB->SelectSingleValue("SELECT fld_answer FROM`itc_question_answer_mapping` WHERE fld_quesid='".$questionid."' AND fld_attr_id=2 AND fld_ans_type='".$answertypeid."' AND fld_boxid='".$ans[$i]."'"); ?>                        
+                    	<?php $pauseans = $ObjDB->SelectSingleValue("SELECT fld_answer FROM`itc_question_answer_mapping` WHERE fld_quesid='".$questionid."' AND fld_attr_id=2 AND fld_ans_type='".$answertypeid."' AND fld_boxid='".$ans[$i]."'"); ?>
 							<div class='row'>
 								<div class="outer-input-sym" style="padding:1px; float:left">
 									<span class="ques-symbol"><?php echo $questionarray[$i]; ?></span>
-								</div>                       
+								</div>
 								<div class="five columns">
                                     <div class="selectbox" >
                                         <input type="hidden" name="pullans<?php echo $i+1;?>" id="pullans<?php echo $i+1;?>" value="<?php echo $ans[$i];?>" >
-                                        <a class="selectbox-toggle" role="button" data-toggle="selectbox" href="#"><span class="selectbox-option input-medium" style="width: 95%;" data-option="" id="clearsubject"><?php if($pause == 0 or $pauseans == ''){ echo "Select Answer";} else {echo $pauseans;}?></span> <b class="caret"></b> </a> 
+                                        <a class="selectbox-toggle" role="button" data-toggle="selectbox" href="#"><span class="selectbox-option input-medium" style="width: 95%;" data-option="" id="clearsubject"><?php if($pause == 0 or $pauseans == ''){ echo "Select Answer";} else {echo $pauseans;}?></span> <b class="caret"></b> </a>
                                         <div class="selectbox-options">
-                                            <ul role="options" id="option<?php echo $i;?>"> 
+                                            <ul role="options" id="option<?php echo $i;?>">
                                                 <?php for($o=0;$o<sizeof($optionarray);$o++){?>
                                                     <li><a tabindex="-1" href="#" data-option="<?php echo $o+1; ?>"><?php echo $optionarray[$o]; ?></a></li>
-                                                <?php  }	?>    
-                                            
+                                                <?php  }	?>
+
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
 							</div>
-					<?php } ?> 
+					<?php } ?>
 				</div>
 		<?php }
 			$ans2 =0;
 			if($answertypeid == 12) // Drag & Drop - Type 2
 			{
 				if($pause == 1){
-					$ObjDB->NonQuery("UPDATE `itc_test_student_answer_track` SET fld_answer=' ', fld_correct_answer=0, fld_show=0, fld_time_track='00:00:00' 
+					$ObjDB->NonQuery("UPDATE `itc_test_student_answer_track` SET fld_answer=' ', fld_correct_answer=0, fld_show=0, fld_time_track='00:00:00'
                   					WHERE fld_student_id='".$uid."' AND fld_test_id='".$testid."' AND fld_question_id='".$questionid."'");
 				}
-				
-				$ansopt = $ObjDB->QueryObject("SELECT fld_ball_color, fld_inner_ball, fld_outer_ball, fld_correct, fld_ano_correct 
-				                              FROM itc_question_drag_drop WHERE fld_quesid='".$questionid."' 
-											  AND fld_ans_type='".$answertypeid."' AND fld_flag='1'");					
+
+				$ansopt = $ObjDB->QueryObject("SELECT fld_ball_color, fld_inner_ball, fld_outer_ball, fld_correct, fld_ano_correct
+				                              FROM itc_question_drag_drop WHERE fld_quesid='".$questionid."'
+											  AND fld_ans_type='".$answertypeid."' AND fld_flag='1'");
 				$ballcolor=array();
 				$insideballcolor=array();
 				$outsideballcolor=array();
@@ -699,7 +699,7 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
 					(function(d){d.fn.shuffle=function(c){c=[];return this.each(function(){c.push(d(this).clone(true))}).each(function(a,b){d(b).replaceWith(c[a=Math.floor(Math.random()*c.length)]);c.splice(a,1)})};d.shuffle=function(a){return d(a).shuffle()}})(jQuery);
 					$('.ball-green').shuffle();
 					$('.ball-blue').shuffle();
-					
+
 					function rearrangeballs()
 					{
 						var emtpdiv='<div class="empty" style="width: 30px; height: 30px; float: left;pointer-events:none"></div>';
@@ -715,7 +715,7 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
 						}
 					}
 					rearrangeballs();
-					
+
 					$(function() {
 						$(".ballcontainer").sortable({
 							connectWith: ".ballsplitted",
@@ -742,7 +742,7 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
 								rearrangeballs();
 								getcontainerballs();
 							}
-						});	
+						});
 						function rgb2hex(rgb){
 							rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
 							return "" +
@@ -750,7 +750,7 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
 							("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
 							("0" + parseInt(rgb[3],10).toString(16)).slice(-2);
 						}
-								
+
 						function getcontainerballs()
 						{
 							var ansvalue=[];
@@ -765,20 +765,20 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
 				</script>
 				<?php
 			}
-			
+
 			if($answertypeid == 13) // Drag & Drop
 			{
 				if($pause == 1){
-					$ObjDB->NonQuery("UPDATE `itc_test_student_answer_track` SET fld_answer=' ', fld_correct_answer=0, fld_show=0, fld_time_track='00:00:00' 
+					$ObjDB->NonQuery("UPDATE `itc_test_student_answer_track` SET fld_answer=' ', fld_correct_answer=0, fld_show=0, fld_time_track='00:00:00'
                   					WHERE fld_student_id='".$uid."' AND fld_test_id='".$testid."' AND fld_question_id='".$questionid."'");
 				}
-								
-				$ansimage = $ObjDB->SelectSingleValue("SELECT fld_answer AS answer FROM itc_question_answer_mapping 
+
+				$ansimage = $ObjDB->SelectSingleValue("SELECT fld_answer AS answer FROM itc_question_answer_mapping
 				                                      WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."' AND fld_attr_id='1' AND fld_flag='1'");
-				$pointcount = $ObjDB->SelectSingleValue("SELECT COUNT(fld_answer) FROM itc_question_answer_mapping 
+				$pointcount = $ObjDB->SelectSingleValue("SELECT COUNT(fld_answer) FROM itc_question_answer_mapping
 				                                       WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."' AND fld_attr_id='2' AND fld_flag='1'");
 				;
-				
+
 				$ansimage1 = ($ansimage != '') ? "../../thumb.php?src=".__CNTANSIMGPATH__.$ansimage."&w=800&h=200&zc=3" :'';
 				?>
                                 <div class="twelve columns" id="droppable">
@@ -793,7 +793,7 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
 						<?php } if($pointcount > 4) {?>
                                     <div id="balldraggable5" class="rowspacer drag1" title="Drag this Point" style="left:40px;"></div>
 						<?php }?>
-						<img name="txtimage" id="txtimage" src="<?php echo $ansimage1; ?>"/>   
+						<img name="txtimage" id="txtimage" src="<?php echo $ansimage1; ?>"/>
 					</div>
 				<input type="hidden" id="hidepointcount" name="hidepointcount" value="<?php echo $pointcount;?>" />
 				<input type="hidden" id="hideimagedragpos1" name="hideimagedragpos1" value="" />
@@ -801,7 +801,7 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
 				<input type="hidden" id="hideimagedragpos3" name="hideimagedragpos3" value="" />
 				<input type="hidden" id="hideimagedragpos4" name="hideimagedragpos4" value="" />
 				<input type="hidden" id="hideimagedragpos5" name="hideimagedragpos5" value="" />
-				
+
 				<script language="javascript" type="text/javascript">
 					$('#balldraggable1,#balldraggable2,#balldraggable3,#balldraggable4,#balldraggable5').draggable({
 						containment: '#txtimage',
@@ -819,50 +819,50 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
                                                         var newleft = parseInt(ui.draggable.css('left').replace('px',''))+newp;
                                                         console.log(id+ " : " +newleft);
                                                         ballpost=('' + ui.draggable.css('top') + ',' + ui.draggable.css('left'));
-							
+
 							$('#hideimagedragpos'+id).val(ballpost);
 						}
 					});
 				</script>
 				<?php
 			}
-			
+
 			if($answertypeid == 14)
 			{
 				if($pause == 1){
-					$ObjDB->NonQuery("UPDATE `itc_test_student_answer_track` SET fld_answer=' ', fld_correct_answer=0, fld_show=0, fld_time_track='00:00:00' 
+					$ObjDB->NonQuery("UPDATE `itc_test_student_answer_track` SET fld_answer=' ', fld_correct_answer=0, fld_show=0, fld_time_track='00:00:00'
                   					WHERE fld_student_id='".$uid."' AND fld_test_id='".$testid."' AND fld_question_id='".$questionid."'");
 				}
-				  
-				$ansimage = $ObjDB->SelectSingleValue("SELECT fld_answer AS answer FROM itc_question_answer_mapping 
-				                                      WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."' 
+
+				$ansimage = $ObjDB->SelectSingleValue("SELECT fld_answer AS answer FROM itc_question_answer_mapping
+				                                      WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."'
 													  AND fld_attr_id='1' AND fld_flag='1'");
-				
+
 				?>
 				<div class="six columns" >
 					<div class="six columns" id="droppable" style="height:800px">
 						<iframe id="iframegraphline" src="" height="800" width="800"></iframe>
 						<script>
 							$('#iframegraphline').attr('src','line.php?img=<?php echo $ansimage;?>');
-							$("#hideimagename").val('<?php echo $ansimage;?>'); 
-							
+							$("#hideimagename").val('<?php echo $ansimage;?>');
+
 							var iframe1 = document.getElementById('iframegraphline');
 							var innerDoc1 = iframe1.contentDocument || iframe1.contentWindow.document;
 						</script>
 					</div>
 				</div>
 				<input type="hidden" id="hideimagename" name="hideimagename" value="<?php echo $ansimage; ?>" />
-				<?php 
+				<?php
 			}
                         /*--- Single Answer id=2 ---*/
-			if($answertypeid == 15) // Single Answer 
+			if($answertypeid == 15) // Single Answer
 			{
 				if($pause == 1){
-					$canswer = $ObjDB->SelectSingleValue("SELECT b.fld_answer AS canswer  
-												FROM itc_question_details AS a 
+					$canswer = $ObjDB->SelectSingleValue("SELECT b.fld_answer AS canswer
+												FROM itc_question_details AS a
 												LEFT JOIN itc_test_student_answer_track AS b ON b.fld_question_id=a.fld_id
-												LEFT JOIN itc_test_pause AS c ON c.fld_test_id= b.fld_test_id AND c.fld_student_id=b.fld_student_id 
-												WHERE a.fld_id='".$questionid."' AND c.fld_test_id='".$testid."' 
+												LEFT JOIN itc_test_pause AS c ON c.fld_test_id= b.fld_test_id AND c.fld_student_id=b.fld_student_id
+												WHERE a.fld_id='".$questionid."' AND c.fld_test_id='".$testid."'
 												AND c.fld_class_id='".$studentclassid."' AND c.fld_student_id='".$uid."'");
 				}
 		?>
@@ -874,39 +874,39 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
                                             <div class="outer-input-txt"><textarea autofocus style="width:729px;height:403px;text-align: left;" class="ques-input qit-medium"  id="txtopenresponse" maxlength="1000" name="txtopenresponse"  onkeypress="if (this.value.length==this.getAttribute('maxlength')) alert('Max character reached')"><?php echo $canswer;?></textarea></div>
                                             <p>Maximum allowed 1000 character's olny</p>
 					</div>
-                                    
-				</div>		
-			<?php	
-			} // Single Answer if ends	
-                        
-                        
-                        /************Custom Materices Code Start Here Developed by Mohan M 30-7-2015************/  
-                        if($answertypeid == 16) 
+
+				</div>
+			<?php
+			} // Single Answer if ends
+
+
+                        /************Custom Materices Code Start Here Developed by Mohan M 30-7-2015************/
+                        if($answertypeid == 16)
                         {
                                 $qry = $ObjDB->QueryObject("SELECT fld_boxid AS txtboxval, fld_answer AS aswer, fld_attr_id AS columnsval
-                                                                             FROM itc_question_answer_mapping 
+                                                                             FROM itc_question_answer_mapping
                                                                              WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."' AND fld_flag='1'");
-                                if($qry->num_rows > 0) 
+                                if($qry->num_rows > 0)
                                 {
                                    while($row = $qry->fetch_assoc())
                                    {
-                                       extract($row); 
+                                       extract($row);
                                        $rowsval = explode("~",$columnsval);
                                    }
                                 }
 		?>
-                                
+
                                 <input type="hidden" id="rowval" name="rowval" value="<?php echo $rowsval[0]; ?>" />
                                 <input type="hidden" id="columnval" name="columnval" value="<?php echo $rowsval[1]; ?>" />
                                 <?php
                                         if($rowsval[1]=='2'){ ?>
                                         <div style="border-left:4px solid #b4b4b4; border-right:4px solid #b4b4b4; border-radius: 25px;  padding: 10px; width:149px;">
-                                        <?php }else if($rowsval[1]=='3'){ ?> 
+                                        <?php }else if($rowsval[1]=='3'){ ?>
                                         <div style="border-left:4px solid #b4b4b4; border-right:4px solid #b4b4b4; border-radius: 25px;  padding: 10px; width:224px;">
-                                        <?php }else if($rowsval[1]=='4'){ ?> 
+                                        <?php }else if($rowsval[1]=='4'){ ?>
                                         <div style="border-left:4px solid #b4b4b4; border-right:4px solid #b4b4b4; border-radius: 25px;  padding: 10px; width:301px;">
-                                        <?php }else if($rowsval[1]=='5'){ ?> 
-                                        <div style="border-left:4px solid #b4b4b4; border-right:4px solid #b4b4b4; border-radius: 25px;  padding: 10px; width:377px;">                
+                                        <?php }else if($rowsval[1]=='5'){ ?>
+                                        <div style="border-left:4px solid #b4b4b4; border-right:4px solid #b4b4b4; border-radius: 25px;  padding: 10px; width:377px;">
                                         <?php } ?>
                                     <br>
                                     <?php
@@ -916,24 +916,24 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
                                             { ?>
                                                 <input id="txt_<?php echo $i."_".$j;?>" type='text' class="mix-input" size='2' >&nbsp;  <?php
                                             } ?>
-                                            <br><br> 
+                                            <br><br>
                                             <?php
                                         }
-                                        
+
                                        $tottxtbox= $rowsval[0]*$rowsval[1];
                                     ?>
                                 </div>
                                 <?php
                                 if($pause == 1)
                                 {
-                                    $stuanswer = $ObjDB->SelectSingleValue("SELECT b.fld_answer AS canswer  
-                                                                                FROM itc_question_details AS a 
+                                    $stuanswer = $ObjDB->SelectSingleValue("SELECT b.fld_answer AS canswer
+                                                                                FROM itc_question_details AS a
                                                                                 LEFT JOIN itc_test_student_answer_track AS b ON b.fld_question_id=a.fld_id
-                                                                                LEFT JOIN itc_test_pause AS c ON c.fld_test_id= b.fld_test_id AND c.fld_student_id=b.fld_student_id 
-                                                                                WHERE a.fld_id='".$questionid."' AND c.fld_test_id='".$testid."' 
+                                                                                LEFT JOIN itc_test_pause AS c ON c.fld_test_id= b.fld_test_id AND c.fld_student_id=b.fld_student_id
+                                                                                WHERE a.fld_id='".$questionid."' AND c.fld_test_id='".$testid."'
                                                                                 AND c.fld_class_id='".$studentclassid."' AND c.fld_student_id='".$uid."'");
-                                   
-                                     
+
+
                                     $sans=explode(",", $stuanswer, $tottxtbox);
                                     $stufillans=array_chunk($sans,$rowsval[1]);
 
@@ -954,17 +954,17 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
                 <script language="JavaScript">
                         function updateTextArea() {
                                 var allVals = [];
-                                $('#c_b :checked').each(function() {					
-                                        allVals.push($(this).val());					
+                                $('#c_b :checked').each(function() {
+                                        allVals.push($(this).val());
                                 });
                                 $('#answer').val(allVals)
                         }
-                        $(function() {					
+                        $(function() {
                                 $('#c_b input').click(updateTextArea);
-                                updateTextArea();					
+                                updateTextArea();
 
 
-                        });	
+                        });
 
                         jQuery(document).ready(function($) {
 
@@ -973,24 +973,24 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
                 <?php
                 $teachid = $ObjDB->SelectSingleValue("SELECT fld_created_by FROM itc_user_master WHERE fld_id='".$uid."' AND fld_delstatus='0'");
                 $clssid = $ObjDB->SelectSingleValue("SELECT fld_class_id FROM itc_test_student_mapping WHERE fld_test_id='".$testid."' AND fld_student_id='".$uid."' AND fld_created_by='".$teachid."'");
-                $widflag = $ObjDB->SelectSingleValue("SELECT fld_flag FROM widgets_turnoff_student WHERE fld_schedule_id='".$scheduleid."' AND fld_class_id='".$clssid."' AND fld_created_by = '".$teachid."' AND fld_student_id='".$uid."'"); 
+                $widflag = $ObjDB->SelectSingleValue("SELECT fld_flag FROM widgets_turnoff_student WHERE fld_schedule_id='".$scheduleid."' AND fld_class_id='".$clssid."' AND fld_created_by = '".$teachid."' AND fld_student_id='".$uid."'");
 		if($widflag != '1'){
-               
+
                    $contentid = 4;
-             
+
              $widcontflag = $ObjDB->SelectSingleValue("SELECT fld_flag FROM widgets_turnoff_content WHERE fld_content_id='".$contentid."' AND fld_created_by = '".$teachid."'");
              if($widcontflag!='1'){
 		?>
                 <link href='<?= CONTENT_EXP_URL ?>/emaps-master/partials/widgets/tooltip.css' rel='stylesheet' type="text/css" />
 		<script language="JavaScript">
-		
+
                 $(function() {
 
                    $( ".modalDialog" ).draggable();
                  });
 		</script>
             <style>
-                   
+
                .modalDialog {
                     position: fixed;
                     font-family: Arial, Helvetica, sans-serif;
@@ -1001,7 +1001,7 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
                     -moz-transition: opacity 400ms ease-in;
                     transition: opacity 400ms ease-in;
                     pointer-events: none;
-                    
+
             }
             .modalDialog:target {
                     opacity:1;
@@ -1012,7 +1012,7 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
                     width: 226px;
                     position: relative;
                     margin-top:20px;
-                    
+
 
             }
             .closenew {
@@ -1028,7 +1028,7 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
                     font-weight: bold;
                     -webkit-border-radius: 12px;
                     -moz-border-radius: 12px;
-                   
+
                     -moz-box-shadow: 1px 1px 3px #000;
                     -webkit-box-shadow: 1px 1px 3px #000;
                     box-shadow: 1px 1px 3px #000;
@@ -1037,79 +1037,79 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
             .closenew:hover { background: #00d9ff; }
 
             ul{
-                      margin:0 !important;; 
+                      margin:0 !important;;
                       padding: 0 !important;
 
                     }
 
-          #wmenu { 
+          #wmenu {
                     margin-top:360px;
                 float: left;
-                        line-height: 25px; 
+                        line-height: 25px;
                         left: 200px;
-                        font-weight:normal; 
-                        font-variant: small-caps; 
+                        font-weight:normal;
+                        font-variant: small-caps;
 
             }
-                    #wmenu a { 
+                    #wmenu a {
                 display: block;
                 text-decoration: none;
                         color: #fff;
                     }
-                
+
                     #wmenu ul li ul li {
-                        width: 150px; 
-                        color: #49708a;  
-                        padding-top: 3px; 
-                        padding-bottom:3px; 
-                        padding-left: 3px; 
-                        padding-right: 3px; 
+                        width: 150px;
+                        color: #49708a;
+                        padding-top: 3px;
+                        padding-bottom:3px;
+                        padding-left: 3px;
+                        padding-right: 3px;
                         background: rgba(36, 72, 95, 1);
             }
 		    #wmenu a:hover { background: #a3cae4;}
-                    #wmenu ul li ul li a { 
-                        font: 12px arial; 
-                        font-weight:normal; 
+                    #wmenu ul li ul li a {
+                        font: 12px arial;
+                        font-weight:normal;
                         padding:5px;}
                     #wmenu ul li {
-                        width: 156px; 
+                        width: 156px;
                         background: #49708a;}
 
-                    #wmenu li{ 
-                        position:relative; 
+                    #wmenu li{
+                        position:relative;
                         float:left;
             }
-                    #wmenu ul li ul, #wmenu:hover ul li ul, #wmenu:hover ul li:hover ul li ul{ 
+                    #wmenu ul li ul, #wmenu:hover ul li ul, #wmenu:hover ul li:hover ul li ul{
                         display:none;
-                        list-style-type:none; 
+                        list-style-type:none;
                         width: 140px;}
-                    #wmenu:hover ul, #wmenu:hover ul li:hover ul, #wmenu:hover ul li:hover ul li:hover ul { 
+                    #wmenu:hover ul, #wmenu:hover ul li:hover ul, #wmenu:hover ul li:hover ul li:hover ul {
                         display:block;}
 
-                    #wmenu:hover ul li:hover ul { 
+                    #wmenu:hover ul li:hover ul {
                         position: absolute;
                         margin-top: 1px;
                         font: 11px;
                         bottom:100%;
             }
-                
+
             a#tooltip2 span {
                 margin-top: -455px;
             }
-            </style>  
-    <input type="hidden" id="hiddquestionid_<?php echo $questionid; ?>" value="<?php echo $questionid; ?>" />    
+            </style>
+    <input type="hidden" id="hiddquestionid_<?php echo $questionid; ?>" value="<?php echo $questionid; ?>" />
     <input type="hidden" id="answertypeid_<?php echo $questionid; ?>" value="<?php echo $answertypeid; ?>" />
     <input type="hidden" id="boxcount" value="<?php echo $count; ?>" />
     <input type="hidden" id="hidqorderquesid_<?php echo $quesorder;?>" value="<?php echo $questionid; ?>" />
     <input type="hidden" name="answer" id="answer"/>
     </div>
 </div>
-                                            
-<?php $widintflag = $ObjDB->SelectSingleValue("SELECT COUNT(fld_id) 
-                                                                FROM itc_widgets_menu WHERE 
+
+<?php $widintflag = $ObjDB->SelectSingleValue("SELECT COUNT(fld_id)
+                                                                FROM itc_widgets_menu WHERE
                                                                 fld_id NOT IN (SELECT fld_widget_id FROM widgets_turnoff_individual WHERE fld_flag = '1' AND fld_created_by = '".$teachid."') AND fld_delstatus = '0'");
-                   
-           if($widintflag!=0){   
+
+           if($widintflag!=0){
     ?>
         <div id="openModal1" class="modalDialog" draggable="true" style="height:335px;width:315px;background: gray;top: 10px;left:220px;">
             <div id="calbgrd2" class="dragclass">
@@ -1120,7 +1120,7 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
                             <p>Your browser does not support iframes.</p>
                             </iframe>
 
-            </div>       
+            </div>
             </div>
             <div id="openModal2" class="modalDialog" draggable="true" style="height:675px;width:655px;background: gray;top: 10px;left:220px;">
             <div id="calbgrd2" class="dragclass">
@@ -1131,9 +1131,9 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
                             <p>Your browser does not support iframes.</p>
                             </iframe>
 
-                    </div>	
+                    </div>
             </div>
-            
+
             <div id="openModal4" class="modalDialog" draggable="true"  style="height:471px;width:501px;background: gray;top: 10px;left:220px;">
             <div id="calbgrd3">
                             <a href="#close" title="Close" class="closenew">X</a>
@@ -1143,7 +1143,7 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
                             <p>Your browser does not support iframes.</p>
                             </iframe>
 
-                    </div>	
+                    </div>
             </div>
             <div id="wmenu">
 
@@ -1152,18 +1152,18 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
 
                     <ul>
                         <li><center><a href="#">Widgets</a></center>
-                            <ul><?php 
+                            <ul><?php
                             $widids = array();
-                            $qry = $ObjDB->QueryObject("SELECT fld_id AS widgetid 
-                                                        FROM itc_widgets_menu WHERE 
+                            $qry = $ObjDB->QueryObject("SELECT fld_id AS widgetid
+                                                        FROM itc_widgets_menu WHERE
                                                         fld_id NOT IN (SELECT fld_widget_id FROM widgets_turnoff_individual WHERE fld_flag = '1' AND fld_created_by = '".$teachid."') AND fld_delstatus = '0'");
-                            if($qry->num_rows > 0){													
+                            if($qry->num_rows > 0){
                                 while($rows = $qry->fetch_assoc()){
                                     extract($rows);
-                        
+
                            if($widgetid == "1"){
                             ?>
-                                <li style="margin-bottom:0px;">  <span style="float:left;width:90%;"> <a class="arrow-left" href="#openModal1">Calculator</a> </span> <span style="float:right;width:10%;"> <a id="tooltip1" style="padding:5px 0px; text-align:center">?<span style="font-family: Times New Roman, Times, serif;">                                        
+                                <li style="margin-bottom:0px;">  <span style="float:left;width:90%;"> <a class="arrow-left" href="#openModal1">Calculator</a> </span> <span style="float:right;width:10%;"> <a id="tooltip1" style="padding:5px 0px; text-align:center">?<span style="font-family: Times New Roman, Times, serif;">
                                         <strong style="text-align:center; font-size:18px;">Calculator</strong><br />
                                         <strong>Movement</strong><br />
                                         * &nbsp;You may drag the Calculator widget anywhere on the screen.<br />
@@ -1174,8 +1174,8 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
                                         * &nbsp;Click CE to clear your calculation.<br />
                                         * &nbsp;Click the left-facing arrow to backspace and remove one digit at a time.<br />
                                         * &nbsp;Click the plus/minus button to change the number from positive to negative or<br /> &nbsp;&nbsp;from negative to positive.
-                                </span>    
-                           </a> </span></li><?php } 
+                                </span>
+                           </a> </span></li><?php }
                            if($widgetid == "2"){?>
                                         <li style="margin-bottom:0px;"><span style="float:left;width:90%;"> <a href="#openModal2">Graphing Calculator</a> </span> <span style="float:right;width:10%; font-family: Times New Roman, Times, serif;"> <a id="tooltip2" style="padding:5px 0px ; text-align:center">?<span>
                                         <strong style="text-align:center; font-size:18px;">Graphing Calculator</strong><br />
@@ -1195,13 +1195,13 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
                                      <strong>Equations</strong><br />
 
                                         * &nbsp;To graph an equation, use the numbers and operators on your keyboard <br />&nbsp;&nbsp;to type the equation in the y= field. <br />  &nbsp;&nbsp;&nbsp; <strong>Note:</strong> You can create exponents by using the caret. For example, 2x^2 is 2x2.<br />
-                                        * &nbsp;You cannot customize the line color of the resulting graph.<br />  
+                                        * &nbsp;You cannot customize the line color of the resulting graph.<br />
                                         * &nbsp;To graph more than one equation, click the blue + button. You may add as many equations<br /> &nbsp;&nbsp;as necessary. Each new equation will be assigned a different color.<br />
                                         * &nbsp;You cannot remove an equation box after it's been added. If you do not wish to graph the<br /> &nbsp;&nbsp;equation, you must clear the equation typed in that field.<br />
                                         * &nbsp;After you have entered your equation(s), click the blue Evaluate button. <br />&nbsp;&nbsp;The graphs will appear on the coordinate plane to the left.<br />
                                        </span>
-                                            </a> </span></li><?php } 
-                                
+                                            </a> </span></li><?php }
+
                                 if($widgetid == "4"){?>
                                         <li style="margin-bottom:0px;"> <span style="float:left;width:90%;"> <a href="#openModal4">Scientific Calculator</a> </span> <span style="float:right;width:10%; font-family: Times New Roman, Times, serif;"> <a id="tooltip4" style="padding:5px 0px ; text-align:center">?<span>
                                         <strong style="text-align:center; font-size:18px;">Scientific Calculator</strong><br />
@@ -1230,12 +1230,12 @@ if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
                                              }
                             }
                                 ?>
-                                    
+
                             </ul>
                         </li>
-                    </ul> 
-                </div>     
-                
+                    </ul>
+                </div>
+
             </div>
 <?php
            }// Widget Ind ends

@@ -1,112 +1,112 @@
 <?php
 	@include("sessioncheck.php");
-	
+
 	$method=$_REQUEST;
-	
+
 	$id = isset($method['id']) ? $method['id'] : '0';
 	$id = explode(",",$id);
-	
+
 	$sessionid = $id[0];  // Session id
 	$moduleid = $id[1]; // Module id
 	$mathmoduleid = $id[2]; // Module / Math Module
 	$scheduleid = 0; // Schedule id
 	$scheduletype = 0; // Schedule Type
 	$windowheight = $id[3]; // Window Height
-	
+
 	$uguid1 = $ObjDB->SelectSingleValue("SELECT fld_uuid FROM itc_user_master WHERE fld_id='".$uid."'");
-	
+
 	$qrymod = '';
 	if($mathmoduleid==0)
-		$qrymod = "SELECT CONCAT(a.fld_module_name,' ',b.fld_version) AS modulename, b.fld_file_name AS filename 
-						FROM itc_module_master AS a 
-						LEFT JOIN itc_module_version_track AS b ON a.fld_id=b.fld_mod_id 
+		$qrymod = "SELECT CONCAT(a.fld_module_name,' ',b.fld_version) AS modulename, b.fld_file_name AS filename
+						FROM itc_module_master AS a
+						LEFT JOIN itc_module_version_track AS b ON a.fld_id=b.fld_mod_id
 						WHERE a.fld_id='".$moduleid."' AND a.fld_delstatus='0' AND b.fld_delstatus='0'";
 	else
 		$qrymod = "SELECT CONCAT(a.fld_mathmodule_name,' ',b.fld_version) AS modulename, b.fld_file_name AS filename
-						FROM itc_mathmodule_master AS a 
-						LEFT JOIN itc_module_version_track AS b ON a.fld_module_id=b.fld_mod_id 
+						FROM itc_mathmodule_master AS a
+						LEFT JOIN itc_module_version_track AS b ON a.fld_module_id=b.fld_mod_id
 						WHERE a.fld_id='".$mathmoduleid."' AND a.fld_delstatus='0' AND b.fld_delstatus='0'";
-	
+
 	$qrymodnames = $ObjDB->QueryObject($qrymod);
-	
+
 	$resqrymodnames = $qrymodnames->fetch_assoc();
 	extract($resqrymodnames);
-	
+
 	$string = file_get_contents(_CONTENTURL_."modules/".$filename."/book.xml");	 // change path
 	$doc = new DOMDocument();
 	$doc->loadXML($string);
 
 	$xpath = new DOMXpath($doc);
 	$modguid = $xpath->query("//book")->item(0)->getAttribute('id');
-	
+
 	$attributes = $xpath->query("//attributes/*");
 	foreach ($attributes as $attribute) {
 	   	${$attribute->nodeName} = $attribute->nodeValue;
 	}
-	
+
 	$sections = $xpath->query("//toc/section_node");
 	$arrsection = array();
 	$arrpages = array();
 	$pages = array();
 	$sectioncount = $sections->length;
 	$i = 1;
-	
+
 	foreach($sections as $section) {
 		$sectionid = $section->getAttribute('id');
 		$sectiontitle = addslashes($section->getAttribute('title'));
 		$attendance[] = $section->getAttribute('attendance');
 		$participation[] = $section->getAttribute('participation');
-		
+
 		$innerpages = $xpath->query("page_node | section_node", $section);
 		if($innerpages->length > 0) {
 			foreach ($innerpages as $innerpage) {
-				
+
 				if($innerpage->nodeName == 'page_node') {
 					$pages[] =  $innerpage->getAttribute('id')."~". addslashes($innerpage->getAttribute('title'));
 				}
-				
+
 				if($innerpage->nodeName == 'section_node' and $i > 7) {
 					$innersectionid = $innerpage->getAttribute('id');
 					$innersectiontitle = $innerpage->getAttribute('title');
-					
+
 					$arrsection[] = $innersectionid."~".$innersectiontitle;
 				}
-				
+
 				$innersections = $xpath->query("page_node", $innerpage);
 				if($innersections->length > 0) {
 					foreach ($innersections as $innersection) {
-						
+
 						if($innersection->nodeName == 'page_node') {
 							$pages[] =  $innersection->getAttribute('id')."~". addslashes($innersection->getAttribute('title'));
 						}
 					}
-					
+
 					if($i > 7){
 						$sectioncount = $sectioncount + 1;
-						$arrpages[] = implode("%",$pages);	
+						$arrpages[] = implode("%",$pages);
 						unset($pages);
 						$i++;
 					}
 				}
 			}
 		}
-		
+
 		if($sectiontitle != 'Enrichments') {
 			$arrsection[] = $sectionid."~".$sectiontitle;
-		
+
 			$arrpages[] = implode("%",$pages);
 			unset($pages);
-			$i++;	
+			$i++;
 		}
 	}
-	
+
 ?>
 <!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
 <title>New FRE</title>
-<script language="javascript" type="text/javascript" src="../../jquery-ui/js/jquery-1.8.3.min.js"></script> 
+<script language="javascript" type="text/javascript" src="../../jquery-ui/js/jquery-1.8.3.min.js"></script>
 <script language="javascript" type="text/javascript" src="../../js/UFO.js"></script>
 <script language="javascript" type="text/javascript" src="../../js/FRE.js"></script>
 <link href='../../css/player.css' rel='stylesheet' type="text/css" />
@@ -123,14 +123,14 @@
 </div>
 
 <div id="divlbcontentmodule">
-    <!--Player Window--> 
+    <!--Player Window-->
     <div class="playeouter">
         <div class="plleft" style="background-color:#000">
-            
+
             <!--Load FRE Player Content-->
             <div class="plcontent" id="freplayer" style="width:97%">
                 <div id="contentArea">
-                    <div style="margin:20px; color:#F00" >The required Flash plugin is missing. To install the Flash plugin please click here. 
+                    <div style="margin:20px; color:#F00" >The required Flash plugin is missing. To install the Flash plugin please click here.
                         <a href="http://www.adobe.com/support/flashplayer/downloads.html" target="_blank">Adobe Flash Player</a>
                     </div>
                 </div>
@@ -176,11 +176,11 @@
             <input type="button" id="cc" class="plbtn-cc" onClick="ToggleCC()"/>
             <input type="button" id="nextButton" name="nextButton" class="plbtn-next" onClick="loadNextPage();"/>
         </div>
-    </div> 
-    <div class="dialogTitleSmallFullScr" id="dispstu2" style="float:right;margin-right:2%;"><?php echo $sessusrfullname1;?></div> 
+    </div>
+    <div class="dialogTitleSmallFullScr" id="dispstu2" style="float:right;margin-right:2%;"><?php echo $sessusrfullname1;?></div>
 </div>
 
-<input type="hidden" id="scheduletype" name="scheduletype" value="<?php echo $scheduletype;?>"/> 
+<input type="hidden" id="scheduletype" name="scheduletype" value="<?php echo $scheduletype;?>"/>
 <input type="hidden" id="scheduleid" name="scheduleid" value="<?php echo $scheduleid;?>"/>
 <input type="hidden" id="moduleid" name="moduleid" value="<?php echo $moduleid;?>"/>
 <input type="hidden" id="testerid" name="testerid" value="<?php echo $uid;?>"/>
@@ -197,7 +197,7 @@
 
 <!-- This iframe is used to make cross domain requests from the JavaScript -->
 <iframe id="XHP_iFrame" style="visibility:hidden; height: 0px; width: 0px; border: 0px none; display:none;"></iframe>
-    
+
 <script type="text/javascript" language="javascript">
 	var FRE;
 	var modname = '<?php echo $filename; ?>';
@@ -212,20 +212,20 @@
 	<?php
 		for($i=0;$i<$sectioncount-1;$i++){
 	?>
-		page[<?php echo $i; ?>] = '<?php echo $arrpages[$i]; ?>'; 
-	<?php		
+		page[<?php echo $i; ?>] = '<?php echo $arrpages[$i]; ?>';
+	<?php
 		}
 	?>
-	
+
 	fn_loadmodule(sessid,modname);
-	
+
 	function fn_game(userid1,modname)
 	{
 		var guid = $('#guid').val();
-		
-		window.open('http://robo-review.pitsco.com/Play?moduleGuid='+guid+'&player1='+userid1);
+
+		window.open('http://robo-review.nolaedu.net/Play?moduleGuid='+guid+'&player1='+userid1);
 	}
-	
+
 	function fn_loadmodule(sess,modname) {
 		var fo = {
 			movie: "Presentor.swf",
@@ -242,64 +242,64 @@
 		}
 		UFO.create(fo, "contentArea");
 	};
-	
+
 	function fn_showpages(sessionid, currentindex) {
-		
+
 		var topsesstitle = "Session "+ (parseInt(sessionid)+1);
 		$('#sessid').html(topsesstitle);
-		
+
 		$('#hidsesschange').val('');
-		
-		sessid = sessionid; 
+
+		sessid = sessionid;
 		var pglist = ''
 		var tmppage = '';
 		var tmpreadpages = '';
-		
+
 		cursecpages = page[sessionid].split("%");
 		$('#hidtotpage').val(cursecpages.length - 1);
-		
+
 		$('.btnprevclose').removeClass().addClass('btnprevclose').addClass('toolbg'+sessionid);
 		$('.diviplbottom').removeClass().addClass('diviplbottom').addClass('toolbg'+sessionid);
-		
+
 		var clickgame = "fn_game('<?php echo $uguid1;?>','<?php echo $modulename;?>')";
-		var clspg = ''; 
+		var clspg = '';
 		pglist = '<ul id="pagelist">';
-		
+
 		if(sessionid==5) {
 			pglist = pglist + '<li id="game_0" class="'+clspg+'" onclick="'+clickgame+'" style="width:100%;">Robo-Review</li>';
 		}
-		currentindex = 0;		
+		currentindex = 0;
 		for(i=0;i<cursecpages.length;i++){
-			tmppage = cursecpages[i].split("~");			
+			tmppage = cursecpages[i].split("~");
 			pglist = pglist + '<li id="page_'+i+'" onclick="LoadPageData('+tmppage[0]+','+i+');" style="width:100%;">'+tmppage[1]+'</li>';
-			
+
 			if(i == currentindex){
-				newpage = tmppage[0];	
-				$("#hidCurrPageIndex").val(i); 
+				newpage = tmppage[0];
+				$("#hidCurrPageIndex").val(i);
 			}
-		}	
+		}
 		pglist += '<ul>';
-		
-		$('#debugControls2').html(pglist);		
+
+		$('#debugControls2').html(pglist);
 		LoadPageData(newpage, currentindex);
 	}
 	/****newliy added*/
-	
-	
+
+
 	function fn_show(id)
 	{
-		if(id==0) 
+		if(id==0)
 		{
-			$('.plright').hide();	
+			$('.plright').hide();
 			$('.plleft').css('width','100%');
 			$('#divshow').val(1);
 			$('#chclass').removeClass('arrowRight').addClass('arrowLeft');
 			$('.rightAction').css('margin-left','1%');
-			
+
 		}
-		else 
+		else
 		{
-			$('.plright').show();	
+			$('.plright').show();
 			$('.plleft').css('width','85%');
 			$('#divshow').val(0);
 			$('#chclass').removeClass('arrowLeft').addClass('arrowRight');
@@ -308,10 +308,10 @@
 	}
 	/****newliy added*/
 	function ReloadPage(){
-		
+
 		LoadPageData(newpage, $('#hidCurrPageIndex').val());
 	}
-	
+
 	function ToggleCC() {
 		FRE.flashObject.toggleCaptions();
 		if($('#cc').attr('class')=='plbtn-cc'){
@@ -326,7 +326,7 @@
 		StopAudio();
 		StartAudio();
 	}
-	
+
 	function StartAudio() {
 		var audioId = $('#curraudioid').val();
 		FRE.flashObject.startAudio(audioId);
@@ -336,52 +336,52 @@
 		var audioId = $('#curraudioid').val();
 		FRE.flashObject.pauseAudio(audioId);
 	}
-	
+
 	function StopAudio() {
 		var audioId = $('#curraudioid').val();
 		FRE.flashObject.stopAudio(audioId);
 	}
-	
-	
+
+
 	function KillFlash() {
 		var ca = document.getElementById("contentArea");
 		while (ca.firstChild) {
 			ca.removeChild(ca.firstChild);
 		}
 	}
-	
+
 	function disabler(event) {
 		event.preventDefault();
 		return false;
 	}
 
 	function LoadPageData(pageid, cindex) {
-		
+
 		var toptitle = '';
 		if(cindex == 0)
 			toptitle = "Knowledge Survey";
 		else
 			toptitle = "page "+(parseInt(cindex)) + " of " + $('#hidtotpage').val();
-		
+
 		$('#pageval').html(toptitle);
-		
-		readpages[cindex] = 1; 
+
+		readpages[cindex] = 1;
 		$("#hidCurrPageIndex").val(cindex);
 
 		$('li[id^="page_"]').each(function(index, element) {
 			var tmppage = cursecpages[index].split("~");
 			$(this).attr("onclick","LoadPageData("+tmppage[0]+","+index+")").removeClass().addClass('nextselect');
         });
-		
+
 		$('#page_'+cindex).removeClass().addClass('select');
-				
+
 		$('#prevButton').attr('disabled', false).removeClass('dim');
 		$('#nextButton').attr('disabled', false).removeClass('dim');
-		
+
 		if(parseInt(cindex) == 0)
 			$('#prevButton').attr('disabled', false).addClass('dim');
 		fn_buttonenable();
-		
+
 		newpage = pageid;
 		audioelements = 0;
 		FRE.flashObject.loadPageData("<?php echo _CONTENTURL_;?>modules/"+modname+"/pages/"+pageid+".xml",null,'POST'); // change path
@@ -401,88 +401,88 @@
 		var newWindow = window.open('', 'reportwindow', 'width=650,height=750,toolbar=no,location=no,directories=no,status=yes,menubar=yes,scrollbars=yes,copyhistory=no,resizable=yes');
 		html = html.replace(/{/g,'<script>');
 		html = html.replace(/}/g,';<\/script>');
-		html = html.replace(/#/g,"'");	
-		
+		html = html.replace(/#/g,"'");
+
 		var prival = '';
 		for (key in frevariables) {
 			prival += (prival == '')? unescape(key+"#"+frevariables[key]) : "~"+key+"#"+frevariables[key];
 		}
-									
+
 		html = "<input type='hidden' id='hidvar' value='"+prival+"' /> <script> var prvar = document.getElementById('hidvar').value; var arrprvar=[]; prvar = prvar.split('~'); for(i=0;i<prvar.length;i++){ var tmpp=prvar[i].split('#'); arrprvar[tmpp[0]] = tmpp[1]; } function getUserVar(printvar){  document.write(arrprvar[printvar]); } <\/script>" + html;
 		newWindow.document.writeln(html);
 		newWindow.document.close();
 		newWindow.focus();
 		newWindow.print();
 	}
-	
+
 	function loadPrevPage(){
-		var cindex = parseInt($("#hidCurrPageIndex").val()) - 1;		
-		
+		var cindex = parseInt($("#hidCurrPageIndex").val()) - 1;
+
 		var tmpprevpage = cursecpages[cindex].split("~");
 		if(cindex >= 0) {
 			LoadPageData(tmpprevpage[0],cindex);
-			$("#hidCurrPageIndex").val(cindex); 
-			
-			$('#prevButton').attr('disabled',false).removeClass('dim');	
-			$('#nextButton').attr('disabled',false).removeClass('dim');	
+			$("#hidCurrPageIndex").val(cindex);
+
+			$('#prevButton').attr('disabled',false).removeClass('dim');
+			$('#nextButton').attr('disabled',false).removeClass('dim');
 			if(cindex == 0){
-				$('#prevButton').attr('disabled',true).addClass('dim');		
-			}
-		}
-	}	
-	
-	function loadNextPage(){
-		var cindex = parseInt($("#hidCurrPageIndex").val()) + 1;		
-		
-		var tmpnxtpage = cursecpages[cindex].split("~");
-		if(cindex >= 0) {
-			LoadPageData(tmpnxtpage[0],cindex);
-			$("#hidCurrPageIndex").val(cindex); 			
-			
-			if(cindex == parseInt($("#hidtotpage").val())){
-				$('#nextButton').attr('disabled', 'disabled').addClass('dim');	
+				$('#prevButton').attr('disabled',true).addClass('dim');
 			}
 		}
 	}
-	
+
+	function loadNextPage(){
+		var cindex = parseInt($("#hidCurrPageIndex").val()) + 1;
+
+		var tmpnxtpage = cursecpages[cindex].split("~");
+		if(cindex >= 0) {
+			LoadPageData(tmpnxtpage[0],cindex);
+			$("#hidCurrPageIndex").val(cindex);
+
+			if(cindex == parseInt($("#hidtotpage").val())){
+				$('#nextButton').attr('disabled', 'disabled').addClass('dim');
+			}
+		}
+	}
+
 	function fn_buttondisable(){
-		$('.playerbuttons').hide();	
+		$('.playerbuttons').hide();
 		$('#dispstu2').css('margin-top','0');
 		$('#xmlFileSelect').attr('disabled', true);
 		$('a.icon-synergy-close-dark').bind('click',disabler).addClass('dim');
 	}
-	
+
 	function fn_buttonenable(){
 		$('.playerbuttons').show();
 		$('#dispstu2').css('margin-top','-38px');
-		$('#xmlFileSelect').attr('disabled', false);	
+		$('#xmlFileSelect').attr('disabled', false);
 		$('a.icon-synergy-close-dark').unbind('click',disabler).removeClass('dim');
 	}
-	
-	FRE.onClearPage = function(evt) {		
+
+	FRE.onClearPage = function(evt) {
 	}
-	
-	FRE.onPageLoad = function(evt) {		
+
+	FRE.onPageLoad = function(evt) {
 		RepeatAudio();
 	}
-	
+
 	FRE.onPageInit = function (evt) {
 		this.flashObject = document.getElementById('Presentor');
 		this.flashObject.setBaseUrl('<?php echo _CONTENTURL_."modules/".$filename."/media/"; ?>'); // change path
 		this.flashObject.setBackground('<?php echo $background; ?>');
 		this.flashObject.setBaseFont('<?php echo $font; ?>','<?php echo $fontsize; ?>','<?php echo $fontstyle; ?>','<?php echo $fontcolor; ?>');
-		this.flashObject.setCaptionFont('<?php echo $captionFontName; ?>','<?php echo $captionFontSize; ?>','<?php echo $captionFontStyle; ?>','<?php echo $captionFontColor; ?>');		
+		this.flashObject.setCaptionFont('<?php echo $captionFontName; ?>','<?php echo $captionFontSize; ?>','<?php echo $captionFontStyle; ?>','<?php echo $captionFontColor; ?>');
 		fn_showpages(sessid, 0);
 	}
-	
-	FRE.onRequiredElementsComplete = function (evt) {		
+
+	FRE.onRequiredElementsComplete = function (evt) {
 		var cindex = $('#hidCurrPageIndex').val();
 	}
 
 	FRE.requestTesters = function (assessment_id) {
 		var testers = new Array();
 		var q1 = new Array();
-		
+
 		testers[0] = { username: '<?php echo addslashes($username); ?>',
 			fullname: '<?php echo addslashes($sessusrfullname); ?>',
 			tester_id: '<?php echo $uid; ?>',
@@ -498,22 +498,22 @@
 	function escapestr(str){
 		return escape(str.replace(/<script[^>]*>([\s\S]*?)<\/script[^>]*>/,""));
 	}
-	
+
 	FRE.setVariable = function (o) {
-		for (key in o) {			
+		for (key in o) {
 			frevariables[key] = unescape(o[key]);
-			
-			$.post("library-modules-playerajax.php", { oper: "variabletrack", key: escapestr(key), answer: escapestr(frevariables[key]), scheduleid: $('#scheduleid').val(), scheduletype: $('#scheduletype').val(), moduleid: $('#moduleid').val(), sessionid: sessid, pageid: $("#hidCurrPageIndex").val(), edit: '0', testerid: $('#testerid').val(), testerid1: $('#testerid1').val() });			
+
+			$.post("library-modules-playerajax.php", { oper: "variabletrack", key: escapestr(key), answer: escapestr(frevariables[key]), scheduleid: $('#scheduleid').val(), scheduletype: $('#scheduletype').val(), moduleid: $('#moduleid').val(), sessionid: sessid, pageid: $("#hidCurrPageIndex").val(), edit: '0', testerid: $('#testerid').val(), testerid1: $('#testerid1').val() });
 		}
 	}
 
 	FRE.getVariable = function (key) {
 		var value = ''; //FREBridge.getVariable(key);
-		
+
 		if(!(key in frevariables)) {
-			
+
 			var dataparam = "oper=variabletrack&moduleid="+$('#moduleid').val()+"&scheduleid="+$('#scheduleid').val()+"&scheduletype="+$('#scheduletype').val()+"&key="+escapestr(key)+"&testerid="+$('#testerid').val()+"&edit=1";
-			
+
 			$.ajax({
 				type: 'post',
 				url: 'library-modules-playerajax.php',
@@ -525,21 +525,21 @@
 				}
 			});
 		}
-		
+
 		if(frevariables[key]) {
 			value = frevariables[key];
 		}
 		return value;
 	}
 
-	FRE.onQuestionAnswered = function (evt) {		
+	FRE.onQuestionAnswered = function (evt) {
 	}
 
 	FRE.onAssessmentCanceled = function (evt) {
 		parent.closefullscreenlesson();
 	}
 
-	FRE.onAssessmentComplete = function (evt) {			
+	FRE.onAssessmentComplete = function (evt) {
 
 		loadNextPage();
 	}
@@ -556,7 +556,7 @@
 		else {
 			var xmlDoc = null;
 		}
-	
+
 		if (xmlDoc && xmlDoc != null) {
 			var actionNodes = xmlDoc.getElementsByTagName('action_node');
 				var action = '';
@@ -564,12 +564,12 @@
 					action = actionNodes[i].getAttribute('type');
 					if ((action == 'open') || (action == 'agent')) {
 						var command = actionNodes[i].getAttribute('command');
-						if (!command || command == null) 
+						if (!command || command == null)
 							command = '';
 						var parms = actionNodes[i].getAttribute('parms');
-						if (!parms || parms == null) 
+						if (!parms || parms == null)
 							parms = '';
-						
+
 						var url = "http://localhost:6001/launchApp?app=" + command + "&appParams=" + parms;
 						var XHP_Proxy = document.getElementById('XHP_iFrame');
 						if (XHP_Proxy && XHP_Proxy != null) {
@@ -582,70 +582,70 @@
 				}
 		}
 	}
-	
+
 	FRE.onaudiostart = function (evt) {
-		
+
 		if($('#curraudioid').val() == evt.id){
 			audioelements = 0;
 		}
-		
+
 		if(audioelements == 0) {
 			$('#curraudioid').val(evt.id);
 			$('#pause').removeClass('dim').attr('disabled', false).show();
-			$('#play').hide();			
+			$('#play').hide();
 			audioelements = audioelements + 1;
-		}		
+		}
 	}
 
 	FRE.onaudiostop = function (evt) {
 		if($('#curraudioid').val() == evt.id) {
-			$('#pause').attr('disabled', true).addClass('dim');		
+			$('#pause').attr('disabled', true).addClass('dim');
 		}
 	}
 
 	FRE.onaudiopause = function (evt) {
 		$('#pause').hide();
-		$('#play').show();		
+		$('#play').show();
 	}
-	
-	FRE.onloaderror = function(evt){		
+
+	FRE.onloaderror = function(evt){
 	}
-	
+
 	//Function to set the max & min values for the textbox
 	String.prototype.startsWith = function (str) {
 		return (this.indexOf(str) === 0);
 	}
-	
+
 	function ChkValidChar(id) {
 		var txtbx = document.getElementById(id).value;
 		if ((txtbx.startsWith("0")) || (txtbx > 10)){
-			document.getElementById(id).value = "";			
+			document.getElementById(id).value = "";
 		}
 	}
-		
+
 	$(window).resize(function() {
 		$('#debugControls2').css('height',($('.plleft').height()-25));
-		
+
 		var cssObjInner = {
 		  'display' : 'block',
 		  'width' : $('body').width(),
 		  'height' : <?php echo $windowheight;?> - 90
 		};
-		
+
 		$('#divlbcontentmodule').css(cssObjInner);
 	});
-	
+
 	$(document).ready(function () {
 		var cssObjInner = {
 		  'display' : 'block',
 		  'width' : $('body').width(),
 		  'height' : <?php echo $windowheight;?> - 90
 		};
-		
+
 		$('#divlbcontentmodule').css(cssObjInner);
-		
+
 		//Function to validate the textboxes in attendance & participations
-		$("input[name^='attpartxt']").keyup(function(e){			
+		$("input[name^='attpartxt']").keyup(function(e){
 			var empty = true;
 			$("input[name^='attpartxt']").each(function(i){
 				if($(this).val()==''){
@@ -658,19 +658,19 @@
 					empty=false;
 				}
 			});
-			if(!empty) $('#done').removeClass('dim');                
+			if(!empty) $('#done').removeClass('dim');
 		});
-		
+
 		//Function to enter only numbers in textbox
 		$("#attpartxt1, #attpartxt2, #attpartxt3, #attpartxt4").keypress(function (e) {
 			if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
 				return false;
 			}
 		});
-		
+
 		setTimeout("$('#loadImg', window.parent.document).remove()",500);
 	});
-</script>    
+</script>
 </body>
 </html>
 <?php

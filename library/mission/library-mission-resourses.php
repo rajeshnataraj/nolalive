@@ -13,7 +13,7 @@ $missionid=$id[3];
 $qrytask= $ObjDB->QueryObject("SELECT fld_id, fld_task_name, fld_task_desc, fld_task_id FROM itc_exp_task_master WHERE fld_id='".$taskid."' AND fld_flag='1' AND fld_delstatus='0'");
 $rowqrytask = $qrytask->fetch_object();
 
-$qrymedias = $ObjDB->QueryObject("SELECT fld_media_name, fld_media_file_type, fld_media_file_name, fld_media_desc, fld_id 
+$qrymedias = $ObjDB->QueryObject("SELECT fld_media_name, fld_media_file_type, fld_media_file_name, fld_media_desc, fld_id
 									FROM itc_mis_media_master
 									WHERE fld_mis_dest_task_id='".$taskid."' AND fld_media_category='3' AND fld_flag='1' AND fld_delstatus='0'");
 ?>
@@ -26,7 +26,7 @@ $qrymedias = $ObjDB->QueryObject("SELECT fld_media_name, fld_media_file_type, fl
                 <p class="lightSubTitle">&nbsp;</p>
             </div>
         </div>
-        
+
         <div class='row-fluid'>
         	<?php if($qrymedias->num_rows>0 || $rowqrytask->fld_task_desc!=''){?>
             <div class="container">
@@ -37,9 +37,9 @@ $qrymedias = $ObjDB->QueryObject("SELECT fld_media_name, fld_media_file_type, fl
                         	<strong>Description:</strong><br />
                                 <div class="descexp"><?php echo $rowqrytask->fld_task_desc; }?></div>
                         </div>
-                        
+
                         <div class="five columns">
-							<?php 
+							<?php
 							if($qrymedias->num_rows>0) {
 								while($rowqrymedias = $qrymedias->fetch_object()){
 									if($rowqrymedias->fld_media_file_type!=3) {
@@ -53,12 +53,12 @@ $qrymedias = $ObjDB->QueryObject("SELECT fld_media_name, fld_media_file_type, fl
 									<div class="d-list" onclick="<?php echo $click;?>" >
 										<?php if($rowqrymedias->fld_media_file_type!=3) {?>
 										<div class="d-listimg"></div>
-                                        <?php } else { 										
-										
+                                        <?php } else {
+
 										?>
                                         <div id="audioControl_<?php echo $rowqrymedias->fld_id; ?>" class="d-listimg" >
                                             <audio preload="auto" crossorigin="anonymous" id="yourAudio_<?php echo $rowqrymedias->fld_id; ?>" onended="fn_end(<?php echo $rowqrymedias->fld_id; ?>);">
-                                           	<?php $url=$_SESSION['mediaurlpath'].$rowqrymedias->fld_media_file_name; //"http://itctest.pitsco.com/receiveaudio.php?url=".?>
+                                           	<?php $url=$_SESSION['mediaurlpath'].$rowqrymedias->fld_media_file_name; //"http://itctest.nolaedu.net/receiveaudio.php?url=".?>
                                            <source src='<?php echo "../../receiveaudio.php?url=".$url;?>' type='audio/mp3' />
                                             </audio>
                                         </div>
@@ -66,9 +66,9 @@ $qrymedias = $ObjDB->QueryObject("SELECT fld_media_name, fld_media_file_type, fl
 										<div class="d-listtitle"><?php echo $rowqrymedias->fld_media_name; ?></div>
 										<div class="d-listdesc"><?php echo $rowqrymedias->fld_media_desc; ?></div>
 									</div>
-									<?php 
-								} 
-							} ?> 
+									<?php
+								}
+							} ?>
                         </div>
                     </div>
                 </div>
@@ -76,26 +76,26 @@ $qrymedias = $ObjDB->QueryObject("SELECT fld_media_name, fld_media_file_type, fl
             <?php }?>
             <div class='row buttons'>
                 <p style="color: <?php if($sessmasterprfid==10) { ?> #FFFFFF;<?php } else {?> #537F98;<?php }?> font-family: 'source_sans_proregular'; font-size: 18px; font-weight: bold; margin-bottom:7px;"></p>
-                <?php 
+                <?php
                 $qryresources= $ObjDB->QueryObject("SELECT fld_id, fld_res_name, fn_shortname (CONCAT(fld_res_name), 1) AS shortname, fld_res_file_name, fld_res_file_type, fld_res_status, fld_typeof_res FROM itc_mis_resource_master WHERE fld_task_id='".$taskid."' AND fld_flag='1' AND fld_delstatus='0' ORDER BY fld_order");
                 if($qryresources->num_rows>0) {
 					$i=1;
 					while($rowqqryresources = $qryresources->fetch_object()){
 						if($rowqqryresources->fld_res_file_type!=6){
-							$resclick = "loadiframes('path?destinationid=".$destinationid."&taskid=".$taskid."&resourceid=".$rowqqryresources->fld_id."&type=".$rowqqryresources->fld_res_file_type."&filename=".$rowqqryresources->fld_res_file_name."','preview');";             
+							$resclick = "loadiframes('path?destinationid=".$destinationid."&taskid=".$taskid."&resourceid=".$rowqqryresources->fld_id."&type=".$rowqqryresources->fld_res_file_type."&filename=".$rowqqryresources->fld_res_file_name."','preview');";
 							$link='';
-							$target='';  
+							$target='';
 						}
 						else
 						{
 							$resclick="return false";
 							$link='href='.$rowqqryresources->fld_res_file_name;
-							$target='target="new"';  
-						
+							$target='target="new"';
+
 						}
 						if($rowqqryresources->fld_typeof_res==1)
 							$classname = " icon-Information";
-                                                
+
 						else if($rowqqryresources->fld_typeof_res==2)
 							$classname = " icon-Activity";
 						?>
@@ -106,14 +106,14 @@ $qrymedias = $ObjDB->QueryObject("SELECT fld_media_name, fld_media_file_type, fl
 						<?php
 						$i++;
 					}
-                                        
+
                           $select_viewexpmatlist=$ObjDB->QueryObject("");
-                        
-                        
+
+
                         if($select_viewexpmatlist->num_rows > 0)   {
-                                        
-                                        
-                                        
+
+
+
                                         ?>
                  <a class="skip btn mainBtn" href="#library-mission-viewmaterialfortask" id="btnlibrary-mission-viewmaterialfortask" name="<?php echo $missionid;?>,<?php echo $destinationid;?>,<?php echo $taskid; ?>">
                             <div class="icon-synergy-tests"></div>

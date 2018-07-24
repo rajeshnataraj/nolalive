@@ -3,9 +3,9 @@
 	Created By - vijayalakshmi php programmer
 	Page - library-extend-ajax
 	Description:
-	   
+
 	   This page is accessed by depends on the extend lessson content scripts .
-	   
+
 	History:
 	 no - update
 
@@ -14,7 +14,7 @@
 
 var timestamp=new Date().getTime();
 
-document.domain = 'pitsco.com';
+document.domain = 'nolaedu.net';
 
 /****** this function to rename or copy the  lesson extent content name******/
 
@@ -30,7 +30,7 @@ function fn_showextendform(id,extid,type){
                     $.fancybox.resize();
             }
             });
-	
+
 	return false;
 }
 
@@ -45,10 +45,10 @@ function fn_cancelextendform()
 
 function fn_saveextendform(id,extid,type)
 {
-	
+
 	if($("#moduleextendforms").validate().form())
 	{
-	var extendtxt=$('#txtextensionname').val();	
+	var extendtxt=$('#txtextensionname').val();
 	$.ajax({
             type	: "POST",
             cache	: false,
@@ -57,7 +57,7 @@ function fn_saveextendform(id,extid,type)
             success: function(data) {
 
               if(type=='new' || type=='copy')
-              {	
+              {
                     var response=trim(data);
                     var output=response.split('~');
                     var status=output[0];
@@ -82,16 +82,16 @@ function fn_saveextendform(id,extid,type)
                     }
              }
               else
-             {                   
+             {
                      fn_cancelextendform();
                      $('#extendtxt-'+extid).html(extendtxt);
              }
 
            }
-		
+
 	});
 	}
-	
+
 }
 
 /****** this function to delete the extent content name in library-extend-ajax.php******/
@@ -103,8 +103,8 @@ function deleteextendtext(id)
         'type':     'confirmation',
         'buttons':  [
                         {caption: 'No', callback: function() { return false; }},
-                        {caption: 'Yes', callback: function() { 
-                                   
+                        {caption: 'Yes', callback: function() {
+
         var excflag=0;
 	$.ajax({
             type	: "POST",
@@ -120,7 +120,7 @@ function deleteextendtext(id)
                        'type':     'confirmation',
                        'buttons':  [
                             {caption: 'No', callback: function() { return false; }},
-                            {caption: 'Yes', callback: function() { 
+                            {caption: 'Yes', callback: function() {
 
                             $.ajax({
                             type	: "POST",
@@ -130,7 +130,7 @@ function deleteextendtext(id)
                             success: function(data) {
                                 var response=trim(data);
                                 if(response=='fail')
-                                {                                     
+                                {
 
                                 }
                                 else{
@@ -155,7 +155,7 @@ function deleteextendtext(id)
                            return false;
                     }
                     else
-                    {                            
+                    {
                             $.ajax({
                             type	: "POST",
                             cache	: false,
@@ -164,7 +164,7 @@ function deleteextendtext(id)
                             success: function(data) {
                                 var response=trim(data);
                                 if(response=='fail')
-                                {                                       
+                                {
                                 }
                                 else{
                                     $("#lesson-extend-"+id).remove();
@@ -183,23 +183,23 @@ function deleteextendtext(id)
                             }
                             });
                     }
-				
+
             }
 	});
-													
+
                        }},
                     ]
     });
  return false;
-	
+
 }
 
 /*
 	function for fullscreen lesson play along with edit content using tinymce
 */
 
-function showfullscreenlessonextend(fldrname,fldrnameinner,lessonextid,userid,access){	
-  
+function showfullscreenlessonextend(fldrname,fldrnameinner,lessonextid,userid,access){
+
     $('html, body').animate({scrollTop: '0px'}, 0);
     $('body').css('overflow','hidden');
 
@@ -208,13 +208,13 @@ function showfullscreenlessonextend(fldrname,fldrnameinner,lessonextid,userid,ac
       'width' : $('body').width(),
 	  'height' : $(window).height()
     };
-	
+
     var cssObjInner = {
 	  'display' : 'block',
 	  'width' : $('body').width(),
 	  'height' : $(window).height() - 90
     };
-	
+
     $('body').append('<div id="divcustomlightbox" title="Synergy ITC"><div class="btnprevclose"><p class="dialogTitleFullScr">Preview</p><a href="javascript:void(0);" onclick="closefullscreenlesson()" class="icon-synergy-close-dark"></a></div><div id="divlbcontent"><iframe src="'+CONTENT_URL+'/scormlib/lessonplayerdemo.php?Extend_ID='+lessonextid+'&lessonid='+fldrnameinner+'&zipname='+fldrname+'&uid='+userid+'&access='+access+'&hostname='+location.host+'" width="100%"></iframe></div><div class="diviplbottom"></div></div>');
 
     $('#divcustomlightbox').css(cssObjOuter);
@@ -225,7 +225,7 @@ function showfullscreenlessonextend(fldrname,fldrnameinner,lessonextid,userid,ac
 /****** this function to show the popup to get extent content text form for lessons ******/
 
 function fn_showextendpopform(id,extid,type){
-  
+
       $.fancybox.showActivity();
       $.ajax({
                 type	: "POST",
@@ -237,7 +237,7 @@ function fn_showextendpopform(id,extid,type){
                         $.fancybox.resize();
                 }
 		});
-	
+
 		return false;
 }
 
@@ -245,22 +245,22 @@ function fn_showextendpopform(id,extid,type){
 
 function fn_saveextendlessonform(id,extid,type)
 {
-   
-	
+
+
 	if($("#lessonextendforms").validate().form())
         {
-            var extendtxt=$('#txtextensionname').val();	
+            var extendtxt=$('#txtextensionname').val();
             $.ajax({
 			type	: "POST",
 			cache	: false,
 			url	: "library/lessons/library-extend-ajax.php",
 			data:"oper=saveextendtxt&_="+timestamp+"&ln_id="+id+"&extendtxt="+escapestr(extendtxt)+"&extid="+extid+"&type="+type,
-                     
+
 			success: function(data) {
-          
+
 			  if(type=='new' || type=='copy')
 			  {
-                              
+
 				var response=trim(data);
 				var output=response.split('~');
 				var status=output[0];
@@ -273,10 +273,10 @@ function fn_saveextendlessonform(id,extid,type)
 				var filename=output[7];
 				var userid=output[8];
                                 var access=output[9];
-				
+
 				if(status=="sucess")
 				{
-                                
+
 				  fn_cancelextendform();
 				  $('#lesson-extend-0').remove();
 				 var Content1='<tr class="Btn" id="lesson-extend-'+extendid+'"><td width="22%" id="extendtxt-'+extendid+'" class="createnewtd">&nbsp;&nbsp;&nbsp;'+extendtxt+'</td><td width="22%" class="createnewtd">&nbsp;&nbsp;&nbsp;'+extendcreatename+'</td>';
@@ -287,16 +287,16 @@ function fn_saveextendlessonform(id,extid,type)
 				}
 			 }
 			  else
-			 {				
+			 {
 				 fn_cancelextendform();
 				 $('#extendtxt-'+extid).html(extendtxt);
 			 }
-			 
+
 		 }
-		
+
 		});
         }
-       
-	
-	
+
+
+
 }

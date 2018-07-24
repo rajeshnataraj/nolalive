@@ -44,18 +44,18 @@ define('__CNTREMPATH__',_CONTENTURL_.'question/remediations/');
 define('__TINYPATH__', __CNTPATH__.'tiny_mce/');
 
 /***full document path for both ipls and units***/
-/*define('__FULLCNTICONPATH__', __EXACTPATH__.__CNTICONPATH__);     
-define('__FULLCNTUNITICONPATH__', __EXACTPATH__.__CNTUNITICONPATH__); 
-define('__FULLCNTACTIVITYPATH__', __EXACTPATH__.__CNTACTIVITYPATH__); 
+/*define('__FULLCNTICONPATH__', __EXACTPATH__.__CNTICONPATH__);
+define('__FULLCNTUNITICONPATH__', __EXACTPATH__.__CNTUNITICONPATH__);
+define('__FULLCNTACTIVITYPATH__', __EXACTPATH__.__CNTACTIVITYPATH__);
 define('__FULLCNTASSETPATH__', __EXACTPATH__.__CNTASSETPATH__); */
 
-define('__FULLCNTICONPATH__', __CNTICONPATH__);     
-define('__FULLCNTUNITICONPATH__', __CNTUNITICONPATH__); 
-define('__FULLCNTCOURSEICONPATH__', __CNTCOURSEICONPATH__); 
-define('__FULLCNTPDICONPATH__', __CNTPDICONPATH__); 
-define('__FULLCNTACTIVITYPATH__', __CNTACTIVITYPATH__); 
-define('__FULLCNTASSETPATH__', __CNTASSETPATH__); 
-	
+define('__FULLCNTICONPATH__', __CNTICONPATH__);
+define('__FULLCNTUNITICONPATH__', __CNTUNITICONPATH__);
+define('__FULLCNTCOURSEICONPATH__', __CNTCOURSEICONPATH__);
+define('__FULLCNTPDICONPATH__', __CNTPDICONPATH__);
+define('__FULLCNTACTIVITYPATH__', __CNTACTIVITYPATH__);
+define('__FULLCNTASSETPATH__', __CNTASSETPATH__);
+
 define('MYSQL_TYPE_DECIMAL',		0);
 define('MYSQL_TYPE_TINY',			1);
 define('MYSQL_TYPE_SHORT',			2);
@@ -401,13 +401,13 @@ define('DB_USERNAME','root');
 define('DB_PASSWORD','root');
 define('DB_DATABASE','synergyitc');
 define('PROJECT_CODE', '21.F851w45C#43V');
-	
-if($domainame == "http://itcdeveloper.pitsco.com/" or $domainame == "http://itctest.pitsco.com/" or $domainame == "http://itcwebapp.pitsco.com/") {
+
+if($domainame == "http://itcdeveloper.nolaedu.net/" or $domainame == "http://itctest.nolaedu.net/" or $domainame == "http://itcwebapp.nolaedu.net/") {
 	//define('DB_CONNECTION','server=localhost;database=synergyitc;username=root;password=root;port=3306;socket=');
     define('DB_CONNECTION',"server=52.27.17.175;database=synergyitc;username=itcuser;password=itcnanouser;port=3306;socket=");
 }
 
-if($domainame == "http://itcproduction.pitsco.com/" or $domainame == ITC_URL . "/") {
+if($domainame == "http://itcproduction.nolaedu.net/" or $domainame == ITC_URL . "/") {
 	//define('DB_CONNECTION','server=54.200.134.104;database=synergyitc;username=itcuser;password=itcnanouser;port=3306;socket=');
     define('DB_CONNECTION',"server=52.27.17.175;database=synergyitc;username=itcuser;password=itcnanouser;port=3306;socket=");
 }
@@ -426,7 +426,7 @@ if($domainame == "http://localhost/synergy-itc/") {
 class MysqliDatabase extends mysqli
 {
     public $throw_exceptions = true;
-    
+
 	/**
 	* Modified constructor that accepts a connection string as its input
 	* Format: "server=...; database=...; username=...; password=...; port=...; socket=..."
@@ -458,7 +458,7 @@ class MysqliDatabase extends mysqli
 		    if ($ThrowExceptions) throw new Exception(mysqli_connect_error(), mysqli_connect_errno());
 		}
 	}
-	
+
     /**
     * Sends a query to the database
     * Adds exception throwing
@@ -472,7 +472,7 @@ class MysqliDatabase extends mysqli
 	        if ($this->throw_exceptions) throw new Exception(MYSQL_ERSTR_NOT_CONNECTED, MYSQL_ER_NOT_CONNECTED);
 	        return null;
 	    }
-	    
+
 		$Ret = parent::query($Query);
 		if ($this->errno)
 		{
@@ -484,7 +484,7 @@ class MysqliDatabase extends mysqli
 		}
 		return $Ret;
 	}
-	
+
 	/**
     * Send a query and returns the first result row
     * @param string $Query
@@ -496,7 +496,7 @@ class MysqliDatabase extends mysqli
 	    if (is_object($Ret)) return $Ret->fetch_object();
 	    return null;
 	}
-	
+
 	/**
     * Send out a query and return all the rows
     * @param string $Query
@@ -506,7 +506,7 @@ class MysqliDatabase extends mysqli
 	{
 		$Ret = $this->query($Query);
 		if (!is_object($Ret)) return null;
-		
+
 		$Rows = array();
 		while ($Row = $Ret->fetch_object())
 		{
@@ -514,7 +514,7 @@ class MysqliDatabase extends mysqli
 		}
 		return empty($Rows) ? null : $Rows;
 	}
-	
+
 	/**
     * Send out a query and return the first field of the first result row, cast to the given type
     * @param string $Query
@@ -534,7 +534,7 @@ class MysqliDatabase extends mysqli
 		}
 		return null;
 	}
-	
+
 	/**
     * Send out a query and return the number of affected rows
     * @param string $Query
@@ -545,7 +545,7 @@ class MysqliDatabase extends mysqli
 		$this->query($Query);
 		return $this->affected_rows;
 	}
-	
+
 	/**
     * Returns true if the last error code is equal to that given or false otherwise. You may use the constants given
     * @param int $ErrorCode
@@ -555,7 +555,7 @@ class MysqliDatabase extends mysqli
 	{
 		return $this->errno == $ErrorCode;
 	}
-	
+
 	/**
 	* Runs a paginated query - returns the specified page of results
 	* @param string $Query
@@ -570,10 +570,10 @@ class MysqliDatabase extends mysqli
 	    {
 	        $Ret = $this->query(substr_replace($Query, 'SELECT SQL_CALC_FOUND_ROWS', 0, 6) . ' LIMIT ' . ($RecordsPerPage * $Page) . ', ' . $RecordsPerPage);
 	    }
-		
+
 	    return $Ret;
 	}
-	
+
 	/**
 	* Runs a paginated query and fetches all result rows
 	* @param string $Query
@@ -585,7 +585,7 @@ class MysqliDatabase extends mysqli
 	{
 	    $Ret = $this->query_page($Query, $RecordsPerPage, $Page);
 		if (!is_object($Ret)) return null;
-		
+
 		$Rows = array();
 		while ($Row = $Ret->fetch_object())
 		{
@@ -593,7 +593,7 @@ class MysqliDatabase extends mysqli
 		}
 		return empty($Rows) ? null : $Rows;
 	}
-	
+
 	/**
 	* Runs a paginated query and fetches only the first result row
 	* @param string $Query
@@ -607,7 +607,7 @@ class MysqliDatabase extends mysqli
 	    if (is_object($Ret)) return $Ret->fetch_object();
 	    return null;
 	}
-	
+
 	/**
 	* Returns the total number of rows in the last paginated query. DO NOT run unless a paginated query has been ran previously. It will just return 0
 	* @return int
@@ -628,7 +628,7 @@ class MysqliResult
 {
     private $Result = null;
     private $FieldsInfo = array();
-    
+
     /**
     * Constructs a MysqliResult object based on a mysqli_result one
     * @param mysqli_result $Result
@@ -638,7 +638,7 @@ class MysqliResult
         $this->Result = $Result;
         $this->FieldsInfo = $this->Result->fetch_fields();
     }
-    
+
     /**
     * Fetches the next row of data and casts the destination variables to types compatible to those in the database
     * @return mixed NULL if there are no more rows, object otherwise
@@ -647,7 +647,7 @@ class MysqliResult
     {
         $Row = $this->Result->fetch_object();
         if (is_null($Row)) return null;
-				
+
 		$k = 0;
 		foreach ($Row as $Key => $Field)
 		{
@@ -671,17 +671,17 @@ class MysqliResult
 		}
 		return $Row;
     }
-    
+
     public function __get($Attribute)
     {
     	return $this->Result->$Attribute;
     }
-    
+
     public function __set($Attribute, $Value)
     {
     	$this->Result->$Attribute = $Value;
     }
-    
+
     public function __call($Method, $Arguments)
     {
     	return call_user_func_array(array($this->Result, $Method), $Arguments);

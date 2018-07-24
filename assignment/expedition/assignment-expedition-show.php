@@ -2,13 +2,13 @@
 @include("sessioncheck.php");
 $date=date("Y-m-d H:i:s");
 
-$ids = isset($method['id']) ? $method['id'] : '';	
+$ids = isset($method['id']) ? $method['id'] : '';
 $id = explode("~",$ids);
 
 $scheduleid=$id[0];
 $expeditionid=$id[1];
 $schtype=$id[2];
-$txpport=$id[3]; 
+$txpport=$id[3];
 if($txpport==''){
     $txpport=0;
 }
@@ -16,12 +16,12 @@ if($uid1 == ''){
     $uid1=0;
 }
 $exptype = $ObjDB->SelectSingleValueInt("SELECT fld_exptype
-                                        FROM itc_exp_master 
+                                        FROM itc_exp_master
                                         WHERE fld_id='".$expeditionid."' AND fld_delstatus='0'");
 ?>
-<script type="text/javascript" charset="utf-8">	
-	$(document).ready(function () 
-        { 
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function ()
+        {
             $('html, body').animate({scrollTop: '0px'}, 0);
             $('body').css('overflow','hidden');
 
@@ -41,7 +41,7 @@ $exptype = $ObjDB->SelectSingleValueInt("SELECT fld_exptype
             var weigh =$('body').width();
 	        var contenturl = '<?= CONTENT_EXP_URL ?>';
 
-            var cloudcontenturl = "cloudfront.pitsco.com";
+            var cloudcontenturl = "cloudfront.nolaedu.net";
 
             if(location.host == "localhost") {
                 contenturl = "localhost";
@@ -58,7 +58,7 @@ $exptype = $ObjDB->SelectSingleValueInt("SELECT fld_exptype
                         var newurl = contenturl+'/emaps-masterline/index.php?schid='+<?php echo $scheduleid;?>+'&schtype='+<?php echo $schtype;?>+'&expid='+<?php echo $expeditionid;?>+'&uid='+<?php echo $uid;?>+'&uid1='+<?php echo $uid1;?>+'&txpport='+"<?php echo $txpport;?>"+'&height='+heigh+'&width='+weigh;
                 }
             $('body').append('<div id="expedition-fullscreecn-header" title="Synergy ITC"><div id="divlbcontent" style="background:#FFFFFF;"><iframe src="'+newurl+'&hostname='+location.host+'" width="100%"></iframe></div></div>');
-            
+
             $('#expedition-fullscreecn-header').css(cssObjOuter);
             $('#divlbcontent').css(cssObjInner);
             $('iframe').css({ 'width':$('#divlbcontent').width(), 'height' : $('#divlbcontent').height() });

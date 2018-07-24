@@ -71,25 +71,25 @@ if($sessmasterprfid == 10){
     <script language="javascript" type="text/javascript">
 		var swfJSPreLoaderConfig = {
 			'assets':['assignment/science/Presentor.swf'],
-			
+
 			'assetLoaded': function( asset, bytes, status ){
 				console.log(asset + ' loaded');
 			},
-			
-			'loadComplete': function(){ 
-				console.log('all assets loaded'); 
+
+			'loadComplete': function(){
+				console.log('all assets loaded');
 			},
-			
-			'loadError': function(){ 
-				console.log('load error'); 
+
+			'loadError': function(){
+				console.log('load error');
 			}
-		}			
-		$.getScript("js/swfobject.js");	
+		}
+		$.getScript("js/swfobject.js");
 		$.getScript("js/swfJSPreLoader.js");
-    </script>   
+    </script>
 </section>
-<?php 
-	} 
+<?php
+	}
 ?>
 <section class='blueWindow2' data-type='2home' id='home'>
     <div class='container'>
@@ -99,125 +99,125 @@ if($sessmasterprfid == 10){
                     <div class="dashMessage"></div>
                     <div class="dashDual" <?php if($uid1!='') { ?>style="font-size:35px;"<?php }?>><?php echo $sessusrfullname; if($uid1!='') { echo " / ".$sessusrfullname1;}?></div>
                 </div>
-                <?php 
+                <?php
 				if($sessmasterprfid == 10)
 				{
-					if($uid1=='') 
+					if($uid1=='')
 					{
-						$qrysigmath = $ObjDB->QueryObject("SELECT a.fld_id AS sid, a.fld_schedule_name AS sname, fn_shortname(a.fld_schedule_name,1) AS shortname, a.fld_end_date AS edate 
-														FROM itc_class_sigmath_master AS a 
-														LEFT JOIN itc_class_sigmath_student_mapping AS b ON a.fld_id=b.fld_sigmath_id 
-														LEFT JOIN itc_class_master AS c ON c.fld_id=a.fld_class_id 
+						$qrysigmath = $ObjDB->QueryObject("SELECT a.fld_id AS sid, a.fld_schedule_name AS sname, fn_shortname(a.fld_schedule_name,1) AS shortname, a.fld_end_date AS edate
+														FROM itc_class_sigmath_master AS a
+														LEFT JOIN itc_class_sigmath_student_mapping AS b ON a.fld_id=b.fld_sigmath_id
+														LEFT JOIN itc_class_master AS c ON c.fld_id=a.fld_class_id
 														LEFT JOIN itc_license_track AS d ON a.fld_license_id=d.fld_license_id
-														WHERE a.fld_delstatus='0' AND b.fld_flag='1' AND b.fld_student_id='".$uid."' AND DATE(a.fld_start_date) <= DATE(NOW()) 
-															AND DATE(a.fld_end_date) >= DATE(NOW()) AND c.fld_delstatus='0' AND c.fld_lock='0' AND d.fld_school_id='".$schoolid."' 
+														WHERE a.fld_delstatus='0' AND b.fld_flag='1' AND b.fld_student_id='".$uid."' AND DATE(a.fld_start_date) <= DATE(NOW())
+															AND DATE(a.fld_end_date) >= DATE(NOW()) AND c.fld_delstatus='0' AND c.fld_lock='0' AND d.fld_school_id='".$schoolid."'
 															AND d.fld_user_id='".$indid."' AND d.fld_start_date<='".date("Y-m-d")."' AND d.fld_end_date >='".date("Y-m-d")."'");
 
-						$qrydyadtriad = $ObjDB->QueryObject("SELECT b.fld_module_id, CONCAT(a.fld_schedule_name,' / Module') AS schedulename, a.fld_id AS scheduleid, f.fld_enddate, 
-																CONCAT(c.fld_module_name,' / Rotation ',b.fld_rotation-1) AS modulename, 1 AS schtype 
-															FROM `itc_class_rotation_schedule_mastertemp` AS a 
-															LEFT JOIN `itc_class_rotation_schedulegriddet` AS b ON a.fld_id=b.fld_schedule_id 
+						$qrydyadtriad = $ObjDB->QueryObject("SELECT b.fld_module_id, CONCAT(a.fld_schedule_name,' / Module') AS schedulename, a.fld_id AS scheduleid, f.fld_enddate,
+																CONCAT(c.fld_module_name,' / Rotation ',b.fld_rotation-1) AS modulename, 1 AS schtype
+															FROM `itc_class_rotation_schedule_mastertemp` AS a
+															LEFT JOIN `itc_class_rotation_schedulegriddet` AS b ON a.fld_id=b.fld_schedule_id
                                                                                                                         LEFT JOIN itc_class_rotation_scheduledate as f on b.fld_schedule_id=f.fld_schedule_id and b.fld_rotation=f.fld_rotation
-															LEFT JOIN itc_module_master AS c ON b.fld_module_id=c.fld_id 
-															LEFT JOIN itc_class_master AS d ON d.fld_id=a.fld_class_id 
+															LEFT JOIN itc_module_master AS c ON b.fld_module_id=c.fld_id
+															LEFT JOIN itc_class_master AS d ON d.fld_id=a.fld_class_id
 															LEFT JOIN itc_license_track AS e ON a.fld_license_id=e.fld_license_id
-															WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' AND a.fld_moduletype='1' AND b.fld_student_id='".$uid."' 
-																AND a.fld_startdate<='".date("Y-m-d")."' AND f.fld_startdate<='".date("Y-m-d")."' AND f.fld_enddate>='".date("Y-m-d")."' 
+															WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' AND a.fld_moduletype='1' AND b.fld_student_id='".$uid."'
+																AND a.fld_startdate<='".date("Y-m-d")."' AND f.fld_startdate<='".date("Y-m-d")."' AND f.fld_enddate>='".date("Y-m-d")."'
 																AND a.fld_moduletype='1' AND b.fld_type='1' AND e.fld_school_id='".$schoolid."' AND b.fld_flag='1' AND f.fld_flag='1'
-																AND e.fld_user_id='".$indid."' AND e.fld_start_date<='".date("Y-m-d")."' AND e.fld_end_date >='".date("Y-m-d")."'	  
+																AND e.fld_user_id='".$indid."' AND e.fld_start_date<='".date("Y-m-d")."' AND e.fld_end_date >='".date("Y-m-d")."'
 																	UNION ALL
-															SELECT b.fld_module_id, CONCAT(a.fld_schedule_name,' / Math Module') AS schedulename, a.fld_id AS scheduleid, f.fld_enddate, 
-																CONCAT(c.fld_mathmodule_name,' / Rotation ',b.fld_rotation-1) AS modulename, 4 AS schtype 
-															FROM `itc_class_rotation_schedule_mastertemp` AS a 
-															LEFT JOIN `itc_class_rotation_schedulegriddet` AS b ON a.fld_id=b.fld_schedule_id 
+															SELECT b.fld_module_id, CONCAT(a.fld_schedule_name,' / Math Module') AS schedulename, a.fld_id AS scheduleid, f.fld_enddate,
+																CONCAT(c.fld_mathmodule_name,' / Rotation ',b.fld_rotation-1) AS modulename, 4 AS schtype
+															FROM `itc_class_rotation_schedule_mastertemp` AS a
+															LEFT JOIN `itc_class_rotation_schedulegriddet` AS b ON a.fld_id=b.fld_schedule_id
                                                                                                                         LEFT JOIN itc_class_rotation_scheduledate as f on b.fld_schedule_id=f.fld_schedule_id and b.fld_rotation=f.fld_rotation
-															LEFT JOIN itc_mathmodule_master AS c ON b.fld_module_id=c.fld_id 
-															LEFT JOIN itc_class_master AS d ON d.fld_id=a.fld_class_id 
+															LEFT JOIN itc_mathmodule_master AS c ON b.fld_module_id=c.fld_id
+															LEFT JOIN itc_class_master AS d ON d.fld_id=a.fld_class_id
 															LEFT JOIN itc_license_track AS e ON a.fld_license_id=e.fld_license_id
-															WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' AND b.fld_student_id='".$uid."' 
-																AND a.fld_startdate<='".date("Y-m-d")."' AND f.fld_startdate<='".date("Y-m-d")."' AND f.fld_enddate>='".date("Y-m-d")."' 
+															WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' AND b.fld_student_id='".$uid."'
+																AND a.fld_startdate<='".date("Y-m-d")."' AND f.fld_startdate<='".date("Y-m-d")."' AND f.fld_enddate>='".date("Y-m-d")."'
 																AND a.fld_moduletype='2' AND b.fld_type='2' AND e.fld_school_id='".$schoolid."' AND b.fld_flag='1' AND f.fld_flag='1'
-																AND e.fld_user_id='".$indid."' AND e.fld_start_date<='".date("Y-m-d")."' AND e.fld_end_date >='".date("Y-m-d")."'	
+																AND e.fld_user_id='".$indid."' AND e.fld_start_date<='".date("Y-m-d")."' AND e.fld_end_date >='".date("Y-m-d")."'
 																	UNION ALL
-															SELECT b.fld_module_id, CONCAT(a.fld_schedule_name,' / Dyad') AS schedulename, a.fld_id AS scheduleid, b.fld_enddate, 
-																CONCAT(c.fld_module_name,' / Rotation ',b.fld_rotation) AS modulename, 2 AS schtype 
-															FROM `itc_class_dyad_schedulemaster` AS a 
-															LEFT JOIN `itc_class_dyad_schedulegriddet` AS b ON a.fld_id=b.fld_schedule_id 
-															LEFT JOIN itc_module_master AS c ON b.fld_module_id=c.fld_id 
-															LEFT JOIN itc_class_master AS d ON d.fld_id=a.fld_class_id 
+															SELECT b.fld_module_id, CONCAT(a.fld_schedule_name,' / Dyad') AS schedulename, a.fld_id AS scheduleid, b.fld_enddate,
+																CONCAT(c.fld_module_name,' / Rotation ',b.fld_rotation) AS modulename, 2 AS schtype
+															FROM `itc_class_dyad_schedulemaster` AS a
+															LEFT JOIN `itc_class_dyad_schedulegriddet` AS b ON a.fld_id=b.fld_schedule_id
+															LEFT JOIN itc_module_master AS c ON b.fld_module_id=c.fld_id
+															LEFT JOIN itc_class_master AS d ON d.fld_id=a.fld_class_id
 															LEFT JOIN itc_license_track AS e ON a.fld_license_id=e.fld_license_id
-															LEFT JOIN itc_class_dyad_schedule_studentmapping AS f ON (f.fld_schedule_id=b.fld_schedule_id AND f.fld_student_id='".$uid."') 
-															WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' AND (b.fld_student_id='".$uid."' OR b.fld_rotation='0') 
-																AND DATE(a.fld_startdate)<=DATE(NOW()) AND b.fld_startdate<='".date("Y-m-d")."' AND b.fld_enddate>='".date("Y-m-d")."' 
-																AND e.fld_school_id='".$schoolid."' AND e.fld_user_id='".$indid."' AND e.fld_start_date<='".date("Y-m-d")."' 
+															LEFT JOIN itc_class_dyad_schedule_studentmapping AS f ON (f.fld_schedule_id=b.fld_schedule_id AND f.fld_student_id='".$uid."')
+															WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' AND (b.fld_student_id='".$uid."' OR b.fld_rotation='0')
+																AND DATE(a.fld_startdate)<=DATE(NOW()) AND b.fld_startdate<='".date("Y-m-d")."' AND b.fld_enddate>='".date("Y-m-d")."'
+																AND e.fld_school_id='".$schoolid."' AND e.fld_user_id='".$indid."' AND e.fld_start_date<='".date("Y-m-d")."'
 																AND e.fld_end_date >='".date("Y-m-d")."' AND b.fld_flag='1' AND f.fld_flag='1'
 																	UNION ALL
-															SELECT b.fld_module_id, CONCAT(a.fld_schedule_name,' / Triad') AS schedulename, a.fld_id AS scheduleid, b.fld_enddate, 
-																CONCAT(c.fld_module_name,' / Rotation ',b.fld_rotation) AS modulename, 3 AS schtype 
-															FROM `itc_class_triad_schedulemaster` AS a 
-															LEFT JOIN `itc_class_triad_schedulegriddet` AS b ON a.fld_id=b.fld_schedule_id 
-															LEFT JOIN itc_module_master AS c ON b.fld_module_id=c.fld_id 
-															LEFT JOIN itc_class_master AS d ON d.fld_id=a.fld_class_id 
+															SELECT b.fld_module_id, CONCAT(a.fld_schedule_name,' / Triad') AS schedulename, a.fld_id AS scheduleid, b.fld_enddate,
+																CONCAT(c.fld_module_name,' / Rotation ',b.fld_rotation) AS modulename, 3 AS schtype
+															FROM `itc_class_triad_schedulemaster` AS a
+															LEFT JOIN `itc_class_triad_schedulegriddet` AS b ON a.fld_id=b.fld_schedule_id
+															LEFT JOIN itc_module_master AS c ON b.fld_module_id=c.fld_id
+															LEFT JOIN itc_class_master AS d ON d.fld_id=a.fld_class_id
 															LEFT JOIN itc_license_track AS e ON a.fld_license_id=e.fld_license_id
-															LEFT JOIN itc_class_triad_schedule_studentmapping AS f ON (f.fld_schedule_id=b.fld_schedule_id AND f.fld_student_id='".$uid."') 
-															WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' AND (b.fld_student_id='".$uid."' OR b.fld_rotation='0') 
-																AND DATE(a.fld_startdate)<=DATE(NOW()) AND b.fld_startdate<='".date("Y-m-d")."' AND b.fld_enddate>='".date("Y-m-d")."' 
-																AND e.fld_school_id='".$schoolid."' AND e.fld_user_id='".$indid."' AND e.fld_start_date<='".date("Y-m-d")."' 
-																AND e.fld_end_date >='".date("Y-m-d")."' AND b.fld_flag='1' AND f.fld_flag='1' 		 		  
+															LEFT JOIN itc_class_triad_schedule_studentmapping AS f ON (f.fld_schedule_id=b.fld_schedule_id AND f.fld_student_id='".$uid."')
+															WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' AND (b.fld_student_id='".$uid."' OR b.fld_rotation='0')
+																AND DATE(a.fld_startdate)<=DATE(NOW()) AND b.fld_startdate<='".date("Y-m-d")."' AND b.fld_enddate>='".date("Y-m-d")."'
+																AND e.fld_school_id='".$schoolid."' AND e.fld_user_id='".$indid."' AND e.fld_start_date<='".date("Y-m-d")."'
+																AND e.fld_end_date >='".date("Y-m-d")."' AND b.fld_flag='1' AND f.fld_flag='1'
 																	UNION ALL
-															SELECT a.fld_module_id, CONCAT(a.fld_schedule_name,' / Ind Module') AS schedulename, a.fld_id AS scheduleid, a.fld_enddate, 
-																CONCAT(c.fld_module_name,' / Individual Module ') AS modulename, 5 AS schtype 
-															FROM `itc_class_indassesment_master` AS a 
-															LEFT JOIN `itc_class_indassesment_student_mapping` AS b ON a.fld_id=b.fld_schedule_id 
-															LEFT JOIN itc_module_master AS c ON a.fld_module_id=c.fld_id 
-															LEFT JOIN itc_class_master AS d ON d.fld_id=a.fld_class_id 
+															SELECT a.fld_module_id, CONCAT(a.fld_schedule_name,' / Ind Module') AS schedulename, a.fld_id AS scheduleid, a.fld_enddate,
+																CONCAT(c.fld_module_name,' / Individual Module ') AS modulename, 5 AS schtype
+															FROM `itc_class_indassesment_master` AS a
+															LEFT JOIN `itc_class_indassesment_student_mapping` AS b ON a.fld_id=b.fld_schedule_id
+															LEFT JOIN itc_module_master AS c ON a.fld_module_id=c.fld_id
+															LEFT JOIN itc_class_master AS d ON d.fld_id=a.fld_class_id
 															LEFT JOIN itc_license_track AS e ON a.fld_license_id=e.fld_license_id
-															WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' 
-																AND a.fld_moduletype='1' AND b.fld_student_id='".$uid."' AND a.fld_startdate<='".date("Y-m-d")."' 
-																AND DATE(a.fld_startdate)<=DATE(NOW()) AND a.fld_enddate>='".date("Y-m-d")."' 
-																AND e.fld_school_id='".$schoolid."' AND e.fld_user_id='".$indid."' AND e.fld_start_date<='".date("Y-m-d")."' 
-																AND e.fld_end_date >='".date("Y-m-d")."' AND b.fld_flag='1' 								
+															WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0'
+																AND a.fld_moduletype='1' AND b.fld_student_id='".$uid."' AND a.fld_startdate<='".date("Y-m-d")."'
+																AND DATE(a.fld_startdate)<=DATE(NOW()) AND a.fld_enddate>='".date("Y-m-d")."'
+																AND e.fld_school_id='".$schoolid."' AND e.fld_user_id='".$indid."' AND e.fld_start_date<='".date("Y-m-d")."'
+																AND e.fld_end_date >='".date("Y-m-d")."' AND b.fld_flag='1'
 																	UNION ALL
-															SELECT a.fld_module_id, CONCAT(a.fld_schedule_name,' / Ind Math Module') AS schedulename, a.fld_id AS scheduleid, a.fld_enddate, 
-																CONCAT(c.fld_mathmodule_name,' / Individual Math Module ') AS modulename, 6 AS schtype 
-															FROM `itc_class_indassesment_master` AS a 
-															LEFT JOIN `itc_class_indassesment_student_mapping` AS b ON a.fld_id=b.fld_schedule_id 
-															LEFT JOIN itc_mathmodule_master AS c ON a.fld_module_id=c.fld_id 
-															LEFT JOIN itc_class_master AS d ON d.fld_id=a.fld_class_id 
+															SELECT a.fld_module_id, CONCAT(a.fld_schedule_name,' / Ind Math Module') AS schedulename, a.fld_id AS scheduleid, a.fld_enddate,
+																CONCAT(c.fld_mathmodule_name,' / Individual Math Module ') AS modulename, 6 AS schtype
+															FROM `itc_class_indassesment_master` AS a
+															LEFT JOIN `itc_class_indassesment_student_mapping` AS b ON a.fld_id=b.fld_schedule_id
+															LEFT JOIN itc_mathmodule_master AS c ON a.fld_module_id=c.fld_id
+															LEFT JOIN itc_class_master AS d ON d.fld_id=a.fld_class_id
 															LEFT JOIN itc_license_track AS e ON a.fld_license_id=e.fld_license_id
-															WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' 
-																AND a.fld_moduletype='2' AND b.fld_student_id='".$uid."' AND a.fld_startdate<='".date("Y-m-d")."' 
-																AND DATE(a.fld_startdate)<=DATE(NOW()) AND a.fld_enddate>='".date("Y-m-d")."' 
-																AND e.fld_school_id='".$schoolid."' AND e.fld_user_id='".$indid."' AND e.fld_start_date<='".date("Y-m-d")."' 
-																AND e.fld_end_date >='".date("Y-m-d")."' AND b.fld_flag='1' 	
+															WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0'
+																AND a.fld_moduletype='2' AND b.fld_student_id='".$uid."' AND a.fld_startdate<='".date("Y-m-d")."'
+																AND DATE(a.fld_startdate)<=DATE(NOW()) AND a.fld_enddate>='".date("Y-m-d")."'
+																AND e.fld_school_id='".$schoolid."' AND e.fld_user_id='".$indid."' AND e.fld_start_date<='".date("Y-m-d")."'
+																AND e.fld_end_date >='".date("Y-m-d")."' AND b.fld_flag='1'
 																	UNION ALL
-															SELECT a.fld_module_id, CONCAT(a.fld_schedule_name,' / Ind Quest') AS schedulename, a.fld_id AS scheduleid, a.fld_enddate, 
-																CONCAT(c.fld_module_name,' / Individual Quest ') AS modulename, 7 AS schtype 
-															FROM `itc_class_indassesment_master` AS a 
-															LEFT JOIN `itc_class_indassesment_student_mapping` AS b ON a.fld_id=b.fld_schedule_id 
-															LEFT JOIN itc_module_master AS c ON a.fld_module_id=c.fld_id 
-															LEFT JOIN itc_class_master AS d ON d.fld_id=a.fld_class_id 
+															SELECT a.fld_module_id, CONCAT(a.fld_schedule_name,' / Ind Quest') AS schedulename, a.fld_id AS scheduleid, a.fld_enddate,
+																CONCAT(c.fld_module_name,' / Individual Quest ') AS modulename, 7 AS schtype
+															FROM `itc_class_indassesment_master` AS a
+															LEFT JOIN `itc_class_indassesment_student_mapping` AS b ON a.fld_id=b.fld_schedule_id
+															LEFT JOIN itc_module_master AS c ON a.fld_module_id=c.fld_id
+															LEFT JOIN itc_class_master AS d ON d.fld_id=a.fld_class_id
 															LEFT JOIN itc_license_track AS e ON a.fld_license_id=e.fld_license_id
-															WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' 
-																AND a.fld_moduletype='7' AND b.fld_student_id='".$uid."' AND a.fld_startdate<='".date("Y-m-d")."' 
-																AND DATE(a.fld_startdate)<=DATE(NOW()) AND a.fld_enddate>='".date("Y-m-d")."' 
-																AND e.fld_school_id='".$schoolid."' AND e.fld_user_id='".$indid."' AND e.fld_start_date<='".date("Y-m-d")."' 
-																AND e.fld_end_date >='".date("Y-m-d")."' AND b.fld_flag='1' 				
+															WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0'
+																AND a.fld_moduletype='7' AND b.fld_student_id='".$uid."' AND a.fld_startdate<='".date("Y-m-d")."'
+																AND DATE(a.fld_startdate)<=DATE(NOW()) AND a.fld_enddate>='".date("Y-m-d")."'
+																AND e.fld_school_id='".$schoolid."' AND e.fld_user_id='".$indid."' AND e.fld_start_date<='".date("Y-m-d")."'
+																AND e.fld_end_date >='".date("Y-m-d")."' AND b.fld_flag='1'
 																	UNION ALL
-															SELECT b.fld_module_id, CONCAT(a.fld_schedule_name,' / Custom Module') AS schedulename, a.fld_id AS scheduleid, f.fld_enddate, 
-																CONCAT(c.fld_contentname,' / Rotation ',b.fld_rotation-1) AS modulename, 8 AS schtype 
-															FROM `itc_class_rotation_schedule_mastertemp` AS a 
-															LEFT JOIN `itc_class_rotation_schedulegriddet` AS b ON a.fld_id=b.fld_schedule_id 
+															SELECT b.fld_module_id, CONCAT(a.fld_schedule_name,' / Custom Module') AS schedulename, a.fld_id AS scheduleid, f.fld_enddate,
+																CONCAT(c.fld_contentname,' / Rotation ',b.fld_rotation-1) AS modulename, 8 AS schtype
+															FROM `itc_class_rotation_schedule_mastertemp` AS a
+															LEFT JOIN `itc_class_rotation_schedulegriddet` AS b ON a.fld_id=b.fld_schedule_id
                                                                                                                         LEFT JOIN itc_class_rotation_scheduledate as f on b.fld_schedule_id=f.fld_schedule_id and b.fld_rotation=f.fld_rotation
-															LEFT JOIN itc_customcontent_master AS c ON b.fld_module_id=c.fld_id 
-															LEFT JOIN itc_class_master AS d ON d.fld_id=a.fld_class_id 
+															LEFT JOIN itc_customcontent_master AS c ON b.fld_module_id=c.fld_id
+															LEFT JOIN itc_class_master AS d ON d.fld_id=a.fld_class_id
 															LEFT JOIN itc_license_track AS e ON a.fld_license_id=e.fld_license_id
-															WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' AND b.fld_student_id='".$uid."' 
-																AND DATE(a.fld_startdate)<=DATE(NOW()) AND f.fld_startdate<='".date("Y-m-d")."' AND f.fld_enddate>='".date("Y-m-d")."' 
+															WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' AND b.fld_student_id='".$uid."'
+																AND DATE(a.fld_startdate)<=DATE(NOW()) AND f.fld_startdate<='".date("Y-m-d")."' AND f.fld_enddate>='".date("Y-m-d")."'
 																AND b.fld_type='8' AND e.fld_school_id='".$schoolid."' AND b.fld_flag='1' AND f.fld_flag='1'
-																AND e.fld_user_id='".$indid."' AND e.fld_start_date<='".date("Y-m-d")."' AND e.fld_end_date >='".date("Y-m-d")."' 
-						
-                                                                                                                        UNION ALL 
+																AND e.fld_user_id='".$indid."' AND e.fld_start_date<='".date("Y-m-d")."' AND e.fld_end_date >='".date("Y-m-d")."'
+
+                                                                                                                        UNION ALL
 
 															SELECT a.fld_module_id,CONCAT(a.fld_schedule_name, ' / Ind Custom') AS schedulename,a.fld_id AS scheduleid,a.fld_enddate,
 															CONCAT(c.fld_contentname,' / Individual Custom ') AS modulename,17 AS schtype
@@ -227,121 +227,121 @@ if($sessmasterprfid == 10){
 															LEFT JOIN itc_class_master AS d ON d.fld_id = a.fld_class_id
 															LEFT JOIN itc_license_track AS e ON a.fld_license_id=e.fld_license_id
 															WHERE a.fld_delstatus = '0' AND d.fld_delstatus = '0' AND d.fld_lock = '0' AND b.fld_student_id ='".$uid."'
-															AND a.fld_moduletype = '17' AND a.fld_startdate<='".date("Y-m-d")."' 
-															AND DATE(a.fld_startdate)<=DATE(NOW()) AND a.fld_enddate>='".date("Y-m-d")."' AND e.fld_school_id='".$schoolid."' 
-															AND e.fld_user_id='".$indid."' AND e.fld_start_date<='".date("Y-m-d")."' 
+															AND a.fld_moduletype = '17' AND a.fld_startdate<='".date("Y-m-d")."'
+															AND DATE(a.fld_startdate)<=DATE(NOW()) AND a.fld_enddate>='".date("Y-m-d")."' AND e.fld_school_id='".$schoolid."'
+															AND e.fld_user_id='".$indid."' AND e.fld_start_date<='".date("Y-m-d")."'
 															AND e.fld_end_date >='".date("Y-m-d")."' AND b.fld_flag = '1' AND a.fld_flag = '1'
-UNION ALL   
-						
-                                                                                                                        SELECT b.fld_expedition_id, CONCAT(a.fld_schedule_name,' / Expedition') AS schedulename, a.fld_id AS scheduleid, g.fld_enddate, 
+UNION ALL
+
+                                                                                                                        SELECT b.fld_expedition_id, CONCAT(a.fld_schedule_name,' / Expedition') AS schedulename, a.fld_id AS scheduleid, g.fld_enddate,
                                                                                                                         CONCAT(c.fld_exp_name,' / Rotation ',b.fld_rotation-1) AS modulename, 19 AS schtype
-                                                                                                                        FROM `itc_class_rotation_expschedule_mastertemp` AS a LEFT JOIN `itc_class_rotation_expschedulegriddet` AS b ON a.fld_id=b.fld_schedule_id 
-                                                                                                                        LEFT JOIN itc_class_rotation_expscheduledate as g on b.fld_schedule_id=g.fld_schedule_id and b.fld_rotation=g.fld_rotation 
-                                                                                                                        LEFT JOIN itc_exp_master AS c ON b.fld_expedition_id=c.fld_id LEFT JOIN itc_class_master AS d on d.fld_id=a.fld_class_id 
-                                                                                                                        WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' AND b.fld_student_id='".$uid."' 
-                                                                                                                        AND DATE(a.fld_startdate) <= DATE(NOW()) AND g.fld_startdate<='".date("Y-m-d")."' AND g.fld_enddate>='".date("Y-m-d")."' AND a.fld_license_id IN (SELECT fld_license_id FROM itc_license_track 
-                                                                                                                        WHERE fld_school_id='".$schoolid."' AND fld_user_id='".$indid."' AND fld_start_date<='".date("Y-m-d")."' AND fld_end_date >='".date("Y-m-d")."') 
-                                                                                                                        AND b.fld_flag='1'  
-						
-                                                                                                                         UNION ALL   SELECT b.fld_module_id, CONCAT(a.fld_schedule_name,' / Module ') AS schedulename, a.fld_id AS scheduleid, g.fld_enddate, 
-                                                                                                                        CONCAT(c.fld_module_name,' / Rotation ',b.fld_rotation-1) AS modulename, 21 AS schtype 
-                                                                                                                        FROM `itc_class_rotation_modexpschedule_mastertemp` AS a LEFT JOIN `itc_class_rotation_modexpschedulegriddet` AS b ON a.fld_id=b.fld_schedule_id 
-                                                                                                                        LEFT JOIN itc_class_rotation_modexpscheduledate as g on b.fld_schedule_id=g.fld_schedule_id and b.fld_rotation=g.fld_rotation 
-                                                                                                                        LEFT JOIN itc_module_master AS c ON b.fld_module_id=c.fld_id LEFT JOIN itc_class_master AS d on d.fld_id=a.fld_class_id 
-                                                                                                                        WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' AND b.fld_student_id='".$uid."' 
-                                                                                                                        AND DATE(a.fld_startdate) <= DATE(NOW()) AND g.fld_startdate<='".date("Y-m-d")."' AND g.fld_enddate>='".date("Y-m-d")."'  AND a.fld_license_id IN (SELECT fld_license_id FROM itc_license_track 
-                                                                                                                        WHERE fld_school_id='".$schoolid."' AND fld_user_id='".$indid."' AND fld_start_date<='".date("Y-m-d")."' AND fld_end_date >='".date("Y-m-d")."') 
+                                                                                                                        FROM `itc_class_rotation_expschedule_mastertemp` AS a LEFT JOIN `itc_class_rotation_expschedulegriddet` AS b ON a.fld_id=b.fld_schedule_id
+                                                                                                                        LEFT JOIN itc_class_rotation_expscheduledate as g on b.fld_schedule_id=g.fld_schedule_id and b.fld_rotation=g.fld_rotation
+                                                                                                                        LEFT JOIN itc_exp_master AS c ON b.fld_expedition_id=c.fld_id LEFT JOIN itc_class_master AS d on d.fld_id=a.fld_class_id
+                                                                                                                        WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' AND b.fld_student_id='".$uid."'
+                                                                                                                        AND DATE(a.fld_startdate) <= DATE(NOW()) AND g.fld_startdate<='".date("Y-m-d")."' AND g.fld_enddate>='".date("Y-m-d")."' AND a.fld_license_id IN (SELECT fld_license_id FROM itc_license_track
+                                                                                                                        WHERE fld_school_id='".$schoolid."' AND fld_user_id='".$indid."' AND fld_start_date<='".date("Y-m-d")."' AND fld_end_date >='".date("Y-m-d")."')
+                                                                                                                        AND b.fld_flag='1'
+
+                                                                                                                         UNION ALL   SELECT b.fld_module_id, CONCAT(a.fld_schedule_name,' / Module ') AS schedulename, a.fld_id AS scheduleid, g.fld_enddate,
+                                                                                                                        CONCAT(c.fld_module_name,' / Rotation ',b.fld_rotation-1) AS modulename, 21 AS schtype
+                                                                                                                        FROM `itc_class_rotation_modexpschedule_mastertemp` AS a LEFT JOIN `itc_class_rotation_modexpschedulegriddet` AS b ON a.fld_id=b.fld_schedule_id
+                                                                                                                        LEFT JOIN itc_class_rotation_modexpscheduledate as g on b.fld_schedule_id=g.fld_schedule_id and b.fld_rotation=g.fld_rotation
+                                                                                                                        LEFT JOIN itc_module_master AS c ON b.fld_module_id=c.fld_id LEFT JOIN itc_class_master AS d on d.fld_id=a.fld_class_id
+                                                                                                                        WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' AND b.fld_student_id='".$uid."'
+                                                                                                                        AND DATE(a.fld_startdate) <= DATE(NOW()) AND g.fld_startdate<='".date("Y-m-d")."' AND g.fld_enddate>='".date("Y-m-d")."'  AND a.fld_license_id IN (SELECT fld_license_id FROM itc_license_track
+                                                                                                                        WHERE fld_school_id='".$schoolid."' AND fld_user_id='".$indid."' AND fld_start_date<='".date("Y-m-d")."' AND fld_end_date >='".date("Y-m-d")."')
                                                                                                                         AND b.fld_flag='1' AND b.fld_type='1'
 
-                                                                                                                        UNION ALL   
-                                                                                                                        
-                                                                                                                        SELECT b.fld_module_id, CONCAT(a.fld_schedule_name,' / Custom') AS schedulename, 
-                                                                                                                        a.fld_id AS scheduleid, g.fld_enddate, CONCAT(c.fld_contentname,' / Rotation ',b.fld_rotation-1) AS modulename, 
+                                                                                                                        UNION ALL
+
+                                                                                                                        SELECT b.fld_module_id, CONCAT(a.fld_schedule_name,' / Custom') AS schedulename,
+                                                                                                                        a.fld_id AS scheduleid, g.fld_enddate, CONCAT(c.fld_contentname,' / Rotation ',b.fld_rotation-1) AS modulename,
                                                                                                                         22 AS schtype
                                                                                                                         FROM itc_class_rotation_modexpschedule_mastertemp AS a
-                                                                                                                        LEFT JOIN itc_class_rotation_modexpschedulegriddet AS b ON a.fld_id=b.fld_schedule_id 
-                                                                                                                        LEFT JOIN itc_class_rotation_modexpscheduledate as g 
+                                                                                                                        LEFT JOIN itc_class_rotation_modexpschedulegriddet AS b ON a.fld_id=b.fld_schedule_id
+                                                                                                                        LEFT JOIN itc_class_rotation_modexpscheduledate as g
                                                                                                                         on b.fld_schedule_id=g.fld_schedule_id and b.fld_rotation=g.fld_rotation
-                                                                                                                        LEFT JOIN itc_customcontent_master as c ON b.fld_module_id=c.fld_id 
+                                                                                                                        LEFT JOIN itc_customcontent_master as c ON b.fld_module_id=c.fld_id
                                                                                                                         LEFT JOIN itc_class_master AS d on d.fld_id=a.fld_class_id
                                                                                                                         WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' AND b.fld_type='8'
-                                                                                                                        AND b.fld_student_id='".$uid."' AND DATE(a.fld_startdate) <= DATE(NOW()) AND g.fld_startdate<='".date("Y-m-d")."' AND g.fld_enddate>='".date("Y-m-d")."' 
+                                                                                                                        AND b.fld_student_id='".$uid."' AND DATE(a.fld_startdate) <= DATE(NOW()) AND g.fld_startdate<='".date("Y-m-d")."' AND g.fld_enddate>='".date("Y-m-d")."'
                                                                                                                         AND b.fld_flag='1'
-                                                                                                                        
-                                                                                                                        UNION ALL   SELECT b.fld_module_id, CONCAT(a.fld_schedule_name,' / Expedition') AS schedulename, a.fld_id AS scheduleid, g.fld_enddate, 
-                                                                                                                        CONCAT(c.fld_exp_name,' / Rotation ',b.fld_rotation-1) AS modulename, 20 AS schtype 
-                                                                                                                        FROM `itc_class_rotation_modexpschedule_mastertemp` AS a LEFT JOIN `itc_class_rotation_modexpschedulegriddet` AS b ON a.fld_id=b.fld_schedule_id 
-                                                                                                                        LEFT JOIN itc_class_rotation_modexpscheduledate as g on b.fld_schedule_id=g.fld_schedule_id and b.fld_rotation=g.fld_rotation 
-                                                                                                                        LEFT JOIN itc_exp_master AS c ON b.fld_module_id=c.fld_id LEFT JOIN itc_class_master AS d on d.fld_id=a.fld_class_id 
-                                                                                                                        WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' AND b.fld_student_id='".$uid."' 
-                                                                                                                        AND DATE(a.fld_startdate) <= DATE(NOW()) AND g.fld_startdate<='".date("Y-m-d")."' AND g.fld_enddate>='".date("Y-m-d")."'  AND a.fld_license_id IN (SELECT fld_license_id FROM itc_license_track 
-                                                                                                                        WHERE fld_school_id='".$schoolid."' AND fld_user_id='".$indid."' AND fld_start_date<='".date("Y-m-d")."' AND fld_end_date >='".date("Y-m-d")."') 
+
+                                                                                                                        UNION ALL   SELECT b.fld_module_id, CONCAT(a.fld_schedule_name,' / Expedition') AS schedulename, a.fld_id AS scheduleid, g.fld_enddate,
+                                                                                                                        CONCAT(c.fld_exp_name,' / Rotation ',b.fld_rotation-1) AS modulename, 20 AS schtype
+                                                                                                                        FROM `itc_class_rotation_modexpschedule_mastertemp` AS a LEFT JOIN `itc_class_rotation_modexpschedulegriddet` AS b ON a.fld_id=b.fld_schedule_id
+                                                                                                                        LEFT JOIN itc_class_rotation_modexpscheduledate as g on b.fld_schedule_id=g.fld_schedule_id and b.fld_rotation=g.fld_rotation
+                                                                                                                        LEFT JOIN itc_exp_master AS c ON b.fld_module_id=c.fld_id LEFT JOIN itc_class_master AS d on d.fld_id=a.fld_class_id
+                                                                                                                        WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' AND b.fld_student_id='".$uid."'
+                                                                                                                        AND DATE(a.fld_startdate) <= DATE(NOW()) AND g.fld_startdate<='".date("Y-m-d")."' AND g.fld_enddate>='".date("Y-m-d")."'  AND a.fld_license_id IN (SELECT fld_license_id FROM itc_license_track
+                                                                                                                        WHERE fld_school_id='".$schoolid."' AND fld_user_id='".$indid."' AND fld_start_date<='".date("Y-m-d")."' AND fld_end_date >='".date("Y-m-d")."')
                                                                                                                         AND b.fld_flag='1' AND b.fld_type='2' ");
 
 
 
 
-						$qrytest = $ObjDB->QueryObject("SELECT a.fld_max_attempts AS maxattempts, b.fld_max_attempts AS timeattempted, a.fld_test_name AS testname, b.fld_start_date 
-															AS fld_enddate, fn_shortname(a.fld_test_name,1) AS shortname, a.fld_id AS testid, a.fld_ass_type, b.fld_id AS testmapid 
+						$qrytest = $ObjDB->QueryObject("SELECT a.fld_max_attempts AS maxattempts, b.fld_max_attempts AS timeattempted, a.fld_test_name AS testname, b.fld_start_date
+															AS fld_enddate, fn_shortname(a.fld_test_name,1) AS shortname, a.fld_id AS testid, a.fld_ass_type, b.fld_id AS testmapid
 														FROM itc_test_master AS a
 														LEFT JOIN itc_test_student_mapping AS b ON a.fld_id=b.`fld_test_id`
-														LEFT JOIN itc_class_master AS c ON b.fld_class_id=c.fld_id 
+														LEFT JOIN itc_class_master AS c ON b.fld_class_id=c.fld_id
 														WHERE c.fld_delstatus='0' AND c.fld_lock='0' AND b.fld_student_id ='".$uid."' AND b.fld_flag='1'
 															AND a.fld_delstatus='0' AND DATE(b.fld_start_date) <= DATE(NOW()) AND DATE(b.fld_end_date) >= DATE(NOW())");
 
-						$qryactivities = $ObjDB->QueryObject("SELECT a.fld_activity_name AS activityname, a.fld_id AS activityid, b.fld_end_date AS fld_enddate, 
-																fn_shortname(a.fld_activity_name,1) AS shortname 
-															FROM itc_activity_master AS a 
+						$qryactivities = $ObjDB->QueryObject("SELECT a.fld_activity_name AS activityname, a.fld_id AS activityid, b.fld_end_date AS fld_enddate,
+																fn_shortname(a.fld_activity_name,1) AS shortname
+															FROM itc_activity_master AS a
 															LEFT JOIN itc_activity_student_mapping AS b ON a.fld_id=b.`fld_activity_id`
-															LEFT JOIN itc_class_master AS c ON b.fld_class_id=c.fld_id 
-															WHERE c.fld_delstatus='0' AND c.fld_lock='0' AND b.fld_student_id ='".$uid."' AND b.fld_flag='1' AND a.fld_delstatus='0' 
+															LEFT JOIN itc_class_master AS c ON b.fld_class_id=c.fld_id
+															WHERE c.fld_delstatus='0' AND c.fld_lock='0' AND b.fld_student_id ='".$uid."' AND b.fld_flag='1' AND a.fld_delstatus='0'
 																AND DATE(b.fld_start_date) <= DATE(NOW()) AND DATE(b.fld_end_date) >= DATE(NOW())");
 
-						$qryexpedition = $ObjDB->QueryObject("SELECT a.fld_exp_id, CONCAT(a.fld_schedule_name,' / Ind Expedition') AS schedulename, a.fld_id AS scheduleid, a.fld_enddate, 
-																	CONCAT(c.fld_exp_name,' / Individual Expedition ') AS modulename, 15 AS schtype 
-																FROM itc_class_indasexpedition_master AS a 
-																LEFT JOIN itc_class_exp_student_mapping AS b ON a.fld_id=b.fld_schedule_id 
-																LEFT JOIN itc_exp_master AS c ON a.fld_exp_id=c.fld_id 
-																LEFT JOIN itc_class_master AS d ON d.fld_id=a.fld_class_id 
+						$qryexpedition = $ObjDB->QueryObject("SELECT a.fld_exp_id, CONCAT(a.fld_schedule_name,' / Ind Expedition') AS schedulename, a.fld_id AS scheduleid, a.fld_enddate,
+																	CONCAT(c.fld_exp_name,' / Individual Expedition ') AS modulename, 15 AS schtype
+																FROM itc_class_indasexpedition_master AS a
+																LEFT JOIN itc_class_exp_student_mapping AS b ON a.fld_id=b.fld_schedule_id
+																LEFT JOIN itc_exp_master AS c ON a.fld_exp_id=c.fld_id
+																LEFT JOIN itc_class_master AS d ON d.fld_id=a.fld_class_id
 																LEFT JOIN itc_license_track AS e ON a.fld_license_id=e.fld_license_id
-																WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND c.fld_delstatus='0' AND d.fld_lock='0' 
-																	AND b.fld_student_id='".$uid."' AND a.fld_startdate<='".date("Y-m-d")."' 
-																	AND DATE(a.fld_startdate)<=DATE(NOW()) AND a.fld_enddate>='".date("Y-m-d")."' 
-																	AND e.fld_school_id='".$schoolid."' AND e.fld_user_id='".$indid."' AND e.fld_start_date<='".date("Y-m-d")."' 
-																	AND e.fld_end_date >='".date("Y-m-d")."' AND b.fld_flag='1' 
+																WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND c.fld_delstatus='0' AND d.fld_lock='0'
+																	AND b.fld_student_id='".$uid."' AND a.fld_startdate<='".date("Y-m-d")."'
+																	AND DATE(a.fld_startdate)<=DATE(NOW()) AND a.fld_enddate>='".date("Y-m-d")."'
+																	AND e.fld_school_id='".$schoolid."' AND e.fld_user_id='".$indid."' AND e.fld_start_date<='".date("Y-m-d")."'
+																	AND e.fld_end_date >='".date("Y-m-d")."' AND b.fld_flag='1'
 																GROUP BY scheduleid");
 
-                                                $qrymission = $ObjDB->QueryObject("SELECT a.fld_mis_id, CONCAT(a.fld_schedule_name,' / Ind Mission') AS schedulename, a.fld_id AS scheduleid, a.fld_enddate, 
-																	CONCAT(c.fld_mis_name,' / Individual Mission ') AS modulename, 18 AS schtype 
-																FROM itc_class_indasmission_master AS a 
-																LEFT JOIN itc_class_mission_student_mapping AS b ON a.fld_id=b.fld_schedule_id 
-																LEFT JOIN itc_mission_master AS c ON a.fld_mis_id=c.fld_id 
-																LEFT JOIN itc_class_master AS d ON d.fld_id=a.fld_class_id 
+                                                $qrymission = $ObjDB->QueryObject("SELECT a.fld_mis_id, CONCAT(a.fld_schedule_name,' / Ind Mission') AS schedulename, a.fld_id AS scheduleid, a.fld_enddate,
+																	CONCAT(c.fld_mis_name,' / Individual Mission ') AS modulename, 18 AS schtype
+																FROM itc_class_indasmission_master AS a
+																LEFT JOIN itc_class_mission_student_mapping AS b ON a.fld_id=b.fld_schedule_id
+																LEFT JOIN itc_mission_master AS c ON a.fld_mis_id=c.fld_id
+																LEFT JOIN itc_class_master AS d ON d.fld_id=a.fld_class_id
 																LEFT JOIN itc_license_track AS e ON a.fld_license_id=e.fld_license_id
-																WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND c.fld_delstatus='0' AND d.fld_lock='0' 
-																	AND b.fld_student_id='".$uid."' AND a.fld_startdate<='".date("Y-m-d")."' 
-																	AND DATE(a.fld_startdate)<=DATE(NOW()) AND a.fld_enddate>='".date("Y-m-d")."' 
-																	AND e.fld_school_id='".$schoolid."' AND e.fld_user_id='".$indid."' AND e.fld_start_date<='".date("Y-m-d")."' 
-																	AND e.fld_end_date >='".date("Y-m-d")."' AND b.fld_flag='1' 
+																WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND c.fld_delstatus='0' AND d.fld_lock='0'
+																	AND b.fld_student_id='".$uid."' AND a.fld_startdate<='".date("Y-m-d")."'
+																	AND DATE(a.fld_startdate)<=DATE(NOW()) AND a.fld_enddate>='".date("Y-m-d")."'
+																	AND e.fld_school_id='".$schoolid."' AND e.fld_user_id='".$indid."' AND e.fld_start_date<='".date("Y-m-d")."'
+																	AND e.fld_end_date >='".date("Y-m-d")."' AND b.fld_flag='1'
 																GROUP BY scheduleid");
 
-                                                $qrymissionschedule=$ObjDB->QueryObject("SELECT CONCAT(b.fld_mission_id,'-',b.fld_rotation) AS fld_module_id, CONCAT(a.fld_schedule_name,' / Mission') AS schedulename, a.fld_id AS scheduleid, g.fld_enddate, 
-                                CONCAT(c.fld_mis_name,' / Rotation ',b.fld_rotation-1) AS modulename, 23 AS schtype, b.fld_id as mapid 
-                                                                                            FROM itc_class_rotation_mission_mastertemp AS a LEFT JOIN itc_class_rotation_mission_schedulegriddet AS b ON a.fld_id=b.fld_schedule_id 
-                                LEFT JOIN itc_class_rotation_missionscheduledate as g on b.fld_schedule_id=g.fld_schedule_id and b.fld_rotation=g.fld_rotation 
-                                LEFT JOIN itc_mission_master AS c ON b.fld_mission_id=c.fld_id LEFT JOIN itc_class_master AS d on d.fld_id=a.fld_class_id 
-                                WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' AND b.fld_student_id='".$uid."' 
-                                 AND DATE(a.fld_startdate) <= DATE(NOW()) AND g.fld_startdate<='".date("Y-m-d")."' AND g.fld_enddate>='".date("Y-m-d")."' AND a.fld_license_id IN (SELECT fld_license_id FROM itc_license_track 
-                                WHERE fld_school_id='".$schoolid."' AND fld_user_id='".$indid."' AND fld_start_date<='".date("Y-m-d")."' AND fld_end_date >='".date("Y-m-d")."') 
+                                                $qrymissionschedule=$ObjDB->QueryObject("SELECT CONCAT(b.fld_mission_id,'-',b.fld_rotation) AS fld_module_id, CONCAT(a.fld_schedule_name,' / Mission') AS schedulename, a.fld_id AS scheduleid, g.fld_enddate,
+                                CONCAT(c.fld_mis_name,' / Rotation ',b.fld_rotation-1) AS modulename, 23 AS schtype, b.fld_id as mapid
+                                                                                            FROM itc_class_rotation_mission_mastertemp AS a LEFT JOIN itc_class_rotation_mission_schedulegriddet AS b ON a.fld_id=b.fld_schedule_id
+                                LEFT JOIN itc_class_rotation_missionscheduledate as g on b.fld_schedule_id=g.fld_schedule_id and b.fld_rotation=g.fld_rotation
+                                LEFT JOIN itc_mission_master AS c ON b.fld_mission_id=c.fld_id LEFT JOIN itc_class_master AS d on d.fld_id=a.fld_class_id
+                                WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' AND b.fld_student_id='".$uid."'
+                                 AND DATE(a.fld_startdate) <= DATE(NOW()) AND g.fld_startdate<='".date("Y-m-d")."' AND g.fld_enddate>='".date("Y-m-d")."' AND a.fld_license_id IN (SELECT fld_license_id FROM itc_license_track
+                                WHERE fld_school_id='".$schoolid."' AND fld_user_id='".$indid."' AND fld_start_date<='".date("Y-m-d")."' AND fld_end_date >='".date("Y-m-d")."')
                                 AND b.fld_flag='1' GROUP BY scheduleid");
 
-                                                $qrypd = $ObjDB->QueryObject("SELECT a.fld_id AS sid, a.fld_schedule_name AS sname, fn_shortname(a.fld_schedule_name,1) AS shortname, a.fld_end_date AS edate 
-                                                                                    FROM itc_class_pdschedule_master AS a 
-                                                                                    LEFT JOIN itc_class_pdschedule_student_mapping AS b ON a.fld_id=b.fld_pdschedule_id 
-                                                                                    LEFT JOIN itc_class_master AS c ON c.fld_id=a.fld_class_id 
+                                                $qrypd = $ObjDB->QueryObject("SELECT a.fld_id AS sid, a.fld_schedule_name AS sname, fn_shortname(a.fld_schedule_name,1) AS shortname, a.fld_end_date AS edate
+                                                                                    FROM itc_class_pdschedule_master AS a
+                                                                                    LEFT JOIN itc_class_pdschedule_student_mapping AS b ON a.fld_id=b.fld_pdschedule_id
+                                                                                    LEFT JOIN itc_class_master AS c ON c.fld_id=a.fld_class_id
                                                                                     LEFT JOIN itc_license_track AS d ON a.fld_license_id=d.fld_license_id
-                                                                                    WHERE a.fld_delstatus='0' AND b.fld_flag='1' AND b.fld_student_id='".$uid."' AND DATE(a.fld_start_date) <= DATE(NOW()) 
-                                                                                            AND DATE(a.fld_end_date) >= DATE(NOW()) AND c.fld_delstatus='0' AND c.fld_lock='0' AND d.fld_school_id='".$schoolid."' 
+                                                                                    WHERE a.fld_delstatus='0' AND b.fld_flag='1' AND b.fld_student_id='".$uid."' AND DATE(a.fld_start_date) <= DATE(NOW())
+                                                                                            AND DATE(a.fld_end_date) >= DATE(NOW()) AND c.fld_delstatus='0' AND c.fld_lock='0' AND d.fld_school_id='".$schoolid."'
                                                                                             AND d.fld_user_id='".$indid."' AND d.fld_start_date<='".date("Y-m-d")."' AND d.fld_end_date >='".date("Y-m-d")."'");
 
 						$testcount = 0;
@@ -373,10 +373,10 @@ UNION ALL
 					}
 					else
 					{
-						$qrydyadtriad = $ObjDB->QueryObject("SELECT a.`fld_schedule_id` AS scheduleid, a.`fld_module_id`, CONCAT(c.fld_schedule_name,' / Module') AS schedulename, 
-																g.fld_enddate, CONCAT(d.fld_module_name,' / Rotation ', a.fld_rotation-1) AS modulename, 1 AS schtype 
+						$qrydyadtriad = $ObjDB->QueryObject("SELECT a.`fld_schedule_id` AS scheduleid, a.`fld_module_id`, CONCAT(c.fld_schedule_name,' / Module') AS schedulename,
+																g.fld_enddate, CONCAT(d.fld_module_name,' / Rotation ', a.fld_rotation-1) AS modulename, 1 AS schtype
 															FROM itc_class_rotation_schedulegriddet a
-															JOIN itc_class_rotation_schedulegriddet b ON  b.`fld_student_id`='".$uid."' AND b.`fld_schedule_id`=a.`fld_schedule_id` 
+															JOIN itc_class_rotation_schedulegriddet b ON  b.`fld_student_id`='".$uid."' AND b.`fld_schedule_id`=a.`fld_schedule_id`
 																AND b.`fld_module_id`=a.`fld_module_id` AND b.`fld_rotation`=a.`fld_rotation`
 																AND a.`fld_student_id`='".$uid1."' AND b.fld_flag='1' AND a.fld_flag='1'
                                                                                                                         LEFT JOIN itc_class_rotation_scheduledate AS g ON b.fld_schedule_id=g.fld_schedule_id AND b.fld_rotation=g.fld_rotation
@@ -384,16 +384,16 @@ UNION ALL
 															LEFT JOIN itc_module_master d ON a.fld_module_id=d.fld_id
 															LEFT JOIN itc_class_master e ON e.fld_id=a.fld_class_id
 															LEFT JOIN itc_license_track f ON f.`fld_license_id`=c.`fld_license_id`
-															WHERE c.fld_delstatus='0' AND d.fld_delstatus='0' AND e.fld_delstatus='0' AND e.fld_lock='0' AND a.fld_type='1' 
-																AND DATE(c.fld_startdate) <= DATE(NOW()) AND DATE(g.fld_startdate) <= DATE(NOW()) AND DATE(g.fld_enddate) >= DATE(NOW()) 
-																AND c.fld_moduletype='1' AND f.fld_school_id='".$schoolid."' AND f.fld_user_id='".$indid."' 
+															WHERE c.fld_delstatus='0' AND d.fld_delstatus='0' AND e.fld_delstatus='0' AND e.fld_lock='0' AND a.fld_type='1'
+																AND DATE(c.fld_startdate) <= DATE(NOW()) AND DATE(g.fld_startdate) <= DATE(NOW()) AND DATE(g.fld_enddate) >= DATE(NOW())
+																AND c.fld_moduletype='1' AND f.fld_school_id='".$schoolid."' AND f.fld_user_id='".$indid."'
 																AND f.fld_start_date<='".date("Y-m-d")."' AND f.fld_end_date >='".date("Y-m-d")."' AND g.fld_flag='1'
 															GROUP BY a.`fld_schedule_id`
-																	UNION ALL 
-															SELECT a.`fld_schedule_id` AS scheduleid, a.`fld_module_id`, CONCAT(c.fld_schedule_name,' / Math Module') AS schedulename, 
-																g.fld_enddate, CONCAT(d.fld_mathmodule_name,' / Rotation ', a.fld_rotation-1) AS modulename, 4 AS schtype 
+																	UNION ALL
+															SELECT a.`fld_schedule_id` AS scheduleid, a.`fld_module_id`, CONCAT(c.fld_schedule_name,' / Math Module') AS schedulename,
+																g.fld_enddate, CONCAT(d.fld_mathmodule_name,' / Rotation ', a.fld_rotation-1) AS modulename, 4 AS schtype
 															FROM itc_class_rotation_schedulegriddet a
-															JOIN itc_class_rotation_schedulegriddet b ON  b.`fld_student_id`='".$uid."' AND b.`fld_schedule_id`=a.`fld_schedule_id` 
+															JOIN itc_class_rotation_schedulegriddet b ON  b.`fld_student_id`='".$uid."' AND b.`fld_schedule_id`=a.`fld_schedule_id`
 																AND b.`fld_module_id`=a.`fld_module_id` AND b.`fld_rotation`=a.`fld_rotation`
 																AND a.`fld_student_id`='".$uid1."' AND b.fld_flag='1' AND a.fld_flag='1'
                                                                                                                         LEFT JOIN itc_class_rotation_scheduledate AS g ON b.fld_schedule_id=g.fld_schedule_id AND b.fld_rotation=g.fld_rotation
@@ -402,15 +402,15 @@ UNION ALL
 															LEFT JOIN itc_class_master e ON e.fld_id=a.fld_class_id
 															LEFT JOIN itc_license_track f ON f.`fld_license_id`=c.`fld_license_id`
 															WHERE c.fld_delstatus='0' AND d.fld_delstatus='0' AND e.fld_delstatus='0' AND e.fld_lock='0' AND a.fld_type='2'
-																AND DATE(c.fld_startdate) <= DATE(NOW()) AND DATE(g.fld_startdate) <= DATE(NOW()) AND DATE(g.fld_enddate) >= DATE(NOW()) 
-																AND c.fld_moduletype='2' AND f.fld_school_id='".$schoolid."' AND f.fld_user_id='".$indid."' 
+																AND DATE(c.fld_startdate) <= DATE(NOW()) AND DATE(g.fld_startdate) <= DATE(NOW()) AND DATE(g.fld_enddate) >= DATE(NOW())
+																AND c.fld_moduletype='2' AND f.fld_school_id='".$schoolid."' AND f.fld_user_id='".$indid."'
 																AND f.fld_start_date<='".date("Y-m-d")."' AND f.fld_end_date >='".date("Y-m-d")."' AND g.fld_flag='1'
 															GROUP BY a.`fld_schedule_id`
 																	UNION ALL
-															SELECT a.`fld_schedule_id` AS scheduleid, a.`fld_module_id`, CONCAT(c.fld_schedule_name,' / Dyad') AS schedulename, 
-																a.fld_enddate, CONCAT(d.fld_module_name,' / Rotation ', a.fld_rotation) AS modulename, 2 AS schtype 
+															SELECT a.`fld_schedule_id` AS scheduleid, a.`fld_module_id`, CONCAT(c.fld_schedule_name,' / Dyad') AS schedulename,
+																a.fld_enddate, CONCAT(d.fld_module_name,' / Rotation ', a.fld_rotation) AS modulename, 2 AS schtype
 															FROM itc_class_dyad_schedulegriddet a
-															JOIN itc_class_dyad_schedulegriddet b ON (b.`fld_student_id`='".$uid."' OR b.fld_rotation='0') 
+															JOIN itc_class_dyad_schedulegriddet b ON (b.`fld_student_id`='".$uid."' OR b.fld_rotation='0')
 																AND b.`fld_schedule_id`=a.`fld_schedule_id` AND b.`fld_module_id`=a.`fld_module_id` AND b.`fld_rotation`=a.`fld_rotation`
 																AND (a.`fld_student_id`='".$uid1."' OR a.fld_rotation='0') AND b.fld_flag='1' AND a.fld_flag='1'
 															LEFT JOIN itc_class_dyad_schedulemaster c ON c.fld_id=b.fld_schedule_id
@@ -421,15 +421,15 @@ UNION ALL
 															JOIN itc_class_dyad_schedule_studentmapping AS h ON (h.fld_schedule_id=a.fld_schedule_id AND h.fld_student_id='".$uid1."')
 															WHERE c.fld_delstatus='0' AND d.fld_delstatus='0' AND e.fld_delstatus='0' AND e.fld_lock='0'
 																AND g.fld_flag='1' AND h.fld_flag='1'
-																AND DATE(c.fld_startdate) <= DATE(NOW()) AND DATE(b.fld_startdate) <= DATE(NOW()) AND DATE(b.fld_enddate) >= DATE(NOW()) 
-																AND f.fld_school_id='".$schoolid."' AND f.fld_user_id='".$indid."' 
+																AND DATE(c.fld_startdate) <= DATE(NOW()) AND DATE(b.fld_startdate) <= DATE(NOW()) AND DATE(b.fld_enddate) >= DATE(NOW())
+																AND f.fld_school_id='".$schoolid."' AND f.fld_user_id='".$indid."'
 																AND f.fld_start_date<='".date("Y-m-d")."' AND f.fld_end_date >='".date("Y-m-d")."'
 															GROUP BY a.`fld_schedule_id`
 																	UNION ALL
 															SELECT a.`fld_schedule_id` AS scheduleid, a.`fld_module_id`, CONCAT(c.fld_schedule_name,' / Triad') AS schedulename,
-																a.fld_enddate, CONCAT(d.fld_module_name,' / Rotation ', a.fld_rotation) AS modulename, 3 AS schtype 
+																a.fld_enddate, CONCAT(d.fld_module_name,' / Rotation ', a.fld_rotation) AS modulename, 3 AS schtype
 															FROM itc_class_triad_schedulegriddet a
-															JOIN itc_class_triad_schedulegriddet b ON (b.`fld_student_id`='".$uid."' OR b.fld_rotation='0') 
+															JOIN itc_class_triad_schedulegriddet b ON (b.`fld_student_id`='".$uid."' OR b.fld_rotation='0')
 																AND b.`fld_schedule_id`=a.`fld_schedule_id` AND b.`fld_module_id`=a.`fld_module_id` AND b.`fld_rotation`=a.`fld_rotation`
 																AND (a.`fld_student_id`='".$uid1."' OR a.fld_rotation='0') AND b.fld_flag='1' AND a.fld_flag='1'
 															LEFT JOIN itc_class_triad_schedulemaster c ON c.fld_id=b.fld_schedule_id
@@ -440,13 +440,13 @@ UNION ALL
 															JOIN itc_class_triad_schedule_studentmapping AS h ON (h.fld_schedule_id=a.fld_schedule_id AND h.fld_student_id='".$uid1."')
 															WHERE c.fld_delstatus='0' AND d.fld_delstatus='0' AND e.fld_delstatus='0' AND e.fld_lock='0'
 																AND g.fld_flag='1' AND h.fld_flag='1'
-																AND DATE(c.fld_startdate) <= DATE(NOW()) AND DATE(b.fld_startdate) <= DATE(NOW()) AND DATE(b.fld_enddate) >= DATE(NOW()) 
-																AND f.fld_school_id='".$schoolid."' AND f.fld_user_id='".$indid."' 
+																AND DATE(c.fld_startdate) <= DATE(NOW()) AND DATE(b.fld_startdate) <= DATE(NOW()) AND DATE(b.fld_enddate) >= DATE(NOW())
+																AND f.fld_school_id='".$schoolid."' AND f.fld_user_id='".$indid."'
 																AND f.fld_start_date<='".date("Y-m-d")."' AND f.fld_end_date >='".date("Y-m-d")."'
 															GROUP BY a.`fld_schedule_id`
 																	UNION ALL
 															SELECT a.`fld_schedule_id` AS scheduleid, c.`fld_module_id`, CONCAT(c.fld_schedule_name,' / Ind Module') AS schedulename,
-																c.fld_enddate, CONCAT(d.fld_module_name,' / Individual Module') AS modulename, 5 AS schtype 
+																c.fld_enddate, CONCAT(d.fld_module_name,' / Individual Module') AS modulename, 5 AS schtype
 															FROM itc_class_indassesment_student_mapping a
 															JOIN itc_class_indassesment_student_mapping b ON  b.`fld_student_id`='".$uid."' AND b.`fld_schedule_id`=a.`fld_schedule_id`
 																AND a.`fld_student_id`='".$uid1."' AND b.fld_flag='1' AND a.fld_flag='1'
@@ -455,13 +455,13 @@ UNION ALL
 															LEFT JOIN itc_class_master e ON e.fld_id=c.fld_class_id
 															LEFT JOIN itc_license_track f ON f.`fld_license_id`=c.`fld_license_id`
 															WHERE c.fld_delstatus='0' AND d.fld_delstatus='0' AND e.fld_delstatus='0' AND e.fld_lock='0'
-																AND DATE(c.fld_startdate) <= DATE(NOW()) AND DATE(c.fld_enddate) >= DATE(NOW()) AND c.fld_moduletype='1' 
-																AND f.fld_school_id='".$schoolid."' AND f.fld_user_id='".$indid."' 
+																AND DATE(c.fld_startdate) <= DATE(NOW()) AND DATE(c.fld_enddate) >= DATE(NOW()) AND c.fld_moduletype='1'
+																AND f.fld_school_id='".$schoolid."' AND f.fld_user_id='".$indid."'
 																AND f.fld_start_date<='".date("Y-m-d")."' AND f.fld_end_date >='".date("Y-m-d")."'
 															GROUP BY a.`fld_schedule_id`
 																	UNION ALL
-															SELECT a.`fld_schedule_id` AS scheduleid, c.`fld_module_id`, CONCAT(c.fld_schedule_name,' / Ind MathModule') AS schedulename, 
-																c.fld_enddate, CONCAT(d.fld_mathmodule_name,' / Individual MathModule') AS modulename, 6 AS schtype 
+															SELECT a.`fld_schedule_id` AS scheduleid, c.`fld_module_id`, CONCAT(c.fld_schedule_name,' / Ind MathModule') AS schedulename,
+																c.fld_enddate, CONCAT(d.fld_mathmodule_name,' / Individual MathModule') AS modulename, 6 AS schtype
 															FROM itc_class_indassesment_student_mapping a
 															JOIN itc_class_indassesment_student_mapping b ON  b.`fld_student_id`='".$uid."' AND b.`fld_schedule_id`=a.`fld_schedule_id`
 																AND a.`fld_student_id`='".$uid1."' AND b.fld_flag='1' AND a.fld_flag='1'
@@ -470,13 +470,13 @@ UNION ALL
 															LEFT JOIN itc_class_master e ON e.fld_id=c.fld_class_id
 															LEFT JOIN itc_license_track f ON f.`fld_license_id`=c.`fld_license_id`
 															WHERE c.fld_delstatus='0' AND d.fld_delstatus='0' AND e.fld_delstatus='0' AND e.fld_lock='0'
-																AND DATE(c.fld_startdate) <= DATE(NOW()) AND DATE(c.fld_enddate) >= DATE(NOW()) AND c.fld_moduletype='2' 
-																AND f.fld_school_id='".$schoolid."' AND f.fld_user_id='".$indid."' 
+																AND DATE(c.fld_startdate) <= DATE(NOW()) AND DATE(c.fld_enddate) >= DATE(NOW()) AND c.fld_moduletype='2'
+																AND f.fld_school_id='".$schoolid."' AND f.fld_user_id='".$indid."'
 																AND f.fld_start_date<='".date("Y-m-d")."' AND f.fld_end_date >='".date("Y-m-d")."'
 															GROUP BY a.`fld_schedule_id`
 																	UNION ALL
 															SELECT a.`fld_schedule_id` AS scheduleid, c.`fld_module_id`, CONCAT(c.fld_schedule_name,' / Ind Quest') AS schedulename,
-																c.fld_enddate, CONCAT(d.fld_module_name,' / Individual Quest') AS modulename, 7 AS schtype 
+																c.fld_enddate, CONCAT(d.fld_module_name,' / Individual Quest') AS modulename, 7 AS schtype
 															FROM itc_class_indassesment_student_mapping a
 															JOIN itc_class_indassesment_student_mapping b ON  b.`fld_student_id`='".$uid."' AND b.`fld_schedule_id`=a.`fld_schedule_id`
 																AND a.`fld_student_id`='".$uid1."' AND b.fld_flag='1' AND a.fld_flag='1'
@@ -485,15 +485,15 @@ UNION ALL
 															LEFT JOIN itc_class_master e ON e.fld_id=c.fld_class_id
 															LEFT JOIN itc_license_track f ON f.`fld_license_id`=c.`fld_license_id`
 															WHERE c.fld_delstatus='0' AND d.fld_delstatus='0' AND e.fld_delstatus='0' AND e.fld_lock='0'
-																AND DATE(c.fld_startdate) <= DATE(NOW()) AND DATE(c.fld_enddate) >= DATE(NOW()) AND c.fld_moduletype='7' 
-																AND f.fld_school_id='".$schoolid."' AND f.fld_user_id='".$indid."' 
+																AND DATE(c.fld_startdate) <= DATE(NOW()) AND DATE(c.fld_enddate) >= DATE(NOW()) AND c.fld_moduletype='7'
+																AND f.fld_school_id='".$schoolid."' AND f.fld_user_id='".$indid."'
 																AND f.fld_start_date<='".date("Y-m-d")."' AND f.fld_end_date >='".date("Y-m-d")."'
 															GROUP BY a.`fld_schedule_id`
 																	UNION ALL
-															SELECT a.fld_schedule_id AS scheduleid, a.fld_module_id, CONCAT(c.fld_schedule_name,' / Custom Module') AS schedulename, 
-																g.fld_enddate, CONCAT(d.fld_contentname,' / Rotation ', a.fld_rotation-1) AS modulename, 8 AS schtype 
+															SELECT a.fld_schedule_id AS scheduleid, a.fld_module_id, CONCAT(c.fld_schedule_name,' / Custom Module') AS schedulename,
+																g.fld_enddate, CONCAT(d.fld_contentname,' / Rotation ', a.fld_rotation-1) AS modulename, 8 AS schtype
 															FROM itc_class_rotation_schedulegriddet a
-															JOIN itc_class_rotation_schedulegriddet b ON  b.`fld_student_id`='".$uid."' AND b.`fld_schedule_id`=a.`fld_schedule_id` 
+															JOIN itc_class_rotation_schedulegriddet b ON  b.`fld_student_id`='".$uid."' AND b.`fld_schedule_id`=a.`fld_schedule_id`
 																AND b.`fld_module_id`=a.`fld_module_id` AND b.`fld_rotation`=a.`fld_rotation`
 																AND a.`fld_student_id`='".$uid1."' AND b.fld_flag='1' AND a.fld_flag='1'
                                                                                                                         LEFT JOIN itc_class_rotation_scheduledate AS g ON b.fld_schedule_id=g.fld_schedule_id AND b.fld_rotation=g.fld_rotation
@@ -502,13 +502,13 @@ UNION ALL
 															LEFT JOIN itc_class_master e ON e.fld_id=a.fld_class_id
 															LEFT JOIN itc_license_track f ON f.`fld_license_id`=c.`fld_license_id`
 															WHERE c.fld_delstatus='0' AND d.fld_delstatus='0' AND e.fld_delstatus='0' AND e.fld_lock='0' AND a.fld_type='8'
-																AND DATE(c.fld_startdate) <= DATE(NOW()) AND DATE(g.fld_startdate) <= DATE(NOW()) AND DATE(g.fld_enddate) >= DATE(NOW()) 
+																AND DATE(c.fld_startdate) <= DATE(NOW()) AND DATE(g.fld_startdate) <= DATE(NOW()) AND DATE(g.fld_enddate) >= DATE(NOW())
 																AND c.fld_moduletype='1' AND f.fld_school_id='".$schoolid."' AND f.fld_end_date >='".date("Y-m-d")."'
 																AND f.fld_user_id='".$indid."' AND f.fld_start_date<='".date("Y-m-d")."' AND g.fld_flag='1'
 															GROUP BY a.fld_schedule_id
-                                                                                                                        UNION ALL 
+                                                                                                                        UNION ALL
 															SELECT a.`fld_schedule_id` AS scheduleid, c.`fld_module_id`, CONCAT(c.fld_schedule_name,' / Ind Custom') AS schedulename,
-															c.fld_enddate, CONCAT(d.fld_contentname,' / Individual Custom ') AS modulename, 17 AS schtype 
+															c.fld_enddate, CONCAT(d.fld_contentname,' / Individual Custom ') AS modulename, 17 AS schtype
 															FROM itc_class_indassesment_student_mapping a
 															JOIN itc_class_indassesment_student_mapping b ON  b.`fld_student_id`='".$uid."' AND b.`fld_schedule_id`=a.`fld_schedule_id`
 															AND a.`fld_student_id`='".$uid1."' AND b.fld_flag='1' AND a.fld_flag='1'
@@ -517,12 +517,12 @@ UNION ALL
 															LEFT JOIN itc_class_master e ON e.fld_id=c.fld_class_id
 															LEFT JOIN itc_license_track f ON f.`fld_license_id`=c.`fld_license_id`
 															WHERE c.fld_delstatus='0' AND d.fld_delstatus='0' AND e.fld_delstatus='0' AND e.fld_lock='0'
-															AND DATE(c.fld_startdate) <= DATE(NOW()) AND DATE(c.fld_enddate) >= DATE(NOW()) AND c.fld_moduletype='7' 
-															AND f.fld_school_id='".$schoolid."' AND f.fld_user_id='".$indid."' 
+															AND DATE(c.fld_startdate) <= DATE(NOW()) AND DATE(c.fld_enddate) >= DATE(NOW()) AND c.fld_moduletype='7'
+															AND f.fld_school_id='".$schoolid."' AND f.fld_user_id='".$indid."'
 															AND f.fld_start_date<='".date("Y-m-d")."' AND f.fld_end_date >='".date("Y-m-d")."'
 																GROUP BY a.`fld_schedule_id`
                                                                                                           UNION ALL
-                                                        SELECT 
+                                                        SELECT
                                                 a.`fld_schedule_id` AS scheduleid,
                                                 a.`fld_expedition_id`,
                                                 CONCAT(c.fld_schedule_name, ' / Expedition') AS schedulename,
@@ -562,46 +562,46 @@ UNION ALL
                                                     AND f.fld_user_id = '".$indid."'
                                                     AND f.fld_start_date <= '".date("Y-m-d")."'
                                                     AND f.fld_end_date >= '".date("Y-m-d")."'
-                                            GROUP BY a.fld_rotation , a.fld_expedition_id , a.fld_schedule_id                       
+                                            GROUP BY a.fld_rotation , a.fld_expedition_id , a.fld_schedule_id
 
 
 
-                                                                                                                        UNION ALL 
-                                            SELECT a.`fld_schedule_id` AS scheduleid, a.`fld_module_id`, CONCAT(c.fld_schedule_name,' / Module') AS schedulename, 
-                                                        g.fld_enddate, CONCAT(d.fld_module_name,' / Rotation ', a.fld_rotation-1) AS modulename, 21 AS schtype 
+                                                                                                                        UNION ALL
+                                            SELECT a.`fld_schedule_id` AS scheduleid, a.`fld_module_id`, CONCAT(c.fld_schedule_name,' / Module') AS schedulename,
+                                                        g.fld_enddate, CONCAT(d.fld_module_name,' / Rotation ', a.fld_rotation-1) AS modulename, 21 AS schtype
                                                     FROM itc_class_rotation_modexpschedulegriddet a
-                                                    JOIN itc_class_rotation_modexpschedulegriddet b ON  b.`fld_student_id`='".$uid."' AND b.`fld_schedule_id`=a.`fld_schedule_id` 
+                                                    JOIN itc_class_rotation_modexpschedulegriddet b ON  b.`fld_student_id`='".$uid."' AND b.`fld_schedule_id`=a.`fld_schedule_id`
                                                         AND b.`fld_module_id`=a.`fld_module_id` AND b.`fld_rotation`=a.`fld_rotation`
                                                         AND a.`fld_student_id`='".$uid1."' AND b.fld_flag='1' AND a.fld_flag='1'
-                                                    LEFT JOIN itc_class_rotation_modexpscheduledate as g on b.fld_schedule_id=g.fld_schedule_id and b.fld_rotation=g.fld_rotation 
+                                                    LEFT JOIN itc_class_rotation_modexpscheduledate as g on b.fld_schedule_id=g.fld_schedule_id and b.fld_rotation=g.fld_rotation
                                                     LEFT JOIN itc_class_rotation_modexpschedule_mastertemp c ON c.fld_id=b.fld_schedule_id
                                                     LEFT JOIN itc_module_master d ON a.fld_module_id=d.fld_id
                                                     LEFT JOIN itc_class_master e ON e.fld_id=a.fld_class_id
                                                     LEFT JOIN itc_license_track f ON f.`fld_license_id`=c.`fld_license_id`
                                                     WHERE c.fld_delstatus='0' AND d.fld_delstatus='0' AND e.fld_delstatus='0' AND e.fld_lock='0' AND b.fld_type='1'
-                                                        AND DATE(c.fld_startdate) <= DATE(NOW()) AND DATE(g.fld_startdate) <= DATE(NOW()) AND DATE(g.fld_enddate) >= DATE(NOW()) AND f.fld_school_id='".$schoolid."' 
+                                                        AND DATE(c.fld_startdate) <= DATE(NOW()) AND DATE(g.fld_startdate) <= DATE(NOW()) AND DATE(g.fld_enddate) >= DATE(NOW()) AND f.fld_school_id='".$schoolid."'
                                                         AND f.fld_user_id='".$indid."' AND f.fld_start_date<='".date("Y-m-d")."' AND f.fld_end_date >='".date("Y-m-d")."'
                                                     GROUP BY a.`fld_rotation`, a.`fld_module_id`,  a.`fld_schedule_id`
 
                                                     UNION ALL
-                                                    SELECT a.`fld_schedule_id` AS scheduleid, a.`fld_module_id`, CONCAT(c.fld_schedule_name,' / Custom Module') AS schedulename, 
-                                                        g.fld_enddate, CONCAT(d.fld_contentname,' / Rotation ', a.fld_rotation-1) AS modulename, 22 AS schtype 
+                                                    SELECT a.`fld_schedule_id` AS scheduleid, a.`fld_module_id`, CONCAT(c.fld_schedule_name,' / Custom Module') AS schedulename,
+                                                        g.fld_enddate, CONCAT(d.fld_contentname,' / Rotation ', a.fld_rotation-1) AS modulename, 22 AS schtype
                                                     FROM itc_class_rotation_modexpschedulegriddet a
-                                                    JOIN itc_class_rotation_modexpschedulegriddet b ON  b.`fld_student_id`='".$uid."' AND b.`fld_schedule_id`=a.`fld_schedule_id` 
+                                                    JOIN itc_class_rotation_modexpschedulegriddet b ON  b.`fld_student_id`='".$uid."' AND b.`fld_schedule_id`=a.`fld_schedule_id`
                                                         AND b.`fld_module_id`=a.`fld_module_id` AND b.`fld_rotation`=a.`fld_rotation`
                                                         AND a.`fld_student_id`='".$uid1."' AND b.fld_flag='1' AND a.fld_flag='1'
-                                                    LEFT JOIN itc_class_rotation_modexpscheduledate as g on b.fld_schedule_id=g.fld_schedule_id and b.fld_rotation=g.fld_rotation 
+                                                    LEFT JOIN itc_class_rotation_modexpscheduledate as g on b.fld_schedule_id=g.fld_schedule_id and b.fld_rotation=g.fld_rotation
                                                     LEFT JOIN itc_class_rotation_modexpschedule_mastertemp c ON c.fld_id=b.fld_schedule_id
                                                     LEFT JOIN itc_customcontent_master d ON a.fld_module_id=d.fld_id
                                                     LEFT JOIN itc_class_master e ON e.fld_id=a.fld_class_id
                                                     LEFT JOIN itc_license_track f ON f.`fld_license_id`=c.`fld_license_id`
                                                     WHERE c.fld_delstatus='0' AND d.fld_delstatus='0' AND e.fld_delstatus='0' AND e.fld_lock='0' AND b.fld_type='8'
-                                                        AND DATE(c.fld_startdate) <= DATE(NOW()) AND DATE(g.fld_startdate) <= DATE(NOW()) AND DATE(g.fld_enddate) >= DATE(NOW()) AND f.fld_school_id='".$schoolid."' 
+                                                        AND DATE(c.fld_startdate) <= DATE(NOW()) AND DATE(g.fld_startdate) <= DATE(NOW()) AND DATE(g.fld_enddate) >= DATE(NOW()) AND f.fld_school_id='".$schoolid."'
                                                         AND f.fld_user_id='".$indid."' AND f.fld_start_date<='".date("Y-m-d")."' AND f.fld_end_date >='".date("Y-m-d")."'
                                                     GROUP BY a.`fld_rotation`, a.`fld_module_id`,  a.`fld_schedule_id`
 
                                                     UNION ALL
-                                                        SELECT 
+                                                        SELECT
                                                 a.`fld_schedule_id` AS scheduleid,
                                                 a.`fld_module_id`,
                                                 CONCAT(c.fld_schedule_name, ' / Expedition') AS schedulename,
@@ -645,32 +645,32 @@ UNION ALL
                                             GROUP BY a.fld_rotation , a.fld_module_id , a.fld_schedule_id");
 
 
-						$qrycountstudents = $ObjDB->SelectSingleValueInt("SELECT count(*) FROM(SELECT a.fld_id FROM itc_class_indasexpedition_master AS a 
-																LEFT JOIN itc_class_exp_student_mapping AS b ON a.fld_id=b.fld_schedule_id 
-																LEFT JOIN itc_exp_master AS c ON a.fld_exp_id=c.fld_id 
-																LEFT JOIN itc_class_master AS d ON d.fld_id=a.fld_class_id 
+						$qrycountstudents = $ObjDB->SelectSingleValueInt("SELECT count(*) FROM(SELECT a.fld_id FROM itc_class_indasexpedition_master AS a
+																LEFT JOIN itc_class_exp_student_mapping AS b ON a.fld_id=b.fld_schedule_id
+																LEFT JOIN itc_exp_master AS c ON a.fld_exp_id=c.fld_id
+																LEFT JOIN itc_class_master AS d ON d.fld_id=a.fld_class_id
 																LEFT JOIN itc_license_track AS e ON a.fld_license_id=e.fld_license_id
-																WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' 
-																	AND a.fld_startdate<='".date("Y-m-d")."' 
-																	AND DATE(a.fld_startdate)<=DATE(NOW()) AND a.fld_enddate>='".date("Y-m-d")."' 
-																	AND e.fld_school_id='".$schoolid."' AND e.fld_user_id='".$indid."' AND e.fld_start_date<='".date("Y-m-d")."' 
-																	AND e.fld_end_date >='".date("Y-m-d")."' AND b.fld_flag='1' 
+																WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0'
+																	AND a.fld_startdate<='".date("Y-m-d")."'
+																	AND DATE(a.fld_startdate)<=DATE(NOW()) AND a.fld_enddate>='".date("Y-m-d")."'
+																	AND e.fld_school_id='".$schoolid."' AND e.fld_user_id='".$indid."' AND e.fld_start_date<='".date("Y-m-d")."'
+																	AND e.fld_end_date >='".date("Y-m-d")."' AND b.fld_flag='1'
 																	AND b.fld_student_id IN('".$uid."','".$uid1."') GROUP BY a.fld_id having count(a.fld_id) > 1) AS t");
                                                 if($qrycountstudents > 0)
 						{
 
 
-							$qryexpedition = $ObjDB->QueryObject("SELECT a.fld_exp_id, CONCAT(a.fld_schedule_name,' / Ind Expedition') AS schedulename, a.fld_id AS scheduleid, a.fld_enddate, 
-																	CONCAT(c.fld_exp_name,' / Individual Expedition ') AS modulename, 15 AS schtype FROM itc_class_indasexpedition_master AS a 
-																LEFT JOIN itc_class_exp_student_mapping AS b ON a.fld_id=b.fld_schedule_id 
-																LEFT JOIN itc_exp_master AS c ON a.fld_exp_id=c.fld_id 
-																LEFT JOIN itc_class_master AS d ON d.fld_id=a.fld_class_id 
+							$qryexpedition = $ObjDB->QueryObject("SELECT a.fld_exp_id, CONCAT(a.fld_schedule_name,' / Ind Expedition') AS schedulename, a.fld_id AS scheduleid, a.fld_enddate,
+																	CONCAT(c.fld_exp_name,' / Individual Expedition ') AS modulename, 15 AS schtype FROM itc_class_indasexpedition_master AS a
+																LEFT JOIN itc_class_exp_student_mapping AS b ON a.fld_id=b.fld_schedule_id
+																LEFT JOIN itc_exp_master AS c ON a.fld_exp_id=c.fld_id
+																LEFT JOIN itc_class_master AS d ON d.fld_id=a.fld_class_id
 																LEFT JOIN itc_license_track AS e ON a.fld_license_id=e.fld_license_id
-																WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND c.fld_delstatus='0' AND d.fld_lock='0' 
-																	AND a.fld_startdate<='".date("Y-m-d")."' 
-																	AND DATE(a.fld_startdate)<=DATE(NOW()) AND a.fld_enddate>='".date("Y-m-d")."' 
-																	AND e.fld_school_id='".$schoolid."' AND e.fld_user_id='".$indid."' AND e.fld_start_date<='".date("Y-m-d")."' 
-																	AND e.fld_end_date >='".date("Y-m-d")."' AND b.fld_flag='1' 
+																WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND c.fld_delstatus='0' AND d.fld_lock='0'
+																	AND a.fld_startdate<='".date("Y-m-d")."'
+																	AND DATE(a.fld_startdate)<=DATE(NOW()) AND a.fld_enddate>='".date("Y-m-d")."'
+																	AND e.fld_school_id='".$schoolid."' AND e.fld_user_id='".$indid."' AND e.fld_start_date<='".date("Y-m-d")."'
+																	AND e.fld_end_date >='".date("Y-m-d")."' AND b.fld_flag='1'
 																	AND b.fld_student_id IN('".$uid."','".$uid1."') GROUP BY scheduleid having count(scheduleid) > 1");
 
 
@@ -678,18 +678,18 @@ UNION ALL
 						}
 
 
-                        $qrymission = $ObjDB->QueryObject("SELECT a.fld_mis_id, CONCAT(a.fld_schedule_name,' / Ind Mission') AS schedulename, a.fld_id AS scheduleid, a.fld_enddate, 
-																	CONCAT(c.fld_mis_name,' / Individual Mission ') AS modulename, 18 AS schtype 
-																FROM itc_class_indasmission_master AS a 
-																LEFT JOIN itc_class_mission_student_mapping AS b ON a.fld_id=b.fld_schedule_id 
-																LEFT JOIN itc_mission_master AS c ON a.fld_mis_id=c.fld_id 
-																LEFT JOIN itc_class_master AS d ON d.fld_id=a.fld_class_id 
+                        $qrymission = $ObjDB->QueryObject("SELECT a.fld_mis_id, CONCAT(a.fld_schedule_name,' / Ind Mission') AS schedulename, a.fld_id AS scheduleid, a.fld_enddate,
+																	CONCAT(c.fld_mis_name,' / Individual Mission ') AS modulename, 18 AS schtype
+																FROM itc_class_indasmission_master AS a
+																LEFT JOIN itc_class_mission_student_mapping AS b ON a.fld_id=b.fld_schedule_id
+																LEFT JOIN itc_mission_master AS c ON a.fld_mis_id=c.fld_id
+																LEFT JOIN itc_class_master AS d ON d.fld_id=a.fld_class_id
 																LEFT JOIN itc_license_track AS e ON a.fld_license_id=e.fld_license_id
-																WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND c.fld_delstatus='0' AND d.fld_lock='0' 
-																	AND DATE(a.fld_startdate)<=DATE(NOW()) AND a.fld_enddate>='".date("Y-m-d")."' 
-																	AND e.fld_school_id='".$schoolid."' 
-																	AND e.fld_start_date<='".date("Y-m-d")."' AND e.fld_end_date >='".date("Y-m-d")."' 
-																	AND b.fld_flag='1' AND a.fld_startdate<='".date("Y-m-d")."'  
+																WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND c.fld_delstatus='0' AND d.fld_lock='0'
+																	AND DATE(a.fld_startdate)<=DATE(NOW()) AND a.fld_enddate>='".date("Y-m-d")."'
+																	AND e.fld_school_id='".$schoolid."'
+																	AND e.fld_start_date<='".date("Y-m-d")."' AND e.fld_end_date >='".date("Y-m-d")."'
+																	AND b.fld_flag='1' AND a.fld_startdate<='".date("Y-m-d")."'
                                                                     AND (b.fld_student_id = '".$uid."' OR b.fld_student_id = '".$uid1."') GROUP BY scheduleid");
 						$sigmathcount = 0;
 						$sciencecount = $qrydyadtriad->num_rows;
@@ -717,10 +717,10 @@ UNION ALL
 							while($rowsigmath=$qrysigmath->fetch_assoc()){
 								extract($rowsigmath);
 
-								$currentqry = $ObjDB->QueryObject("SELECT fld_id AS maxid, fld_lesson_id AS lessonid, fld_type AS type, fld_status AS status 
-																	FROM itc_assignment_sigmath_master 
-																	WHERE fld_schedule_id='".$sid."' AND fld_student_id='".$uid."' AND fld_status=0 AND fld_delstatus='0' 
-																	ORDER BY fld_id DESC 
+								$currentqry = $ObjDB->QueryObject("SELECT fld_id AS maxid, fld_lesson_id AS lessonid, fld_type AS type, fld_status AS status
+																	FROM itc_assignment_sigmath_master
+																	WHERE fld_schedule_id='".$sid."' AND fld_student_id='".$uid."' AND fld_status=0 AND fld_delstatus='0'
+																	ORDER BY fld_id DESC
 																	LIMIT 0,1");
 								$flag=0;
 								$completed=0;
@@ -729,10 +729,10 @@ UNION ALL
 									extract($current_res);
 
 									//check is the lesson is abailable or not
-									$chklesson = $ObjDB->SelectSingleValueInt("SELECT COUNT(a.fld_id) 
-																				FROM itc_class_sigmath_lesson_mapping AS a 
-																				LEFT JOIN itc_ipl_master AS b ON a.fld_lesson_id=b.fld_id 
-																				WHERE a.fld_sigmath_id='".$sid."' AND a.fld_lesson_id='".$lessonid."' AND a.fld_flag='1' 
+									$chklesson = $ObjDB->SelectSingleValueInt("SELECT COUNT(a.fld_id)
+																				FROM itc_class_sigmath_lesson_mapping AS a
+																				LEFT JOIN itc_ipl_master AS b ON a.fld_lesson_id=b.fld_id
+																				WHERE a.fld_sigmath_id='".$sid."' AND a.fld_lesson_id='".$lessonid."' AND a.fld_flag='1'
 																					AND b.fld_access='1' AND b.fld_delstatus='0'");
 
 									if($chklesson>0){
@@ -741,8 +741,8 @@ UNION ALL
 											$function = "fn_diagnosticstart(".$sid.",".$lessonid.",1)";
 										}
 										else if($type==2){
-											$orientationid = $ObjDB->SelectSingleValueInt("SELECT fld_id 
-																							FROM itc_ipl_master 
+											$orientationid = $ObjDB->SelectSingleValueInt("SELECT fld_id
+																							FROM itc_ipl_master
 																							WHERE fld_lesson_type='2' AND fld_delstatus='0' AND fld_id='".$lessonid."'");
 											if($orientationid==0 || $orientationid=='')
 												$function = "fn_lessonplay(".$sid.",".$lessonid.",".$maxid.")";
@@ -769,22 +769,22 @@ UNION ALL
 
 								if($flag!=1){
 									//get the lesson with out previously attend
-									$orientationid = $ObjDB->SelectSingleValueInt("SELECT fld_id 
-																					FROM itc_ipl_master 
+									$orientationid = $ObjDB->SelectSingleValueInt("SELECT fld_id
+																					FROM itc_ipl_master
 																					WHERE fld_lesson_type='2' AND fld_delstatus='0'");
 									if($orientationid=='') $orientationid=0;
-									$lessonid = $ObjDB->SelectSingleValueInt("SELECT fld_lesson_id FROM itc_class_sigmath_lesson_mapping 
-												 WHERE fld_sigmath_id='".$sid."' AND fld_flag='1' AND ".$orientationid." NOT IN(SELECT fld_lesson_id FROM itc_assignment_sigmath_master 
-												 WHERE (fld_status=1 or fld_status=2) AND fld_student_id='".$uid."' AND fld_schedule_id='".$sid."' AND fld_test_type='1' 
+									$lessonid = $ObjDB->SelectSingleValueInt("SELECT fld_lesson_id FROM itc_class_sigmath_lesson_mapping
+												 WHERE fld_sigmath_id='".$sid."' AND fld_flag='1' AND ".$orientationid." NOT IN(SELECT fld_lesson_id FROM itc_assignment_sigmath_master
+												 WHERE (fld_status=1 or fld_status=2) AND fld_student_id='".$uid."' AND fld_schedule_id='".$sid."' AND fld_test_type='1'
 												 AND fld_delstatus='0' ) AND fld_lesson_id='".$orientationid."'");
 
 									$function = "fn_lessonplay(".$sid.",".$lessonid.",1,1)";
 									if($lessonid==0 || $lessonid=='')
 									{
-										$lessonid = $ObjDB->SelectSingleValueInt("SELECT fld_lesson_id 
-													 FROM itc_class_sigmath_lesson_mapping 
-													 WHERE fld_sigmath_id='".$sid."' AND fld_flag='1' AND fld_lesson_id NOT IN(SELECT fld_lesson_id FROM itc_assignment_sigmath_master 
-													 WHERE (fld_status=1 or fld_status=2) AND fld_student_id='".$uid."' AND fld_schedule_id='".$sid."' AND fld_test_type='1' 
+										$lessonid = $ObjDB->SelectSingleValueInt("SELECT fld_lesson_id
+													 FROM itc_class_sigmath_lesson_mapping
+													 WHERE fld_sigmath_id='".$sid."' AND fld_flag='1' AND fld_lesson_id NOT IN(SELECT fld_lesson_id FROM itc_assignment_sigmath_master
+													 WHERE (fld_status=1 or fld_status=2) AND fld_student_id='".$uid."' AND fld_schedule_id='".$sid."' AND fld_test_type='1'
 													 AND fld_delstatus='0')
 													 ORDER BY fld_order LIMIT 0,1");
 
@@ -795,8 +795,8 @@ UNION ALL
 									}
 								}
 								$schedulenames = $sname;
-								$assnames = $ObjDB->SelectSingleValue("SELECT fld_ipl_name 
-																		FROM itc_ipl_master 
+								$assnames = $ObjDB->SelectSingleValue("SELECT fld_ipl_name
+																		FROM itc_ipl_master
 																		WHERE fld_id='".$lessonid."'");
 								$duedates = $edate;
 								$callfunction = "removesections('#assignment'); showpageswithpostmethod('assignment-sigmath-test','assignment/sigmath/assignment-sigmath-test.php','id=".$sid."~".$lessonid."~1');";
@@ -812,10 +812,10 @@ UNION ALL
 
                                                                 $lessonid = $ObjDB->SelectSingleValueInt("SELECT fld_lesson_id FROM itc_class_pdschedule_lesson_mapping AS a
                                                                                                                 LEFT JOIN    itc_class_pdschedule_student_mapping AS b ON a.fld_license_id = b.fld_license_id
-                                                                                                                WHERE  a.fld_flag = '1' AND b.fld_flag = '1' AND b.fld_student_id = '".$uid."' AND b.fld_pdschedule_id='".$sid."' 
+                                                                                                                WHERE  a.fld_flag = '1' AND b.fld_flag = '1' AND b.fld_student_id = '".$uid."' AND b.fld_pdschedule_id='".$sid."'
                                                                                                                 AND a.fld_pdschedule_id='".$sid."' ORDER BY fld_order LIMIT 0,1");
-								$assnames = $ObjDB->SelectSingleValue("SELECT fld_pd_name 
-                                                                                                                FROM itc_pd_master 
+								$assnames = $ObjDB->SelectSingleValue("SELECT fld_pd_name
+                                                                                                                FROM itc_pd_master
                                                                                                                 WHERE fld_id='".$lessonid."'");
 								$duedates = $edate;
                                                                 //echo ("SELECT fld_zip_name FROM itc_pd_version_track WHERE fld_pd_id='".$lessonid."'");
@@ -1054,10 +1054,10 @@ border-top: 1px solid #337ab7;
 
         <div class='row buttons'>
         <?php
-        $qrymenuname=$ObjDB->QueryObject("SELECT a.fld_id, a.fld_menu_name, a.fld_class, a.fld_href, a.fld_hrefid, a.fld_divclass 
-										FROM itc_main_menu AS a 
-										RIGHT JOIN itc_menu_privileges AS b ON a.fld_id=b.fld_menu_id 
-										WHERE b.fld_profile_id='".$sessprofileid."' AND b.fld_access='1' AND a.fld_main_menu_id=0 AND a.fld_delstatus=0 AND b.fld_delstatus=0 
+        $qrymenuname=$ObjDB->QueryObject("SELECT a.fld_id, a.fld_menu_name, a.fld_class, a.fld_href, a.fld_hrefid, a.fld_divclass
+										FROM itc_main_menu AS a
+										RIGHT JOIN itc_menu_privileges AS b ON a.fld_id=b.fld_menu_id
+										WHERE b.fld_profile_id='".$sessprofileid."' AND b.fld_access='1' AND a.fld_main_menu_id=0 AND a.fld_delstatus=0 AND b.fld_delstatus=0
 										ORDER BY a.fld_position ASC");
         while($rowmenuname=$qrymenuname->fetch_object())
         {
@@ -1069,23 +1069,23 @@ border-top: 1px solid #337ab7;
 			if($sessmasterprfid == 10){	//Student level users
 				if($trialuser==1){
 					// for trial user student
-					$iplqry = $ObjDB->QueryObject("SELECT b.fld_id AS lessonid, b.fld_ipl_name AS lessonname, fn_shortname(b.fld_ipl_name,1) AS shortname, b.fld_ipl_icon AS lessonicon 
-													FROM itc_license_cul_mapping AS a 
-													LEFT JOIN itc_license_track AS c ON a.fld_license_id = c.fld_license_id 
-													RIGHT JOIN itc_ipl_master AS b ON a.fld_lesson_id=b.fld_id 
-													WHERE c.fld_district_id='".$districtid."' AND c.fld_school_id='".$schoolid."' AND c.fld_user_id='".$indid."' AND c.fld_delstatus='0' 
-														AND '".date("Y-m-d")."' BETWEEN c.fld_start_date AND c.fld_end_date AND a.fld_active='1' AND b.fld_delstatus='0' 
+					$iplqry = $ObjDB->QueryObject("SELECT b.fld_id AS lessonid, b.fld_ipl_name AS lessonname, fn_shortname(b.fld_ipl_name,1) AS shortname, b.fld_ipl_icon AS lessonicon
+													FROM itc_license_cul_mapping AS a
+													LEFT JOIN itc_license_track AS c ON a.fld_license_id = c.fld_license_id
+													RIGHT JOIN itc_ipl_master AS b ON a.fld_lesson_id=b.fld_id
+													WHERE c.fld_district_id='".$districtid."' AND c.fld_school_id='".$schoolid."' AND c.fld_user_id='".$indid."' AND c.fld_delstatus='0'
+														AND '".date("Y-m-d")."' BETWEEN c.fld_start_date AND c.fld_end_date AND a.fld_active='1' AND b.fld_delstatus='0'
 													GROUP BY b.fld_id");
 				}
 				else {
 					// Lesson listed based on the class assigned for the student and availability of the license time period
-					$iplqry = $ObjDB->QueryObject("SELECT b.fld_id AS lessonid, b.fld_ipl_name AS lessonname, fn_shortname(b.fld_ipl_name,1) AS shortname, b.fld_ipl_icon AS lessonicon 
-												FROM itc_class_sigmath_student_mapping AS a 
-												LEFT JOIN itc_class_sigmath_lesson_mapping AS c ON a.fld_sigmath_id=c.fld_sigmath_id 
-												LEFT JOIN itc_ipl_master AS b ON b.fld_id=c.fld_lesson_id 
-												LEFT JOIN itc_class_sigmath_master AS d ON d.fld_id=c.fld_sigmath_id 
-												LEFT JOIN itc_class_master AS e ON e.fld_id=d.fld_class_id 
-												WHERE a.fld_student_id='".$uid."' AND a.fld_flag='1' AND c.fld_flag='1' AND b.fld_delstatus='0' AND b.fld_access='1' AND d.fld_delstatus='0' AND e.fld_delstatus='0' AND c.fld_license_id IN (SELECT fld_license_id FROM itc_license_track WHERE fld_school_id='".$schoolid."' AND fld_user_id='".$indid."' AND fld_start_date<='".date("Y-m-d")."' AND fld_end_date >='".date("Y-m-d")."') 
+					$iplqry = $ObjDB->QueryObject("SELECT b.fld_id AS lessonid, b.fld_ipl_name AS lessonname, fn_shortname(b.fld_ipl_name,1) AS shortname, b.fld_ipl_icon AS lessonicon
+												FROM itc_class_sigmath_student_mapping AS a
+												LEFT JOIN itc_class_sigmath_lesson_mapping AS c ON a.fld_sigmath_id=c.fld_sigmath_id
+												LEFT JOIN itc_ipl_master AS b ON b.fld_id=c.fld_lesson_id
+												LEFT JOIN itc_class_sigmath_master AS d ON d.fld_id=c.fld_sigmath_id
+												LEFT JOIN itc_class_master AS e ON e.fld_id=d.fld_class_id
+												WHERE a.fld_student_id='".$uid."' AND a.fld_flag='1' AND c.fld_flag='1' AND b.fld_delstatus='0' AND b.fld_access='1' AND d.fld_delstatus='0' AND e.fld_delstatus='0' AND c.fld_license_id IN (SELECT fld_license_id FROM itc_license_track WHERE fld_school_id='".$schoolid."' AND fld_user_id='".$indid."' AND fld_start_date<='".date("Y-m-d")."' AND fld_end_date >='".date("Y-m-d")."')
 												GROUP BY b.fld_id");
 				}
 
@@ -1112,20 +1112,20 @@ border-top: 1px solid #337ab7;
 			$divclass=$rowmenuname->fld_divclass;
 
                         if($sessmasterprfid == '10'){
-                            $moduleqry = $ObjDB->QueryObject("SELECT w.* FROM (SELECT b.fld_module_id FROM itc_class_rotation_schedule_mastertemp AS a LEFT JOIN itc_class_rotation_schedulegriddet AS b ON a.fld_id=b.fld_schedule_id LEFT JOIN itc_class_rotation_scheduledate as g on b.fld_schedule_id=g.fld_schedule_id and b.fld_rotation=g.fld_rotation LEFT JOIN itc_module_master AS c ON b.fld_module_id=c.fld_id LEFT JOIN itc_class_master AS d on d.fld_id=a.fld_class_id WHERE a.fld_delstatus='0' AND b.fld_type='1' AND d.fld_delstatus='0' AND d.fld_lock='0' AND a.fld_moduletype='1' AND b.fld_student_id='".$uid."' AND a.fld_moduletype='1' AND a.fld_license_id IN (SELECT fld_license_id FROM itc_license_track WHERE fld_school_id='".$schoolid."') AND b.fld_flag='1' 
-                                                                UNION ALL   SELECT b.fld_module_id FROM itc_class_rotation_schedule_mastertemp AS a LEFT JOIN itc_class_rotation_schedulegriddet AS b ON a.fld_id=b.fld_schedule_id LEFT JOIN itc_class_rotation_scheduledate as g on b.fld_schedule_id=g.fld_schedule_id and b.fld_rotation=g.fld_rotation LEFT JOIN itc_mathmodule_master AS c ON b.fld_module_id=c.fld_id LEFT JOIN itc_class_master AS d on d.fld_id=a.fld_class_id WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND b.fld_type='2' AND d.fld_lock='0' AND a.fld_moduletype='2' AND b.fld_student_id='".$uid."' AND a.fld_moduletype='2' AND a.fld_license_id IN (SELECT fld_license_id FROM itc_license_track WHERE fld_school_id='".$schoolid."' AND fld_user_id='".$indid."') AND b.fld_flag='1' 
+                            $moduleqry = $ObjDB->QueryObject("SELECT w.* FROM (SELECT b.fld_module_id FROM itc_class_rotation_schedule_mastertemp AS a LEFT JOIN itc_class_rotation_schedulegriddet AS b ON a.fld_id=b.fld_schedule_id LEFT JOIN itc_class_rotation_scheduledate as g on b.fld_schedule_id=g.fld_schedule_id and b.fld_rotation=g.fld_rotation LEFT JOIN itc_module_master AS c ON b.fld_module_id=c.fld_id LEFT JOIN itc_class_master AS d on d.fld_id=a.fld_class_id WHERE a.fld_delstatus='0' AND b.fld_type='1' AND d.fld_delstatus='0' AND d.fld_lock='0' AND a.fld_moduletype='1' AND b.fld_student_id='".$uid."' AND a.fld_moduletype='1' AND a.fld_license_id IN (SELECT fld_license_id FROM itc_license_track WHERE fld_school_id='".$schoolid."') AND b.fld_flag='1'
+                                                                UNION ALL   SELECT b.fld_module_id FROM itc_class_rotation_schedule_mastertemp AS a LEFT JOIN itc_class_rotation_schedulegriddet AS b ON a.fld_id=b.fld_schedule_id LEFT JOIN itc_class_rotation_scheduledate as g on b.fld_schedule_id=g.fld_schedule_id and b.fld_rotation=g.fld_rotation LEFT JOIN itc_mathmodule_master AS c ON b.fld_module_id=c.fld_id LEFT JOIN itc_class_master AS d on d.fld_id=a.fld_class_id WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND b.fld_type='2' AND d.fld_lock='0' AND a.fld_moduletype='2' AND b.fld_student_id='".$uid."' AND a.fld_moduletype='2' AND a.fld_license_id IN (SELECT fld_license_id FROM itc_license_track WHERE fld_school_id='".$schoolid."' AND fld_user_id='".$indid."') AND b.fld_flag='1'
                                                                 UNION ALL   SELECT a.fld_module_id FROM itc_class_indassesment_master AS a LEFT JOIN itc_class_indassesment_student_mapping AS b ON a.fld_id=b.fld_schedule_id LEFT JOIN itc_module_master AS c ON a.fld_module_id=c.fld_id LEFT JOIN itc_class_master AS d on d.fld_id=a.fld_class_id WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' AND a.fld_moduletype='1' AND b.fld_student_id='".$uid."' AND a.fld_license_id IN (SELECT fld_license_id FROM itc_license_track WHERE fld_school_id='".$schoolid."' AND fld_user_id='".$indid."') AND b.fld_flag='1'
                                                                 UNION ALL   SELECT a.fld_module_id FROM itc_class_indassesment_master AS a LEFT JOIN itc_class_indassesment_student_mapping AS b ON a.fld_id=b.fld_schedule_id LEFT JOIN itc_mathmodule_master AS c ON a.fld_module_id=c.fld_id LEFT JOIN itc_class_master AS d on d.fld_id=a.fld_class_id WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' AND a.fld_moduletype='2' AND b.fld_student_id='".$uid."' AND a.fld_license_id IN (SELECT fld_license_id FROM itc_license_track WHERE fld_school_id='".$schoolid."' AND fld_user_id='".$indid."') AND b.fld_flag='1'
                                                                 UNION ALL   SELECT b.fld_module_id FROM itc_class_rotation_modexpschedule_mastertemp AS a LEFT JOIN itc_class_rotation_modexpschedulegriddet AS b ON a.fld_id=b.fld_schedule_id LEFT JOIN itc_class_rotation_modexpscheduledate as g on b.fld_schedule_id=g.fld_schedule_id and b.fld_rotation=g.fld_rotation LEFT JOIN itc_module_master AS c ON b.fld_module_id=c.fld_id LEFT JOIN itc_class_master AS d on d.fld_id=a.fld_class_id WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' AND b.fld_student_id='".$uid."' AND a.fld_license_id IN (SELECT fld_license_id FROM itc_license_track WHERE fld_school_id='".$schoolid."' AND fld_user_id='".$indid."') AND b.fld_flag='1' AND b.fld_type='1'
-                                                                UNION ALL   SELECT b.fld_module_id FROM `itc_class_dyad_schedulemaster` AS a LEFT JOIN `itc_class_dyad_schedulegriddet` AS b ON a.fld_id=b.fld_schedule_id LEFT JOIN itc_module_master AS c ON b.fld_module_id=c.fld_id LEFT JOIN itc_class_master AS d on d.fld_id=a.fld_class_id LEFT JOIN itc_class_dyad_schedule_studentmapping AS e ON (e.fld_schedule_id=b.fld_schedule_id AND e.fld_student_id='".$uid."') WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' AND (b.fld_student_id='".$uid."' OR b.fld_rotation='0') AND e.fld_flag='1' AND a.fld_license_id IN (SELECT fld_license_id FROM itc_license_track WHERE fld_school_id='".$schoolid."' AND fld_user_id='".$indid."') AND b.fld_flag='1'		
+                                                                UNION ALL   SELECT b.fld_module_id FROM `itc_class_dyad_schedulemaster` AS a LEFT JOIN `itc_class_dyad_schedulegriddet` AS b ON a.fld_id=b.fld_schedule_id LEFT JOIN itc_module_master AS c ON b.fld_module_id=c.fld_id LEFT JOIN itc_class_master AS d on d.fld_id=a.fld_class_id LEFT JOIN itc_class_dyad_schedule_studentmapping AS e ON (e.fld_schedule_id=b.fld_schedule_id AND e.fld_student_id='".$uid."') WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' AND (b.fld_student_id='".$uid."' OR b.fld_rotation='0') AND e.fld_flag='1' AND a.fld_license_id IN (SELECT fld_license_id FROM itc_license_track WHERE fld_school_id='".$schoolid."' AND fld_user_id='".$indid."') AND b.fld_flag='1'
                                                                 UNION ALL   SELECT a.fld_module_id FROM `itc_class_indassesment_master` AS a LEFT JOIN `itc_class_indassesment_student_mapping` AS b ON a.fld_id=b.fld_schedule_id LEFT JOIN itc_module_master AS c ON a.fld_module_id=c.fld_id LEFT JOIN itc_class_master AS d on d.fld_id=a.fld_class_id WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' AND a.fld_moduletype='7' AND b.fld_student_id='".$uid."' AND a.fld_license_id IN (SELECT fld_license_id FROM itc_license_track WHERE fld_school_id='".$schoolid."' AND fld_user_id='".$indid."' AND fld_start_date<='".date("Y-m-d")."')
                                                                 UNION ALL   SELECT b.fld_module_id FROM `itc_class_triad_schedulemaster` AS a LEFT JOIN `itc_class_triad_schedulegriddet` AS b ON a.fld_id=b.fld_schedule_id LEFT JOIN itc_module_master AS c ON b.fld_module_id=c.fld_id LEFT JOIN itc_class_master AS d on d.fld_id=a.fld_class_id LEFT JOIN itc_class_triad_schedule_studentmapping AS e ON (e.fld_schedule_id=b.fld_schedule_id AND e.fld_student_id='".$uid."') WHERE a.fld_delstatus='0' AND d.fld_delstatus='0' AND d.fld_lock='0' AND (b.fld_student_id='".$uid."' OR b.fld_rotation='0') AND e.fld_flag='1' AND a.fld_license_id IN (SELECT fld_license_id FROM itc_license_track WHERE fld_school_id='".$schoolid."' AND fld_user_id='".$indid."' ) AND b.fld_flag='1') AS w
                                                                 UNION ALL   SELECT a.fld_id FROM itc_class_indasexpedition_master AS a LEFT JOIN itc_class_student_mapping as b on b.fld_class_id=a.fld_class_id WHERE b.fld_student_id='".$uid."' AND b.fld_flag = 1 AND a.fld_lock = 0 AND a.fld_delstatus = 0 AND a.fld_flag = 1");
                             $iplcnt = $iplqry->num_rows;
-                            $modcnt = $moduleqry->num_rows;        
+                            $modcnt = $moduleqry->num_rows;
                             if(($menuid!=64 OR $menuid==64) AND ($iplcnt > 0 OR $modcnt > 0) OR $menuid != 1)
                             {
-                        
+
                                 ?>
                                     <a class='<?php echo $class; if(($uid1!='' && $menuid!=46 && $menuid!=47 && $menuid!=4) or ($trialuser =='1' && $menuid=='46') or ($trialuser =='1' && $menuid=='47')) { echo $class." dim"; }?>' href='<?php echo $href;?>' id='<?php echo $id;?>' name='<?php echo $menuid;?>'>
                                     <div class='<?php echo $divclass;?>'></div>
@@ -1146,7 +1146,7 @@ border-top: 1px solid #337ab7;
 			<?php
         }
         }
-                        
+
         }
                if($sessmasterprfid==2){
 		?>
@@ -1154,16 +1154,16 @@ border-top: 1px solid #337ab7;
                 <div class='icon-synergy-repository'></div>
                 <div class='onBtn'>Space Usage</div>
 			</a>
-        	<?php		
+        	<?php
 		}
 
 		if($sessmasterprfid != 10 AND $itcteacher==1){
 		?>
-        	<a class='skip btn main' href='http://synergyitchelp.pitsco.com/' onClick="window.open('http://synergyitchelp.pitsco.com/','_blank');" target="_blank" >
+        	<a class='skip btn main' href='http://synergyitchelp.nolaedu.net/' onClick="window.open('http://synergyitchelp.nolaedu.net/','_blank');" target="_blank" >
                 <div class='icon-synergy-help-a'></div>
                 <div class='onBtn'>Help</div>
 			</a>
-        	<?php		
+        	<?php
 		}
         ?>
         </div>
@@ -1172,7 +1172,7 @@ border-top: 1px solid #337ab7;
 <script>
 	var d = new Date();
 	  	var hours = d.getHours();
-		
+
 		if(hours > 0 && hours < 12)
 		{
 			//$('.dashMessage').html('Good Morning');

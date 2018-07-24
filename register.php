@@ -1,7 +1,7 @@
 <?php
 	@include('config.php');
     @include("table.class.php");
-	
+
 	$enc_userid = (isset($_REQUEST['e'])) ? $_REQUEST['e'] : '';
 	$flag = 1;
 	$photo = "img/no-image.png";
@@ -9,23 +9,23 @@
 	$headtitle = '';
 	$fname='';
 	$lname='';
-	if($enc_userid != '' and $enc_userid != 'd9a22d7a8178d5b42a8750123cbfe5b1') 
+	if($enc_userid != '' and $enc_userid != 'd9a22d7a8178d5b42a8750123cbfe5b1')
 	{
 
-		$checkstatus = $ObjDB->SelectSingleValueInt("SELECT COUNT(fld_id) 
-													FROM itc_user_master 
-													WHERE MD5(fld_id)='".$enc_userid."' AND fld_activestatus='0' AND fld_delstatus='0' "); 
+		$checkstatus = $ObjDB->SelectSingleValueInt("SELECT COUNT(fld_id)
+													FROM itc_user_master
+													WHERE MD5(fld_id)='".$enc_userid."' AND fld_activestatus='0' AND fld_delstatus='0' ");
 		if($checkstatus > 0)
 		 {
 
 			$flag = 1;
 
-			$getdetails = $ObjDB->QueryObject("SELECT a.fld_id AS id, a.fld_fname AS fname, a.fld_lname AS lname, a.fld_email AS email, 
+			$getdetails = $ObjDB->QueryObject("SELECT a.fld_id AS id, a.fld_fname AS fname, a.fld_lname AS lname, a.fld_email AS email,
 												a.fld_profile_id AS profileid, a.fld_role_id AS roleid,
 												a.fld_district_id AS districtid, a.fld_school_id AS schoolid,
-												a.fld_profile_pic AS profilepic,b.fld_prf_main_id AS profileid 
-											FROM itc_user_master AS a 
-											LEFT JOIN itc_profile_master AS b ON b.fld_id=a.fld_profile_id WHERE MD5(a.fld_id)='".$enc_userid."'"); 
+												a.fld_profile_pic AS profilepic,b.fld_prf_main_id AS profileid
+											FROM itc_user_master AS a
+											LEFT JOIN itc_profile_master AS b ON b.fld_id=a.fld_profile_id WHERE MD5(a.fld_id)='".$enc_userid."'");
 
 			$rowgetdet = $getdetails->fetch_assoc();
 			extract($rowgetdet);
@@ -35,11 +35,11 @@
 			$flag = 0;
 		}
 	}
-	else if($enc_userid == 'd9a22d7a8178d5b42a8750123cbfe5b1') 
+	else if($enc_userid == 'd9a22d7a8178d5b42a8750123cbfe5b1')
 	{
 		$flag = 2;
 	}
-	else 
+	else
 	{
 		header("Location: login.php");
 		exit();
@@ -49,17 +49,17 @@
     <html>
     <head>
     <meta charset="utf-8">
-    <title>Synergy ITC | PITSCO Education</title>
+    <title>Synergy ITC | NOLA Education</title>
     <link href="css/register.window.css" rel="stylesheet" type="text/css"  />
     <link href='jquery-ui/css/itc/jquery-ui-1.9.2.custom.min.css' type="text/css" rel='stylesheet'>
     <link href='css/zebra_dialog.css' type="text/css" rel='stylesheet' />
     <link rel="stylesheet" href="css/strength.css">
-    
+
     <script language="javascript" type="text/javascript" src="jquery-ui/js/jquery-1.8.3.min.js"></script>
     <script language="javascript" type="text/javascript" src='jquery-ui/js/jquery-ui-1.9.2.custom.min.js'></script>
     <script language="javascript" type="text/javascript" src="js/jquery.validate.js"></script>
     <script language="javascript" type="text/javascript" src="js/jquery.validate.additional.js"></script>
-    <script language="javascript" type="text/javascript" src="js/jquery.placeholder.js"></script> 
+    <script language="javascript" type="text/javascript" src="js/jquery.placeholder.js"></script>
     <script language="javascript" type="text/javascript" src="js/register.js"></script>
     <script language="javascript" type="text/javascript" src="js/zebra_dialog.js"></script>
         <script language="javascript" type="text/javascript" src="js/strength.js"></script>
@@ -83,7 +83,7 @@
         <form id="frmregister" name="frmregister">
         	<div class="logonBaseBox" style="text-align: left;">
                 <div class="logonLogo"><img src="img/synergy.logo.svg" alt="PITSCO" /></div>
-                
+
                 <div class="smallDialogHeadline">Activate Your Synergy ITC Account</div>
                 <div class="smallHeadline">Please fill in the fields below to activate your account.<br>
                     <i style="display: block; margin-top:12px; color:#C43; opacity: 0.9; font-size: 11px; letter-spacing:-0.1px;"><?= $password_fails_specification_error_message ?></i></div>
@@ -114,12 +114,12 @@
 	                Re-enter Password:
                     <input type="password" id="txtrpassword2" name="txtrpassword2" placeholder="Re-enter password" required="" tabindex="5" class="logonInput txtpassword2" maxlength="14"  />
                 </div>
-                
+
                 <div class="logonSubmitBtn">
                     <input tabindex="6" type="submit" class="logonSubmit" id="btnsignin" name="btnsignin" value="Activate my Account" />
                     <input type="hidden" id="hidusrid" name="hidusrid" value="<?php echo $enc_userid; ?>"  />
                 </div>
-                
+
             </div>
         </form>
         <script>

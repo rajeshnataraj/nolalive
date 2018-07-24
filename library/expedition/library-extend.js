@@ -12,12 +12,12 @@
 
 var timestamp=new Date().getTime();
 
-document.domain = 'pitsco.com';
+document.domain = 'nolaedu.net';
 
 /****** this function to rename or copy the  material extent content name******/
 
 function fn_showextendform(id,extid,type){
- 
+
     $.fancybox.showActivity();
      $.ajax({
             type	: "POST",
@@ -29,7 +29,7 @@ function fn_showextendform(id,extid,type){
                     $.fancybox.resize();
             }
             });
-	
+
 	return false;
 }
 
@@ -111,10 +111,10 @@ $.ajax({
                             cache   : false,
                             url     : "library/expedition/library-extend-ajax.php",
                             data:"oper=deleteextend&_="+timestamp+"&ex_id="+id+"&schflag=0",
-                            success: function(data) {                              
+                            success: function(data) {
                                 var response=trim(data);
                                 if(response=='fail')
-                                {                                     
+                                {
                                 }
                                 else{
                                     $("#exp-extend-"+id).remove();
@@ -148,7 +148,7 @@ $.ajax({
 /****** this function to show the popup to get extent content text form for material ******/
 
 function fn_showextendpopform(id,extid,type){
-  
+
       $.fancybox.showActivity();
       $.ajax({
                 type	: "POST",
@@ -160,7 +160,7 @@ function fn_showextendpopform(id,extid,type){
                         $.fancybox.resize();
                 }
 		});
-	
+
 		return false;
 }
 
@@ -168,22 +168,22 @@ function fn_showextendpopform(id,extid,type){
 
 function fn_saveextendexpform(id,extid,type)
 {
-    	
+
 	if($("#expextendforms").validate().form())
         {
-            var extendtxt=$('#txtextensionname').val();	
+            var extendtxt=$('#txtextensionname').val();
             $.ajax({
 			type	: "POST",
 			cache	: false,
 			url	: "library/expedition/library-extend-ajax.php",
 			data:"oper=saveextendtxt&_="+timestamp+"&materialid="+id+"&extendtxt="+escapestr(extendtxt)+"&extid="+extid+"&type="+type,
-                     
+
 			success: function(data) {
-                           
-          
+
+
 			  if(type=='new' || type=='copy')
 			  {
-                              
+
 				var response=trim(data);
 				var output=response.split('~');
 				var status=output[0];
@@ -191,14 +191,14 @@ function fn_saveextendexpform(id,extid,type)
 				var extendcreatename=output[2];
 				var extenduid=output[3];
 				var enexpid=output[4];
-				var expid=output[5];				
+				var expid=output[5];
 				var userid=output[6];
                                 var access=output[7];
-				
+
 				if(status=="sucess")
 				{
-                                    closeloadingalert();	
-                                    showloadingalert("Saved Sucessfully."); 
+                                    closeloadingalert();
+                                    showloadingalert("Saved Sucessfully.");
                                     setTimeout("closeloadingalert();",2000);
 				  fn_cancelextendform();
 				  $('#exp-extend-0').remove();
@@ -215,14 +215,14 @@ function fn_saveextendexpform(id,extid,type)
 				 fn_cancelextendform();
 				 $('#extendtxt-'+extid).html(extendtxt);
 			 }
-			 
+
 		 }
-		
+
 		});
         }
-       
-	
-	
+
+
+
 }
 
 
@@ -235,44 +235,44 @@ function fn_savematerials(flag,expid,extendid,tempflag,uid)
             var taskname = $("#taskname").val();
             var material = $("#materialname").val();
             var expnmaterialid = $("#expmat_id").val();
-            
-           
+
+
             $.ajax({
                 type	: "POST",
                 cache	: false,
                 url	: "library/expedition/library-extend-ajax.php",
                 data:"oper=saveexpmaterials&_="+timestamp+"&destnname="+destnname+"&taskname="+taskname+"&material="+material+"&extendid="+extendid+"&expednname="+expid+"&expnmaterialid="+expnmaterialid,
                 beforeSend: function(){
-                        showloadingalert("Loading, please wait.");	
+                        showloadingalert("Loading, please wait.");
                 },
                 success: function(data) {
                 if(data == "sucess")
                    {
-                     closeloadingalert();	
-                     showloadingalert("Saved Sucessfully."); 
+                     closeloadingalert();
+                     showloadingalert("Saved Sucessfully.");
                      setTimeout("closeloadingalert();",2000);
                      var val = expid+","+extendid+","+uid;
-                     setTimeout("removesections('#library-expedition-materiallist');",500);	
+                     setTimeout("removesections('#library-expedition-materiallist');",500);
                      setTimeout('showpages("library-expedition-viewmateriallist","library/expedition/library-expedition-viewmateriallist.php?id='+val+'");',500);
                    }
                 }
             });
-			
+
          }
-		
+
     }
-    
+
 }
 function fn_closematerial(expid,extendid,uid)  {
-    closeloadingalert();	
-    showloadingalert("Closed Sucessfully."); 
+    closeloadingalert();
+    showloadingalert("Closed Sucessfully.");
     setTimeout("closeloadingalert();",2000);
     var val = expid+","+extendid+","+uid;
-    setTimeout("removesections('#library-expedition-materiallist');",500);	
+    setTimeout("removesections('#library-expedition-materiallist');",500);
     setTimeout('showpages("library-expedition-viewmateriallist","library/expedition/library-expedition-viewmateriallist.php?id='+val+'");',500);
 }
 function fn_loadtaskbox(destnid,extendid)
-{  
+{
      $.ajax({
                 type	: "POST",
                 cache	: false,
@@ -292,7 +292,7 @@ function fn_loadtmaterialbox(taskid,destnid,extndid)
                 url	: "library/expedition/library-extend-ajax.php",
                 data:"oper=savemateriallist&_="+timestamp+"&taskid="+taskid+"&destnid="+destnid+"&extndid="+extndid,
 
-                success: function(data) { 
+                success: function(data) {
                    $('#materialselection').html(data);
                   ;
                 }
@@ -304,14 +304,14 @@ function fn_editexpmaterial(expmatid)
     $.ajax({
         type: 'post',
         url: 'library/expedition/library-extend-ajax.php',
-        data: dataparam,		
-        beforeSend: function(){	
+        data: dataparam,
+        beforeSend: function(){
                 showloadingalert("Loading, please wait.");
         },
-        success:function(ajaxdata) {           
+        success:function(ajaxdata) {
                 closeloadingalert();
                 var response=trim(ajaxdata);
-		var data=response.split('~');               
+		var data=response.split('~');
                 $('#materialformdet').show();
                 $('#destn_name').html(data[0]);
                 $('#destnname').val(data[1]);
@@ -320,7 +320,7 @@ function fn_editexpmaterial(expmatid)
                 $('#material_name').html(data[4]);
                 $('#materialname').val(data[5]);
                 $('input[name=expmat_id]').val(data[6]);
-                
+
         }
     });
 }
@@ -330,7 +330,7 @@ function fn_deleteexpmaterial(expmatid,rowid)  {
     'type':     'confirmation',
     'buttons':  [
             {caption: 'No', callback: function() { }},
-            {caption: 'Yes', callback: function() { 
+            {caption: 'Yes', callback: function() {
 
             var dataparam = "oper=deletedefineexpmaterial&expmatid="+expmatid;
             $.ajax({
@@ -344,10 +344,10 @@ function fn_deleteexpmaterial(expmatid,rowid)  {
                             showloadingalert("Deleted Successfully.");
                              $('.'+rowid).remove();
                             setTimeout("closeloadingalert()",1000);
-             
+
                     }
-            });	
-                       
+            });
+
              }},
                 ]
     });

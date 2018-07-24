@@ -103,7 +103,7 @@ if ($oper == "showdocuments" and $oper != " ") {
             <?php
         }
     }
-    ?>    
+    ?>
                 </div>
             </div>
             <div class="dragAllLink" onclick="fn_movealllistitems('list5', 'list6', 0);"  style="cursor: pointer;cursor:hand;width: 130px;float:right; ">add all documents</div>
@@ -130,7 +130,7 @@ if ($oper == "showdocuments" and $oper != " ") {
         }
     }
     ?>
-                </div>	
+                </div>
             </div>
             <div class="dragAllLink" onclick="fn_movealllistitems('list6', 'list5', 0);"  style="cursor: pointer;cursor:hand;width: 160px;float: right;">remove all documents</div>
         </div>
@@ -156,7 +156,7 @@ if ($oper == "showgrades" and $oper != " ") {
 
     $grdguidqry = $ObjDB->QueryObject("SELECT a.fld_guid AS grdguids, a.fld_grade AS grdnames,fn_shortname(a.fld_grade,1) as shortgrdname,fn_shortname(b.fld_sub_title,1) as shortsubjname,
 										b.fld_sub_title AS subjectname,b.fld_sub_year AS year
-										FROM itc_correlation_rpt_std_grades AS a 
+										FROM itc_correlation_rpt_std_grades AS a
 										left join itc_correlation_doc_subject AS b ON a.fld_sub_id=b.fld_id
 										WHERE a.fld_rpt_data_id='" . $rptid . "' AND a.fld_delstatus='0'");
 
@@ -168,10 +168,10 @@ if ($oper == "showgrades" and $oper != " ") {
     }
 
 
-    $grdqry = $ObjDB->QueryObject("SELECT a.fld_grade_guid AS gguid, a.fld_grade_name AS gradename 
+    $grdqry = $ObjDB->QueryObject("SELECT a.fld_grade_guid AS gguid, a.fld_grade_name AS gradename
 			,fn_shortname(a.fld_grade_name,1) as shortgrdname,fn_shortname(b.fld_sub_title,1) as shortsubjname,
 										b.fld_sub_title AS subjectname,b.fld_sub_year AS year,a.fld_gradeout_flag as gradeoutflag
-										FROM itc_correlation_grades as a 
+										FROM itc_correlation_grades as a
 										left join itc_correlation_doc_subject AS b ON a.fld_sub_id=b.fld_id
 										WHERE b.fld_sub_guid IN (" . $stdid . ")");
 
@@ -296,7 +296,7 @@ if ($oper == "showgrades" and $oper != " ") {
                         }
                     }
                     ?>
-                </div>	
+                </div>
             </div>
             <div class="dragAllLink" onclick="fn_movealllistitems('list8', 'list7', 0);
                             fn_validategrade();"  style="cursor: pointer;cursor:hand;width: 130px;float: right; ">remove all grades</div>
@@ -312,8 +312,8 @@ if ($oper == "checkreportname" and $oper != " ") {
     $rptid = isset($method['rptid']) ? $method['rptid'] : '0';
     $rpttitle = isset($method['txtrpttitle']) ? fnEscapeCheck($method['txtrpttitle']) : '';
 
-    $count = $ObjDB->SelectSingleValueInt("SELECT COUNT(*) 
-											FROM itc_correlation_report_data 
+    $count = $ObjDB->SelectSingleValueInt("SELECT COUNT(*)
+											FROM itc_correlation_report_data
 											WHERE MD5(LCASE(REPLACE(fld_title,' ','')))='" . $rpttitle . "' AND fld_delstatus=0 AND fld_id<>'" . $rptid . "' AND fld_created_by='" . $uid . "'");
     if ($count == 0) {
         echo "true";
@@ -333,24 +333,24 @@ if ($oper == "savestep1" and $oper != " ") {
     $rptsytle = isset($method['rptsytle']) ? $method['rptsytle'] : '';
     $sec = isset($method['sec']) ? $method['sec'] : '';
     $secsep = explode(",", $sec);
-    $selectschool = isset($method['selectschool']) ? $method['selectschool'] : ''; //changes	
+    $selectschool = isset($method['selectschool']) ? $method['selectschool'] : ''; //changes
 
-    $rptchk = $ObjDB->SelectSingleValueInt("SELECT COUNT(*) 
-												FROM itc_correlation_report_data 
+    $rptchk = $ObjDB->SelectSingleValueInt("SELECT COUNT(*)
+												FROM itc_correlation_report_data
 												WHERE MD5(LCASE(REPLACE(fld_title,' ','')))='" . fnEscapeCheck($rpttitle) . "' AND fld_delstatus=0 AND fld_id<>'" . $rptid . "' AND fld_created_by='" . $uid . "'");
 
     if ($rptchk == 0) {
         if ($rptid == 0) {
-            $rptid = $ObjDB->NonQueryWithMaxValue("INSERT INTO itc_correlation_report_data (fld_title, fld_owner_id, fld_prepared_for, fld_prepared_on, fld_report_style, 
-									fld_sec_std_add_summary, fld_sec_bench_add_summary, fld_sec_corr_by_std, fld_sec_corr_by_title, fld_sec_std_not_add,fld_sec_prod_description, 
-									fld_created_by, fld_created_date,fld_step_id,fld_schoolid) 
+            $rptid = $ObjDB->NonQueryWithMaxValue("INSERT INTO itc_correlation_report_data (fld_title, fld_owner_id, fld_prepared_for, fld_prepared_on, fld_report_style,
+									fld_sec_std_add_summary, fld_sec_bench_add_summary, fld_sec_corr_by_std, fld_sec_corr_by_title, fld_sec_std_not_add,fld_sec_prod_description,
+									fld_created_by, fld_created_date,fld_step_id,fld_schoolid)
 								VALUES ('" . $rpttitle . "','" . $ownerid . "','" . $prepfor . "','" . $prepon . "','" . $rptsytle . "','" . $secsep[0] . "','" . $secsep[1] . "','" . $secsep[2] . "',
 									'" . $secsep[3] . "','" . $secsep[4] . "','" . $secsep[5] . "','" . $uid . "','" . date("Y-m-d H:i:s") . "','1','" . $selectschool . "')");
         } else {
-            $ObjDB->NonQuery("UPDATE itc_correlation_report_data SET fld_title='" . $rpttitle . "', fld_owner_id='" . $ownerid . "', fld_prepared_for='" . $prepfor . "', 
-									fld_prepared_on='" . $prepon . "', fld_report_style='" . $rptsytle . "', fld_sec_std_add_summary='" . $secsep[0] . "', 
-									fld_sec_bench_add_summary='" . $secsep[1] . "', fld_sec_corr_by_std='" . $secsep[2] . "', fld_sec_corr_by_title='" . $secsep[3] . "', 
-									fld_sec_std_not_add='" . $secsep[4] . "',fld_sec_prod_description='" . $secsep[5] . "', fld_updated_by='" . $uid . "',fld_schoolid='" . $selectschool . "', fld_updated_date='" . date("Y-m-d H:i:s") . "',fld_step_id='1' 
+            $ObjDB->NonQuery("UPDATE itc_correlation_report_data SET fld_title='" . $rpttitle . "', fld_owner_id='" . $ownerid . "', fld_prepared_for='" . $prepfor . "',
+									fld_prepared_on='" . $prepon . "', fld_report_style='" . $rptsytle . "', fld_sec_std_add_summary='" . $secsep[0] . "',
+									fld_sec_bench_add_summary='" . $secsep[1] . "', fld_sec_corr_by_std='" . $secsep[2] . "', fld_sec_corr_by_title='" . $secsep[3] . "',
+									fld_sec_std_not_add='" . $secsep[4] . "',fld_sec_prod_description='" . $secsep[5] . "', fld_updated_by='" . $uid . "',fld_schoolid='" . $selectschool . "', fld_updated_date='" . date("Y-m-d H:i:s") . "',fld_step_id='1'
 								WHERE fld_id='" . $rptid . "'");
         }
 
@@ -380,14 +380,14 @@ if ($oper == "savestep2" and $oper != " ") {
     // step3 document mapping start
 
     $ObjDB->NonQuery("UPDATE itc_correlation_rpt_doc_mapping
-						 SET fld_flag='0',fld_updateddate='" . date("Y-m-d H:i:s") . "',fld_updatedby='" . $uid . "' 
+						 SET fld_flag='0',fld_updateddate='" . date("Y-m-d H:i:s") . "',fld_updatedby='" . $uid . "'
 						 WHERE fld_cor_id='" . $rptid . "'");
 
     for ($i = 0; $i < sizeof($documentid); $i++) {
 
 
-        $cnt = $ObjDB->SelectSingleValueInt("SELECT fld_id 
-												FROM itc_correlation_rpt_doc_mapping 
+        $cnt = $ObjDB->SelectSingleValueInt("SELECT fld_id
+												FROM itc_correlation_rpt_doc_mapping
 												WHERE fld_cor_id='" . $rptid . "' AND fld_doc_id=" . $documentid[$i] . "");
 
 
@@ -408,7 +408,7 @@ if ($oper == "savestep2" and $oper != " ") {
             }
 
 
-            $ObjDB->NonQuery("INSERT INTO itc_correlation_rpt_doc_mapping(fld_cor_id,fld_doc_name, fld_doc_id,fld_std_body, fld_flag,fld_createddate,fld_createdby) 
+            $ObjDB->NonQuery("INSERT INTO itc_correlation_rpt_doc_mapping(fld_cor_id,fld_doc_name, fld_doc_id,fld_std_body, fld_flag,fld_createddate,fld_createdby)
 																VALUES ('" . $rptid . "','" . $stddocs . "', " . $documentid[$i] . ",'" . $state . "','1','" . date('Y-m-d H:i:s') . "','" . $uid . "')");
         } else {
             $docqry = $ObjDB->QueryObject("SELECT a.fld_doc_title AS documenttitle,b.fld_sub_title AS subjectname,
@@ -424,9 +424,9 @@ if ($oper == "savestep2" and $oper != " ") {
                 $stddocs = $documenttitle . " | " . $subjectname . " (" . $year . ")";
             }
 
-            $ObjDB->NonQuery("UPDATE itc_correlation_rpt_doc_mapping 
+            $ObjDB->NonQuery("UPDATE itc_correlation_rpt_doc_mapping
 								SET fld_flag='1',fld_updateddate='" . date("Y-m-d H:i:s") . "',fld_updatedby='" . $uid . "',
-								fld_doc_name='" . $stddocs . "',fld_std_body='" . $state . "' 
+								fld_doc_name='" . $stddocs . "',fld_std_body='" . $state . "'
 								WHERE fld_cor_id='" . $rptid . "'  AND fld_doc_id=" . $documentid[$i] . " AND fld_id='" . $cnt . "'");
         }
     }
@@ -434,13 +434,13 @@ if ($oper == "savestep2" and $oper != " ") {
 
 
 
-    $ObjDB->NonQuery("UPDATE itc_correlation_report_data 
-						SET fld_std_body='" . $state . "', fld_step_id='2', fld_updated_by='" . $uid . "', 
-						fld_updated_date='" . date("Y-m-d H:i:s") . "' 
+    $ObjDB->NonQuery("UPDATE itc_correlation_report_data
+						SET fld_std_body='" . $state . "', fld_step_id='2', fld_updated_by='" . $uid . "',
+						fld_updated_date='" . date("Y-m-d H:i:s") . "'
 						WHERE fld_id='" . $rptid . "'");
 
-    $ObjDB->NonQuery("UPDATE itc_correlation_rpt_std_grades 
-						SET fld_delstatus=1 
+    $ObjDB->NonQuery("UPDATE itc_correlation_rpt_std_grades
+						SET fld_delstatus=1
 						WHERE fld_rpt_data_id='" . $rptid . "'");
 
 
@@ -450,19 +450,19 @@ if ($oper == "savestep2" and $oper != " ") {
         $gnam = $ObjDB->SelectSingleValue("SELECT fld_grade_name as name FROM itc_correlation_grades
 												WHERE fld_grade_guid='" . $gids[$i] . "'");
 
-        $gchk = $ObjDB->SelectSingleValueInt("SELECT COUNT(*) 
-												FROM itc_correlation_rpt_std_grades 
+        $gchk = $ObjDB->SelectSingleValueInt("SELECT COUNT(*)
+												FROM itc_correlation_rpt_std_grades
 												WHERE fld_rpt_data_id='" . $rptid . "' AND fld_guid='" . $gids[$i] . "'");
 
 
 
 
         if ($gchk == 0) {
-            $ObjDB->NonQuery("INSERT INTO itc_correlation_rpt_std_grades (fld_rpt_data_id,fld_guid,fld_grade) 
+            $ObjDB->NonQuery("INSERT INTO itc_correlation_rpt_std_grades (fld_rpt_data_id,fld_guid,fld_grade)
 								VALUES ('" . $rptid . "','" . $gids[$i] . "','" . $gnam . "')");
         } else {
-            $ObjDB->NonQuery("UPDATE itc_correlation_rpt_std_grades 
-								SET fld_delstatus=0 
+            $ObjDB->NonQuery("UPDATE itc_correlation_rpt_std_grades
+								SET fld_delstatus=0
 								WHERE fld_rpt_data_id='" . $rptid . "' AND fld_guid='" . $gids[$i] . "'");
         }
     }
@@ -471,7 +471,7 @@ if ($oper == "savestep2" and $oper != " ") {
     for ($i = 0; $i < sizeof($documentid); $i++) {
 
 
-        $grdqry = $ObjDB->QueryObject("SELECT fld_sub_id as subid,fld_grade_guid AS gguid, fld_grade_name AS gradename 
+        $grdqry = $ObjDB->QueryObject("SELECT fld_sub_id as subid,fld_grade_guid AS gguid, fld_grade_name AS gradename
 										FROM itc_correlation_grades
 										WHERE fld_sub_id IN (SELECT fld_id FROM itc_correlation_doc_subject WHERE fld_sub_guid=" . $documentid[$i] . ")");
 
@@ -479,7 +479,7 @@ if ($oper == "savestep2" and $oper != " ") {
             while ($grdrow = $grdqry->fetch_assoc()) {
                 extract($grdrow);
 
-                $ObjDB->NonQuery("UPDATE itc_correlation_rpt_std_grades 
+                $ObjDB->NonQuery("UPDATE itc_correlation_rpt_std_grades
 								SET fld_sub_id='" . $subid . "'
 								WHERE fld_rpt_data_id='" . $rptid . "' AND fld_guid='" . $gguid . "'");
             }
@@ -579,7 +579,7 @@ if ($oper == "showproducts" and $oper != " ") {
                 }
             });
         });
-    </script>	
+    </script>
 
 
     <div class="dragndropcol">
@@ -664,7 +664,7 @@ if ($oper == "showproducts" and $oper != " ") {
                 $rptid = isset($method['reportid']) ? $method['reportid'] : '';
 
                 $expids = explode(',', $expeid);
-                ?> 
+                ?>
     <script type="text/javascript" language="javascript">
         $(function () {
             $('#testrailvisible0').slimscroll({
@@ -695,7 +695,7 @@ if ($oper == "showproducts" and $oper != " ") {
             });
 
         });
-    </script>                     
+    </script>
 
     <div class="dragndropcol">
 
@@ -717,10 +717,10 @@ if ($oper == "showproducts" and $oper != " ") {
         $expeditionids = explode('~', $expids[$d]);
 
         $qrydest = $ObjDB->QueryObject("SELECT  a.fld_id AS destid, a.fld_dest_name AS destname, fn_shortname (CONCAT(a.fld_dest_name), 2)AS shortname,1 as desttype
-                                                                FROM itc_exp_destination_master AS a 
-                                                WHERE a.fld_id NOT IN( SELECT b.fld_prd_sys_id FROM itc_correlation_rpt_products AS c   
+                                                                FROM itc_exp_destination_master AS a
+                                                WHERE a.fld_id NOT IN( SELECT b.fld_prd_sys_id FROM itc_correlation_rpt_products AS c
                                                 LEFT JOIN itc_correlation_products AS b ON b.fld_id=c.fld_prd_id
-                                                WHERE c.fld_rpt_data_id='" . $rptid . "' AND c.fld_exptype='1' AND c.fld_delstatus='0') AND a.fld_exp_id='" . $expeditionids[0] . "' 
+                                                WHERE c.fld_rpt_data_id='" . $rptid . "' AND c.fld_exptype='1' AND c.fld_delstatus='0') AND a.fld_exp_id='" . $expeditionids[0] . "'
                                                  AND a.fld_delstatus='0'  ORDER BY a.fld_order");
         if ($qrydest->num_rows > 0) {
             while ($rowsdest = $qrydest->fetch_assoc()) {
@@ -750,7 +750,7 @@ if ($oper == "showproducts" and $oper != " ") {
             </div>
         </div>
         <div class="dragAllLink"  onclick="fn_movealllistitems('list21', 'list22', 0, 0);" style="cursor: pointer;cursor:hand;width:  137px;float: right;">add all destinations</div>
-    </div>        
+    </div>
 
 
                 <?php
@@ -764,7 +764,7 @@ if ($oper == "showproducts" and $oper != " ") {
 
                 $selectproducts = isset($method['selecttasks']) ? $method['selecttasks'] : 0;
                 $selectproducts = explode(',', $selectproducts);
-                ?> 
+                ?>
     <script type="text/javascript" language="javascript">
         $(function () {
             $('#testrailvisible2').slimscroll({
@@ -793,7 +793,7 @@ if ($oper == "showproducts" and $oper != " ") {
             });
 
         });
-    </script>  
+    </script>
 
 
     <div class="dragndropcol">
@@ -811,8 +811,8 @@ if ($oper == "showproducts" and $oper != " ") {
     <?php
     for ($i = 0; $i < sizeof($destid); $i++) {
         $qrystudent = $ObjDB->QueryObject("SELECT a.fld_id AS taskid, a.fld_task_name AS taskname,fn_shortname (CONCAT(a.fld_task_name), 2) AS shortname,2 as tasktype
-                                                                    FROM itc_exp_task_master AS a  
-                                                                    WHERE a.fld_id NOT IN( SELECT b.fld_prd_sys_id FROM itc_correlation_rpt_products AS c   
+                                                                    FROM itc_exp_task_master AS a
+                                                                    WHERE a.fld_id NOT IN( SELECT b.fld_prd_sys_id FROM itc_correlation_rpt_products AS c
                                                                     LEFT JOIN itc_correlation_products AS b ON b.fld_id=c.fld_prd_id
                                                                     WHERE c.fld_rpt_data_id='" . $rptid . "' AND c.fld_exptype='2' AND c.fld_delstatus='0') AND a.fld_dest_id='" . $destid[$i] . "'
                                                                      AND a.fld_delstatus='0'  AND a.fld_flag='1' ORDER BY a.fld_order ");
@@ -862,7 +862,7 @@ if ($oper == "showproducts" and $oper != " ") {
 
                 $selectproducts = isset($method['selectres']) ? $method['selectres'] : 0;
                 $selectproducts = explode(',', $selectproducts);
-                ?> 
+                ?>
     <script type="text/javascript" language="javascript">
         $(function () {
             $('#testrailvisible4').slimscroll({
@@ -893,7 +893,7 @@ if ($oper == "showproducts" and $oper != " ") {
 
 
         });
-    </script>  
+    </script>
 
 
     <div class="dragndropcol">
@@ -910,8 +910,8 @@ if ($oper == "showproducts" and $oper != " ") {
     <?php
     for ($j = 0; $j < sizeof($taskid); $j++) {
 
-        $qrycount = $ObjDB->SelectSingleValue("SELECT COUNT(a.fld_id) FROM itc_exp_resource_master AS a 
-                                                                     LEFT JOIN itc_exp_res_status AS b on a.fld_id = b.fld_res_id                                                      
+        $qrycount = $ObjDB->SelectSingleValue("SELECT COUNT(a.fld_id) FROM itc_exp_resource_master AS a
+                                                                     LEFT JOIN itc_exp_res_status AS b on a.fld_id = b.fld_res_id
                                                                      WHERE a.fld_task_id='" . $taskid[$j] . "' AND a.fld_flag='1' AND a.fld_delstatus='0' AND b.fld_school_id = '" . $schoolid . "' AND b.fld_created_by='" . $uid . "' ORDER BY a.fld_order");
 
 
@@ -919,18 +919,18 @@ if ($oper == "showproducts" and $oper != " ") {
 
 
             $qrystudent = $ObjDB->QueryObject("SELECT a.fld_id AS resoid, a.fld_res_name AS resoname, fn_shortname (CONCAT(a.fld_res_name), 2) AS shortname,3 as restype,a.fld_expres_id as resprdid
-                                                                        FROM itc_exp_resource_master AS a 
-                                                                        LEFT JOIN itc_exp_res_status AS e on a.fld_id = e.fld_res_id   
-                                                                        WHERE a.fld_id NOT IN( SELECT b.fld_prd_sys_id FROM itc_correlation_rpt_products AS c   
+                                                                        FROM itc_exp_resource_master AS a
+                                                                        LEFT JOIN itc_exp_res_status AS e on a.fld_id = e.fld_res_id
+                                                                        WHERE a.fld_id NOT IN( SELECT b.fld_prd_sys_id FROM itc_correlation_rpt_products AS c
                                                                         LEFT JOIN itc_correlation_products AS b ON b.fld_id=c.fld_prd_id
                                                                         WHERE c.fld_rpt_data_id='" . $rptid . "' AND c.fld_exptype='3' AND c.fld_delstatus='0') AND a.fld_task_id='" . $taskid[$j] . "'
                                                                          AND a.fld_delstatus='0'  AND a.fld_flag='1' AND e.fld_status='1' AND e.fld_school_id = '" . $schoolid . "' AND e.fld_created_by='" . $uid . "' ORDER BY a.fld_order ");
         } else {
 
             $qrystudent = $ObjDB->QueryObject("SELECT a.fld_id AS resoid, a.fld_res_name AS resoname, fn_shortname (CONCAT(a.fld_res_name), 2) AS shortname,3 as restype,a.fld_expres_id as resprdid
-                                                                   FROM itc_exp_resource_master AS a 
-                                                                   LEFT JOIN itc_exp_res_status AS e on a.fld_id = e.fld_res_id   
-                                                                   WHERE a.fld_id NOT IN( SELECT b.fld_prd_sys_id FROM itc_correlation_rpt_products AS c   
+                                                                   FROM itc_exp_resource_master AS a
+                                                                   LEFT JOIN itc_exp_res_status AS e on a.fld_id = e.fld_res_id
+                                                                   WHERE a.fld_id NOT IN( SELECT b.fld_prd_sys_id FROM itc_correlation_rpt_products AS c
                                                                    LEFT JOIN itc_correlation_products AS b ON b.fld_id=c.fld_prd_id
                                                                    WHERE c.fld_rpt_data_id='" . $rptid . "' AND c.fld_exptype='3' AND c.fld_delstatus='0') AND a.fld_task_id='" . $taskid[$j] . "'
                                                                     AND a.fld_delstatus='0'  AND a.fld_flag='1' AND e.fld_status='1' AND e.fld_school_id = '0' ORDER BY a.fld_order ");
@@ -1030,7 +1030,7 @@ if ($oper == "showproducts" and $oper != " ") {
                                 }
                                 if ($tagtype == '4') {
                                     $qryunits = "SELECT fld_id AS id, fld_unit_name AS nam,fn_shortname(fld_unit_name,2) AS shortname, 2 AS typ, fld_asset_id as assetid,'Unit' AS titlename
-	  			FROM itc_unit_master 
+	  			FROM itc_unit_master
 				WHERE fld_delstatus='0' AND fld_id = '" . $titleid . "'";
                                     ++$unit_cnt;
 
@@ -1041,8 +1041,8 @@ if ($oper == "showproducts" and $oper != " ") {
                                     }
                                 }
                                 if ($tagtype == '3') {
-                                    $qrymodules = "SELECT a.fld_id AS id, CONCAT(a.fld_module_name,' ',b.fld_version) AS nam,fn_shortname(a.fld_module_name,2) AS shortname, 3 AS typ, a.fld_asset_id AS assetid,'Module' AS titlename 
-					FROM itc_module_master AS a 
+                                    $qrymodules = "SELECT a.fld_id AS id, CONCAT(a.fld_module_name,' ',b.fld_version) AS nam,fn_shortname(a.fld_module_name,2) AS shortname, 3 AS typ, a.fld_asset_id AS assetid,'Module' AS titlename
+					FROM itc_module_master AS a
 					LEFT JOIN itc_module_version_track AS b ON b.fld_mod_id=a.fld_id
 					WHERE a.fld_delstatus='0' AND b.fld_delstatus='0' AND a.fld_id = '" . $titleid . "'";
                                     ++$module_cnt;
@@ -1054,8 +1054,8 @@ if ($oper == "showproducts" and $oper != " ") {
                                     }
                                 }
                                 if ($tagtype == '23') {
-                                    $qrymathmodules = "SELECT a.fld_id AS id, CONCAT(a.fld_mathmodule_name,' ',b.fld_version) AS nam,fn_shortname(a.fld_mathmodule_name,2) AS shortname, 4 AS typ, a.fld_asset_id AS assetid,'Math Module' AS titlename 
-						FROM itc_mathmodule_master AS a 
+                                    $qrymathmodules = "SELECT a.fld_id AS id, CONCAT(a.fld_mathmodule_name,' ',b.fld_version) AS nam,fn_shortname(a.fld_mathmodule_name,2) AS shortname, 4 AS typ, a.fld_asset_id AS assetid,'Math Module' AS titlename
+						FROM itc_mathmodule_master AS a
 						LEFT JOIN itc_module_version_track AS b ON b.fld_mod_id=a.fld_module_id
 						WHERE a.fld_delstatus='0' AND b.fld_delstatus='0' AND a.fld_id = '" . $titleid . "'";
                                     ++$mathmod_cnt;
@@ -1080,14 +1080,14 @@ if ($oper == "showproducts" and $oper != " ") {
                             while ($rowqry = $ptag_type->fetch_assoc()) {
                                 extract($rowqry);
                                 if ($tagtype == '1') {
-                                    $qryipls = "SELECT c.fld_id AS id, CONCAT(c.fld_ipl_name,' ',d.fld_version) AS nam,fn_shortname(c.fld_ipl_name,2) AS shortname, 1 AS typ ,c.fld_asset_id AS assetid,'IPL' AS titlename 
-					FROM itc_license_track AS a 
-					LEFT JOIN itc_license_cul_mapping AS b ON a.fld_license_id=b.fld_license_id 
+                                    $qryipls = "SELECT c.fld_id AS id, CONCAT(c.fld_ipl_name,' ',d.fld_version) AS nam,fn_shortname(c.fld_ipl_name,2) AS shortname, 1 AS typ ,c.fld_asset_id AS assetid,'IPL' AS titlename
+					FROM itc_license_track AS a
+					LEFT JOIN itc_license_cul_mapping AS b ON a.fld_license_id=b.fld_license_id
 					LEFT JOIN itc_ipl_master AS c ON b.`fld_lesson_id`=c.fld_id
-					LEFT JOIN itc_ipl_version_track AS d ON d.fld_ipl_id=c.fld_id 
-					WHERE a.fld_delstatus='0' AND b.fld_active='1' AND a.fld_district_id='" . $sendistid . "' 
+					LEFT JOIN itc_ipl_version_track AS d ON d.fld_ipl_id=c.fld_id
+					WHERE a.fld_delstatus='0' AND b.fld_active='1' AND a.fld_district_id='" . $sendistid . "'
 						AND a.fld_start_date<=NOW() AND a.fld_end_date>=NOW() AND c.fld_delstatus='0' AND c.fld_access='1'
-						AND d.fld_zip_type='1' AND d.fld_delstatus='0' AND c.fld_id = '" . $titleid . "' 
+						AND d.fld_zip_type='1' AND d.fld_delstatus='0' AND c.fld_id = '" . $titleid . "'
 					GROUP BY c.fld_id";
                                     ++$ipl_cnt;
 
@@ -1099,10 +1099,10 @@ if ($oper == "showproducts" and $oper != " ") {
                                 }
                                 if ($tagtype == '4') {
                                     $qryunits = "SELECT c.fld_id AS id, c.fld_unit_name AS nam,fn_shortname(c.fld_unit_name,2) AS shortname, 2 AS typ, c.fld_asset_id as assetid,'Unit' AS titlename
-					FROM itc_license_track AS a 
-					LEFT JOIN itc_license_cul_mapping AS b ON a.fld_license_id=b.fld_license_id 
-					LEFT JOIN itc_unit_master AS c ON b.`fld_unit_id`=c.fld_id 
-					WHERE a.fld_delstatus='0' AND b.fld_active='1' AND a.fld_district_id='" . $sendistid . "' AND a.fld_start_date<=NOW() 
+					FROM itc_license_track AS a
+					LEFT JOIN itc_license_cul_mapping AS b ON a.fld_license_id=b.fld_license_id
+					LEFT JOIN itc_unit_master AS c ON b.`fld_unit_id`=c.fld_id
+					WHERE a.fld_delstatus='0' AND b.fld_active='1' AND a.fld_district_id='" . $sendistid . "' AND a.fld_start_date<=NOW()
 						AND a.fld_end_date>=NOW() AND c.fld_delstatus='0' AND c.fld_id = '" . $titleid . "'
 					GROUP BY c.fld_id";
                                     ++$unit_cnt;
@@ -1114,13 +1114,13 @@ if ($oper == "showproducts" and $oper != " ") {
                                     }
                                 }
                                 if ($tagtype == '3') {
-                                    $qrymodules = "SELECT b.fld_module_id AS id, CONCAT(a.fld_module_name,' ',d.fld_version) AS nam,fn_shortname(a.fld_module_name,2) AS shortname, 3 AS typ , a.fld_asset_id AS assetid,'Module' AS titlename 
-						FROM itc_module_master AS a 
-						LEFT JOIN itc_license_mod_mapping AS b ON a.fld_id=b.fld_module_id 
-						LEFT JOIN itc_license_track AS c ON b.fld_license_id=c.fld_license_id 
+                                    $qrymodules = "SELECT b.fld_module_id AS id, CONCAT(a.fld_module_name,' ',d.fld_version) AS nam,fn_shortname(a.fld_module_name,2) AS shortname, 3 AS typ , a.fld_asset_id AS assetid,'Module' AS titlename
+						FROM itc_module_master AS a
+						LEFT JOIN itc_license_mod_mapping AS b ON a.fld_id=b.fld_module_id
+						LEFT JOIN itc_license_track AS c ON b.fld_license_id=c.fld_license_id
 						LEFT JOIN itc_module_version_track AS d ON d.fld_mod_id=b.fld_module_id
-						WHERE a.fld_delstatus='0' AND c.fld_district_id='" . $sendistid . "' AND c.fld_school_id='0' AND c.fld_delstatus='0' 
-						AND b.fld_active='1' AND c.fld_start_date<=NOW() AND c.fld_end_date>=NOW() AND b.fld_type=1 AND d.fld_delstatus='0' AND a.fld_id = '" . $titleid . "' 
+						WHERE a.fld_delstatus='0' AND c.fld_district_id='" . $sendistid . "' AND c.fld_school_id='0' AND c.fld_delstatus='0'
+						AND b.fld_active='1' AND c.fld_start_date<=NOW() AND c.fld_end_date>=NOW() AND b.fld_type=1 AND d.fld_delstatus='0' AND a.fld_id = '" . $titleid . "'
 						GROUP BY b.fld_module_id";
                                     ++$module_cnt;
 
@@ -1132,10 +1132,10 @@ if ($oper == "showproducts" and $oper != " ") {
                                 }
                                 if ($tagtype == '23') {
                                     $qrymathmodules = "SELECT b.fld_module_id AS id, CONCAT(a.fld_mathmodule_name,' ',d.fld_version) AS nam,fn_shortname(a.fld_mathmodule_name,2) AS shortname, 4 AS typ , a.fld_asset_id AS assetid,'Math Module' AS titlename
-							FROM itc_mathmodule_master AS a 
-							LEFT JOIN itc_license_mod_mapping AS b ON a.fld_id=b.fld_module_id 
+							FROM itc_mathmodule_master AS a
+							LEFT JOIN itc_license_mod_mapping AS b ON a.fld_id=b.fld_module_id
 							LEFT JOIN itc_license_track AS c ON b.fld_license_id=c.fld_license_id
-							LEFT JOIN itc_module_version_track AS d ON d.fld_mod_id=b.fld_module_id 
+							LEFT JOIN itc_module_version_track AS d ON d.fld_mod_id=b.fld_module_id
 							WHERE a.fld_delstatus='0' AND c.fld_district_id='" . $sendistid . "' AND c.fld_school_id='0' AND c.fld_delstatus='0' AND d.fld_delstatus='0'
 								AND b.fld_active='1' AND c.fld_start_date<=NOW() AND c.fld_end_date>=NOW() AND b.fld_type=2 AND a.fld_id = '" . $titleid . "'
 							GROUP BY b.fld_module_id";
@@ -1163,13 +1163,13 @@ if ($oper == "showproducts" and $oper != " ") {
                                 if ($tagtype == '1') {
 
                                     $qryipls = "SELECT c.fld_id AS id, CONCAT(c.fld_ipl_name,' ',d.fld_version) AS nam,fn_shortname(c.fld_ipl_name,2) AS shortname, 1 AS typ , c.fld_asset_id AS assetid,'IPL' AS titlename
-					FROM itc_license_track AS a 
-					LEFT JOIN itc_license_cul_mapping AS b ON a.fld_license_id=b.fld_license_id 
-					LEFT JOIN itc_ipl_master AS c ON b.`fld_lesson_id`=c.fld_id 
+					FROM itc_license_track AS a
+					LEFT JOIN itc_license_cul_mapping AS b ON a.fld_license_id=b.fld_license_id
+					LEFT JOIN itc_ipl_master AS c ON b.`fld_lesson_id`=c.fld_id
 					LEFT JOIN itc_ipl_version_track AS d ON d.fld_ipl_id=c.fld_id
-					WHERE a.fld_delstatus='0' AND b.fld_active='1' AND a.fld_school_id='" . $schoolid . "' AND a.fld_user_id='" . $indid . "' 
+					WHERE a.fld_delstatus='0' AND b.fld_active='1' AND a.fld_school_id='" . $schoolid . "' AND a.fld_user_id='" . $indid . "'
 						AND a.fld_start_date<=NOW() AND a.fld_end_date>=NOW() AND c.fld_delstatus='0' AND c.fld_access='1'
-						AND d.fld_zip_type='1' AND d.fld_delstatus='0' AND c.fld_id = '" . $titleid . "' 
+						AND d.fld_zip_type='1' AND d.fld_delstatus='0' AND c.fld_id = '" . $titleid . "'
 					GROUP BY c.fld_id";
                                     ++$ipl_cnt;
 
@@ -1181,10 +1181,10 @@ if ($oper == "showproducts" and $oper != " ") {
                                 }
                                 if ($tagtype == '4') {
                                     $qryunits = "SELECT c.fld_id AS id, c.fld_unit_name AS nam,fn_shortname(c.fld_unit_name,2) AS shortname, 2 AS typ , c.fld_asset_id as assetid,'Unit' AS titlename
-					FROM itc_license_track AS a 
-					LEFT JOIN itc_license_cul_mapping AS b ON a.fld_license_id=b.fld_license_id 
-					LEFT JOIN itc_unit_master AS c ON b.`fld_unit_id`=c.fld_id 
-					WHERE a.fld_delstatus='0' AND b.fld_active='1' AND a.fld_school_id='" . $schoolid . "' AND a.fld_user_id='" . $indid . "' 
+					FROM itc_license_track AS a
+					LEFT JOIN itc_license_cul_mapping AS b ON a.fld_license_id=b.fld_license_id
+					LEFT JOIN itc_unit_master AS c ON b.`fld_unit_id`=c.fld_id
+					WHERE a.fld_delstatus='0' AND b.fld_active='1' AND a.fld_school_id='" . $schoolid . "' AND a.fld_user_id='" . $indid . "'
 						AND a.fld_start_date<=NOW() AND a.fld_end_date>=NOW() AND c.fld_delstatus='0' AND c.fld_id = '" . $titleid . "'
 					GROUP BY c.fld_id";
                                     ++$unit_cnt;
@@ -1196,13 +1196,13 @@ if ($oper == "showproducts" and $oper != " ") {
                                     }
                                 }
                                 if ($tagtype == '3') {
-                                    $qrymodules = "SELECT b.fld_module_id AS id, 
+                                    $qrymodules = "SELECT b.fld_module_id AS id,
 						CONCAT(a.fld_module_name,' ',d.fld_version) AS nam,fn_shortname(a.fld_module_name,2) AS shortname, 3 AS typ , a.fld_asset_id AS assetid,'Module' AS titlename
-						FROM itc_module_master AS a 
-						LEFT JOIN itc_license_mod_mapping AS b ON a.fld_id=b.fld_module_id 
+						FROM itc_module_master AS a
+						LEFT JOIN itc_license_mod_mapping AS b ON a.fld_id=b.fld_module_id
 						LEFT JOIN itc_license_track AS c ON b.fld_license_id=c.fld_license_id
 						LEFT JOIN itc_module_version_track AS d ON d.fld_mod_id=b.fld_module_id
-						WHERE a.fld_delstatus='0' AND c.fld_school_id='" . $schoolid . "' AND c.fld_user_id='" . $indid . "' AND c.fld_delstatus='0' 
+						WHERE a.fld_delstatus='0' AND c.fld_school_id='" . $schoolid . "' AND c.fld_user_id='" . $indid . "' AND c.fld_delstatus='0'
 							AND b.fld_active='1' AND c.fld_start_date<=NOW() AND c.fld_end_date>=NOW() AND b.fld_type=1 AND d.fld_delstatus='0' AND a.fld_id = '" . $titleid . "'
 						GROUP BY b.fld_module_id";
                                     ++$module_cnt;
@@ -1215,11 +1215,11 @@ if ($oper == "showproducts" and $oper != " ") {
                                 }
                                 if ($tagtype == '23') {
                                     $qrymathmodules = "SELECT b.fld_module_id AS id, CONCAT(a.fld_mathmodule_name,' ',d.fld_version) AS nam,fn_shortname(a.fld_mathmodule_name,2) AS shortname, 4 AS typ , a.fld_asset_id AS assetid,'Math Module' AS titlename
-							FROM itc_mathmodule_master AS a 
-							LEFT JOIN itc_license_mod_mapping AS b ON a.fld_id=b.fld_module_id 
-							LEFT JOIN itc_license_track AS c ON b.fld_license_id=c.fld_license_id 
+							FROM itc_mathmodule_master AS a
+							LEFT JOIN itc_license_mod_mapping AS b ON a.fld_id=b.fld_module_id
+							LEFT JOIN itc_license_track AS c ON b.fld_license_id=c.fld_license_id
 							LEFT JOIN itc_module_version_track AS d ON d.fld_mod_id=b.fld_module_id
-							WHERE a.fld_delstatus='0' AND c.fld_school_id='" . $schoolid . "' AND c.fld_user_id='" . $indid . "' 
+							WHERE a.fld_delstatus='0' AND c.fld_school_id='" . $schoolid . "' AND c.fld_user_id='" . $indid . "'
 								AND c.fld_delstatus='0' AND b.fld_active='1' AND c.fld_start_date<=NOW() AND c.fld_end_date>=NOW() AND b.fld_type=2 AND d.fld_delstatus='0' AND a.fld_id = '" . $titleid . "'
 							GROUP BY b.fld_module_id";
                                     ++$mathmod_cnt;
@@ -1342,7 +1342,7 @@ if ($oper == "showproducts" and $oper != " ") {
 
 
         });
-    </script>	
+    </script>
 
     <div class="dragndropcol">
         <div class="dragtitle">Products</div>
@@ -1384,7 +1384,7 @@ if ($oper == "showproducts" and $oper != " ") {
 
     $qryforselectd_prods = $ObjDB->QueryObject("SELECT b.fld_prd_name,b.fld_prd_id,a.fld_type,
 													b.fld_prd_sys_id
-													FROM itc_correlation_rpt_products as a 
+													FROM itc_correlation_rpt_products as a
 													left join itc_correlation_products as b on a.fld_prd_id=b.fld_id and a.fld_type=b.fld_prd_type
 													where a.fld_rpt_data_id='" . $rptid . "' AND a.fld_delstatus='0' AND b.fld_prd_name<>''");
 
@@ -1468,7 +1468,7 @@ if ($oper == "removerightroducts" and $oper != " ") {
                     }
                     if ($tagtype == '4') {
                         $qryunits = "SELECT fld_id AS id, fld_unit_name AS nam,fn_shortname(fld_unit_name,2) AS shortname, 2 AS typ, fld_asset_id as assetid,'Unit' AS titlename
-	  			FROM itc_unit_master 
+	  			FROM itc_unit_master
 				WHERE fld_delstatus='0' AND fld_id = '" . $titleid . "'";
                         ++$unit_cnt;
 
@@ -1479,8 +1479,8 @@ if ($oper == "removerightroducts" and $oper != " ") {
                         }
                     }
                     if ($tagtype == '3') {
-                        $qrymodules = "SELECT a.fld_id AS id, CONCAT(a.fld_module_name,' ',b.fld_version) AS nam,fn_shortname(a.fld_module_name,2) AS shortname, 3 AS typ, a.fld_asset_id AS assetid,'Module' AS titlename 
-					FROM itc_module_master AS a 
+                        $qrymodules = "SELECT a.fld_id AS id, CONCAT(a.fld_module_name,' ',b.fld_version) AS nam,fn_shortname(a.fld_module_name,2) AS shortname, 3 AS typ, a.fld_asset_id AS assetid,'Module' AS titlename
+					FROM itc_module_master AS a
 					LEFT JOIN itc_module_version_track AS b ON b.fld_mod_id=a.fld_id
 					WHERE a.fld_delstatus='0' AND b.fld_delstatus='0' AND a.fld_id = '" . $titleid . "'";
                         ++$module_cnt;
@@ -1492,8 +1492,8 @@ if ($oper == "removerightroducts" and $oper != " ") {
                         }
                     }
                     if ($tagtype == '23') {
-                        $qrymathmodules = "SELECT a.fld_id AS id, CONCAT(a.fld_mathmodule_name,' ',b.fld_version) AS nam,fn_shortname(a.fld_mathmodule_name,2) AS shortname, 4 AS typ, a.fld_asset_id AS assetid,'Math Module' AS titlename 
-						FROM itc_mathmodule_master AS a 
+                        $qrymathmodules = "SELECT a.fld_id AS id, CONCAT(a.fld_mathmodule_name,' ',b.fld_version) AS nam,fn_shortname(a.fld_mathmodule_name,2) AS shortname, 4 AS typ, a.fld_asset_id AS assetid,'Math Module' AS titlename
+						FROM itc_mathmodule_master AS a
 						LEFT JOIN itc_module_version_track AS b ON b.fld_mod_id=a.fld_module_id
 						WHERE a.fld_delstatus='0' AND b.fld_delstatus='0' AND a.fld_id = '" . $titleid . "'";
                         ++$mathmod_cnt;
@@ -1519,14 +1519,14 @@ if ($oper == "removerightroducts" and $oper != " ") {
                 while ($rowqry = $ptag_type->fetch_assoc()) {
                     extract($rowqry);
                     if ($tagtype == '1') {
-                        $qryipls = "SELECT c.fld_id AS id, CONCAT(c.fld_ipl_name,' ',d.fld_version) AS nam,fn_shortname(c.fld_ipl_name,2) AS shortname, 1 AS typ ,c.fld_asset_id AS assetid,'IPL' AS titlename 
-					FROM itc_license_track AS a 
-					LEFT JOIN itc_license_cul_mapping AS b ON a.fld_license_id=b.fld_license_id 
+                        $qryipls = "SELECT c.fld_id AS id, CONCAT(c.fld_ipl_name,' ',d.fld_version) AS nam,fn_shortname(c.fld_ipl_name,2) AS shortname, 1 AS typ ,c.fld_asset_id AS assetid,'IPL' AS titlename
+					FROM itc_license_track AS a
+					LEFT JOIN itc_license_cul_mapping AS b ON a.fld_license_id=b.fld_license_id
 					LEFT JOIN itc_ipl_master AS c ON b.`fld_lesson_id`=c.fld_id
-					LEFT JOIN itc_ipl_version_track AS d ON d.fld_ipl_id=c.fld_id 
-					WHERE a.fld_delstatus='0' AND b.fld_active='1' AND a.fld_district_id='" . $sendistid . "' 
+					LEFT JOIN itc_ipl_version_track AS d ON d.fld_ipl_id=c.fld_id
+					WHERE a.fld_delstatus='0' AND b.fld_active='1' AND a.fld_district_id='" . $sendistid . "'
 						AND a.fld_start_date<=NOW() AND a.fld_end_date>=NOW() AND c.fld_delstatus='0' AND c.fld_access='1'
-						AND d.fld_zip_type='1' AND d.fld_delstatus='0' AND c.fld_id = '" . $titleid . "' 
+						AND d.fld_zip_type='1' AND d.fld_delstatus='0' AND c.fld_id = '" . $titleid . "'
 					GROUP BY c.fld_id";
                         ++$ipl_cnt;
 
@@ -1538,10 +1538,10 @@ if ($oper == "removerightroducts" and $oper != " ") {
                     }
                     if ($tagtype == '4') {
                         $qryunits = "SELECT c.fld_id AS id, c.fld_unit_name AS nam,fn_shortname(c.fld_unit_name,2) AS shortname, 2 AS typ, c.fld_asset_id as assetid,'Unit' AS titlename
-					FROM itc_license_track AS a 
-					LEFT JOIN itc_license_cul_mapping AS b ON a.fld_license_id=b.fld_license_id 
-					LEFT JOIN itc_unit_master AS c ON b.`fld_unit_id`=c.fld_id 
-					WHERE a.fld_delstatus='0' AND b.fld_active='1' AND a.fld_district_id='" . $sendistid . "' AND a.fld_start_date<=NOW() 
+					FROM itc_license_track AS a
+					LEFT JOIN itc_license_cul_mapping AS b ON a.fld_license_id=b.fld_license_id
+					LEFT JOIN itc_unit_master AS c ON b.`fld_unit_id`=c.fld_id
+					WHERE a.fld_delstatus='0' AND b.fld_active='1' AND a.fld_district_id='" . $sendistid . "' AND a.fld_start_date<=NOW()
 						AND a.fld_end_date>=NOW() AND c.fld_delstatus='0' AND c.fld_id = '" . $titleid . "'
 					GROUP BY c.fld_id";
                         ++$unit_cnt;
@@ -1553,12 +1553,12 @@ if ($oper == "removerightroducts" and $oper != " ") {
                         }
                     }
                     if ($tagtype == '3') {
-                        $qrymodules = "SELECT b.fld_module_id AS id, CONCAT(a.fld_module_name,' ',d.fld_version) AS nam,fn_shortname(a.fld_module_name,2) AS shortname, 3 AS typ , a.fld_asset_id AS assetid,'Module' AS titlename  
-						FROM itc_module_master AS a 
-						LEFT JOIN itc_license_mod_mapping AS b ON a.fld_id=b.fld_module_id 
-						LEFT JOIN itc_license_track AS c ON b.fld_license_id=c.fld_license_id 
+                        $qrymodules = "SELECT b.fld_module_id AS id, CONCAT(a.fld_module_name,' ',d.fld_version) AS nam,fn_shortname(a.fld_module_name,2) AS shortname, 3 AS typ , a.fld_asset_id AS assetid,'Module' AS titlename
+						FROM itc_module_master AS a
+						LEFT JOIN itc_license_mod_mapping AS b ON a.fld_id=b.fld_module_id
+						LEFT JOIN itc_license_track AS c ON b.fld_license_id=c.fld_license_id
 						LEFT JOIN itc_module_version_track AS d ON d.fld_mod_id=b.fld_module_id
-						WHERE a.fld_delstatus='0' AND c.fld_district_id='" . $sendistid . "' AND c.fld_school_id='0' AND c.fld_delstatus='0' 
+						WHERE a.fld_delstatus='0' AND c.fld_district_id='" . $sendistid . "' AND c.fld_school_id='0' AND c.fld_delstatus='0'
 							AND b.fld_active='1' AND c.fld_start_date<=NOW() AND c.fld_end_date>=NOW() AND b.fld_type=1 AND d.fld_delstatus='0' AND a.fld_id = '" . $titleid . "'
 						GROUP BY b.fld_module_id";
                         ++$module_cnt;
@@ -1570,11 +1570,11 @@ if ($oper == "removerightroducts" and $oper != " ") {
                         }
                     }
                     if ($tagtype == '23') {
-                        $qrymathmodules = "SELECT b.fld_module_id AS id, CONCAT(a.fld_mathmodule_name,' ',d.fld_version) AS nam,fn_shortname(a.fld_mathmodule_name,2) AS shortname, 4 AS typ , a.fld_asset_id AS assetid,'Math Module' AS titlename  
-							FROM itc_mathmodule_master AS a 
-							LEFT JOIN itc_license_mod_mapping AS b ON a.fld_id=b.fld_module_id 
+                        $qrymathmodules = "SELECT b.fld_module_id AS id, CONCAT(a.fld_mathmodule_name,' ',d.fld_version) AS nam,fn_shortname(a.fld_mathmodule_name,2) AS shortname, 4 AS typ , a.fld_asset_id AS assetid,'Math Module' AS titlename
+							FROM itc_mathmodule_master AS a
+							LEFT JOIN itc_license_mod_mapping AS b ON a.fld_id=b.fld_module_id
 							LEFT JOIN itc_license_track AS c ON b.fld_license_id=c.fld_license_id
-							LEFT JOIN itc_module_version_track AS d ON d.fld_mod_id=b.fld_module_id 
+							LEFT JOIN itc_module_version_track AS d ON d.fld_mod_id=b.fld_module_id
 							WHERE a.fld_delstatus='0' AND c.fld_district_id='" . $sendistid . "' AND c.fld_school_id='0' AND c.fld_delstatus='0' AND d.fld_delstatus='0'
 								AND b.fld_active='1' AND c.fld_start_date<=NOW() AND c.fld_end_date>=NOW() AND b.fld_type=2 AND a.fld_id = '" . $titleid . "'
 							GROUP BY b.fld_module_id";
@@ -1601,14 +1601,14 @@ if ($oper == "removerightroducts" and $oper != " ") {
                     extract($rowqry);
                     if ($tagtype == '1') {
 
-                        $qryipls = "SELECT c.fld_id AS id, CONCAT(c.fld_ipl_name,' ',d.fld_version) AS nam,fn_shortname(c.fld_ipl_name,2) AS shortname, 1 AS typ , c.fld_asset_id AS assetid,'IPL' AS titlename  
-					FROM itc_license_track AS a 
-					LEFT JOIN itc_license_cul_mapping AS b ON a.fld_license_id=b.fld_license_id 
-					LEFT JOIN itc_ipl_master AS c ON b.`fld_lesson_id`=c.fld_id 
+                        $qryipls = "SELECT c.fld_id AS id, CONCAT(c.fld_ipl_name,' ',d.fld_version) AS nam,fn_shortname(c.fld_ipl_name,2) AS shortname, 1 AS typ , c.fld_asset_id AS assetid,'IPL' AS titlename
+					FROM itc_license_track AS a
+					LEFT JOIN itc_license_cul_mapping AS b ON a.fld_license_id=b.fld_license_id
+					LEFT JOIN itc_ipl_master AS c ON b.`fld_lesson_id`=c.fld_id
 					LEFT JOIN itc_ipl_version_track AS d ON d.fld_ipl_id=c.fld_id
-					WHERE a.fld_delstatus='0' AND b.fld_active='1' AND a.fld_school_id='" . $schoolid . "' AND a.fld_user_id='" . $indid . "' 
+					WHERE a.fld_delstatus='0' AND b.fld_active='1' AND a.fld_school_id='" . $schoolid . "' AND a.fld_user_id='" . $indid . "'
 						AND a.fld_start_date<=NOW() AND a.fld_end_date>=NOW() AND c.fld_delstatus='0' AND c.fld_access='1'
-						AND d.fld_zip_type='1' AND d.fld_delstatus='0' AND c.fld_id = '" . $titleid . "' 
+						AND d.fld_zip_type='1' AND d.fld_delstatus='0' AND c.fld_id = '" . $titleid . "'
 					GROUP BY c.fld_id";
                         ++$ipl_cnt;
 
@@ -1619,12 +1619,12 @@ if ($oper == "removerightroducts" and $oper != " ") {
                         }
                     }
                     if ($tagtype == '4') {
-                        $qryunits = "SELECT c.fld_id AS id, c.fld_unit_name AS nam,fn_shortname(c.fld_unit_name,2) AS shortname, 2 AS typ , c.fld_asset_id as assetid,'Unit' AS titlename 
-					FROM itc_license_track AS a 
-					LEFT JOIN itc_license_cul_mapping AS b ON a.fld_license_id=b.fld_license_id 
-					LEFT JOIN itc_unit_master AS c ON b.`fld_unit_id`=c.fld_id 
-					WHERE a.fld_delstatus='0' AND b.fld_active='1' AND a.fld_school_id='" . $schoolid . "' AND a.fld_user_id='" . $indid . "' 
-						AND a.fld_start_date<=NOW() AND a.fld_end_date>=NOW() AND c.fld_delstatus='0' AND c.fld_id = '" . $titleid . "' 
+                        $qryunits = "SELECT c.fld_id AS id, c.fld_unit_name AS nam,fn_shortname(c.fld_unit_name,2) AS shortname, 2 AS typ , c.fld_asset_id as assetid,'Unit' AS titlename
+					FROM itc_license_track AS a
+					LEFT JOIN itc_license_cul_mapping AS b ON a.fld_license_id=b.fld_license_id
+					LEFT JOIN itc_unit_master AS c ON b.`fld_unit_id`=c.fld_id
+					WHERE a.fld_delstatus='0' AND b.fld_active='1' AND a.fld_school_id='" . $schoolid . "' AND a.fld_user_id='" . $indid . "'
+						AND a.fld_start_date<=NOW() AND a.fld_end_date>=NOW() AND c.fld_delstatus='0' AND c.fld_id = '" . $titleid . "'
 					GROUP BY c.fld_id";
                         ++$unit_cnt;
 
@@ -1635,13 +1635,13 @@ if ($oper == "removerightroducts" and $oper != " ") {
                         }
                     }
                     if ($tagtype == '3') {
-                        $qrymodules = "SELECT b.fld_module_id AS id, 
-						CONCAT(a.fld_module_name,' ',d.fld_version) AS nam,fn_shortname(a.fld_module_name,2) AS shortname, 3 AS typ , a.fld_asset_id AS assetid,'Module' AS titlename  
-						FROM itc_module_master AS a 
-						LEFT JOIN itc_license_mod_mapping AS b ON a.fld_id=b.fld_module_id 
+                        $qrymodules = "SELECT b.fld_module_id AS id,
+						CONCAT(a.fld_module_name,' ',d.fld_version) AS nam,fn_shortname(a.fld_module_name,2) AS shortname, 3 AS typ , a.fld_asset_id AS assetid,'Module' AS titlename
+						FROM itc_module_master AS a
+						LEFT JOIN itc_license_mod_mapping AS b ON a.fld_id=b.fld_module_id
 						LEFT JOIN itc_license_track AS c ON b.fld_license_id=c.fld_license_id
 						LEFT JOIN itc_module_version_track AS d ON d.fld_mod_id=b.fld_module_id
-						WHERE a.fld_delstatus='0' AND c.fld_school_id='" . $schoolid . "' AND c.fld_user_id='" . $indid . "' AND c.fld_delstatus='0' 
+						WHERE a.fld_delstatus='0' AND c.fld_school_id='" . $schoolid . "' AND c.fld_user_id='" . $indid . "' AND c.fld_delstatus='0'
 							AND b.fld_active='1' AND c.fld_start_date<=NOW() AND c.fld_end_date>=NOW() AND b.fld_type=1 AND d.fld_delstatus='0' AND a.fld_id = '" . $titleid . "'
 						GROUP BY b.fld_module_id";
                         ++$module_cnt;
@@ -1653,12 +1653,12 @@ if ($oper == "removerightroducts" and $oper != " ") {
                         }
                     }
                     if ($tagtype == '23') {
-                        $qrymathmodules = "SELECT b.fld_module_id AS id, CONCAT(a.fld_mathmodule_name,' ',d.fld_version) AS nam,fn_shortname(a.fld_mathmodule_name,2) AS shortname, 4 AS typ , a.fld_asset_id AS assetid,'Math Module' AS titlename 
-							FROM itc_mathmodule_master AS a 
-							LEFT JOIN itc_license_mod_mapping AS b ON a.fld_id=b.fld_module_id 
-							LEFT JOIN itc_license_track AS c ON b.fld_license_id=c.fld_license_id 
+                        $qrymathmodules = "SELECT b.fld_module_id AS id, CONCAT(a.fld_mathmodule_name,' ',d.fld_version) AS nam,fn_shortname(a.fld_mathmodule_name,2) AS shortname, 4 AS typ , a.fld_asset_id AS assetid,'Math Module' AS titlename
+							FROM itc_mathmodule_master AS a
+							LEFT JOIN itc_license_mod_mapping AS b ON a.fld_id=b.fld_module_id
+							LEFT JOIN itc_license_track AS c ON b.fld_license_id=c.fld_license_id
 							LEFT JOIN itc_module_version_track AS d ON d.fld_mod_id=b.fld_module_id
-							WHERE a.fld_delstatus='0' AND c.fld_school_id='" . $schoolid . "' AND c.fld_user_id='" . $indid . "' 
+							WHERE a.fld_delstatus='0' AND c.fld_school_id='" . $schoolid . "' AND c.fld_user_id='" . $indid . "'
 								AND c.fld_delstatus='0' AND b.fld_active='1' AND c.fld_start_date<=NOW() AND c.fld_end_date>=NOW() AND b.fld_type=2 AND d.fld_delstatus='0' AND a.fld_id = '" . $titleid . "'
 							GROUP BY b.fld_module_id";
                         ++$mathmod_cnt;
@@ -1732,13 +1732,13 @@ if ($oper == "removerightroducts" and $oper != " ") {
 
     for ($m = 0; $m < sizeof($productdetails); $m++) {
 
-        $mprd_id = $ObjDB->SelectSingleValueInt("SELECT fld_id FROM  itc_correlation_products 
-													WHERE fld_prd_type ='" . $productdetails[$m]['type'] . "' 
+        $mprd_id = $ObjDB->SelectSingleValueInt("SELECT fld_id FROM  itc_correlation_products
+													WHERE fld_prd_type ='" . $productdetails[$m]['type'] . "'
 													AND fld_prd_sys_id='" . $productdetails[$m]['id'] . "'");
 
         array_push($remove_selectprod1, $mprd_id);
     }
-    $selected_correpqry = $ObjDB->QueryObject("SELECT fld_prd_id as prodid,fld_type as types FROM  itc_correlation_rpt_products 
+    $selected_correpqry = $ObjDB->QueryObject("SELECT fld_prd_id as prodid,fld_type as types FROM  itc_correlation_rpt_products
 			 												WHERE fld_rpt_data_id='" . $rptid . "' AND fld_tagflag ='1' AND fld_delstatus = '0'");
 
     if ($selected_correpqry->num_rows > 0) {
@@ -1755,7 +1755,7 @@ if ($oper == "removerightroducts" and $oper != " ") {
     $remproduct_result = array_diff($remove_selectprod2, $remove_selectprod1);
     $remproduct_result = array_values($remproduct_result);
     for ($n = 0; $n < sizeof($remproduct_result); $n++) {
-        $ObjDB->NonQuery("UPDATE itc_correlation_rpt_products SET fld_delstatus=1 
+        $ObjDB->NonQuery("UPDATE itc_correlation_rpt_products SET fld_delstatus=1
 										       WHERE fld_rpt_data_id='" . $rptid . "' AND fld_tagflag ='1' AND fld_prd_id ='" . $remproduct_result[$n] . "'");
     }
     echo json_encode($productdetails);
@@ -1773,7 +1773,7 @@ if ($oper == "savestep4" and $oper != " ") {
     $tagproductid = explode(',', $tagproductid);
     $productid = array_filter($productid);
     $tagproductid = array_filter($tagproductid);
-    $statename = $ObjDB->SelectSingleValueInt("SELECT fld_std_body FROM itc_correlation_report_data 
+    $statename = $ObjDB->SelectSingleValueInt("SELECT fld_std_body FROM itc_correlation_report_data
 												WHERE fld_delstatus='0' AND  fld_id='" . $rptid . "'");
     $ObjDB->NonQuery("UPDATE itc_correlation_report_data SET fld_step_id='4', fld_updated_by='" . $uid . "', fld_updated_date='" . date("Y-m-d H:i:s") . "' WHERE fld_id='" . $rptid . "'");
     $ObjDB->NonQuery("UPDATE itc_correlation_rpt_products SET fld_delstatus='1' WHERE fld_rpt_data_id='" . $rptid . "'");
@@ -1783,21 +1783,21 @@ if ($oper == "savestep4" and $oper != " ") {
             $productdetails = explode('~', $productid[$i]);
             $mprd_id = $ObjDB->SelectSingleValueInt("SELECT fld_id  FROM  itc_correlation_productdetails WHERE  fld_asset_id='" . $productdetails[2] . "'"); //fld_prd_type ='".$productdetails[1]."' AND
 
-            $cnt = $ObjDB->SelectSingleValueInt("SELECT COUNT(fld_id) FROM  itc_correlation_rpt_products 
+            $cnt = $ObjDB->SelectSingleValueInt("SELECT COUNT(fld_id) FROM  itc_correlation_rpt_products
 												WHERE fld_rpt_data_id='" . $rptid . "' AND fld_prd_id ='" . $mprd_id . "'");
 
             if ($cnt == 0) {
 
                 if ($show_titletype == '0') {
 
-                    $ObjDB->NonQuery("INSERT INTO itc_correlation_rpt_products(fld_rpt_data_id,fld_type,fld_prd_id,fld_product_id) 
+                    $ObjDB->NonQuery("INSERT INTO itc_correlation_rpt_products(fld_rpt_data_id,fld_type,fld_prd_id,fld_product_id)
                                                                VALUES ('" . $rptid . "','" . $productdetails[1] . "','" . $mprd_id . "','" . $productdetails[2] . "')");
 
                     $ObjDB->NonQuery("UPDATE itc_correlation_report_data SET fld_show_alltype='10', fld_updated_by='" . $uid . "', fld_updated_date='" . date("Y-m-d H:i:s") . "' WHERE fld_id='" . $rptid . "'");
                 } else {
 
 
-                    $ObjDB->NonQuery("INSERT INTO itc_correlation_rpt_products(fld_rpt_data_id,fld_type,fld_prd_id,fld_product_id) 
+                    $ObjDB->NonQuery("INSERT INTO itc_correlation_rpt_products(fld_rpt_data_id,fld_type,fld_prd_id,fld_product_id)
                                     							VALUES ('" . $rptid . "','" . $productdetails[1] . "','" . $mprd_id . "','" . $productdetails[2] . "')");
                 }
             } else {
@@ -1818,17 +1818,17 @@ if ($oper == "savestep4" and $oper != " ") {
         for ($i = 0; $i < sizeof($tagproductid); $i++) {
             $tagproductdetails = explode('~', $tagproductid[$i]);
 
-            $mprd_id = $ObjDB->SelectSingleValueInt("SELECT fld_id 
-														FROM  itc_correlation_productdetails 
+            $mprd_id = $ObjDB->SelectSingleValueInt("SELECT fld_id
+														FROM  itc_correlation_productdetails
 														WHERE fld_prd_type ='" . $tagproductdetails[1] . "'");
 
-            $cnt = $ObjDB->SelectSingleValueInt("SELECT COUNT(fld_id) 
-												FROM  itc_correlation_rpt_products 
+            $cnt = $ObjDB->SelectSingleValueInt("SELECT COUNT(fld_id)
+												FROM  itc_correlation_rpt_products
 												WHERE fld_rpt_data_id='" . $rptid . "' AND fld_prd_id ='" . $mprd_id . "'");
 
             if ($cnt == 0) {
 
-                $ObjDB->NonQuery("INSERT INTO itc_correlation_rpt_products(fld_rpt_data_id,fld_type,fld_prd_id,fld_tagflag) 
+                $ObjDB->NonQuery("INSERT INTO itc_correlation_rpt_products(fld_rpt_data_id,fld_type,fld_prd_id,fld_tagflag)
 									VALUES ('" . $rptid . "','" . $tagproductdetails[1] . "','" . $mprd_id . "','1')");
                 $ObjDB->NonQuery("UPDATE itc_correlation_report_data SET fld_tagproduct_id='" . $tagpid . "',fld_updated_by='" . $uid . "',fld_updated_date='" . date("Y-m-d H:i:s") . "' WHERE fld_id='" . $rptid . "' AND fld_delstatus='0'");
             } else {
@@ -1888,7 +1888,7 @@ if ($oper == "sendmail" and $oper != '') {
         $headers .= "Content-type:text/html;charset=utf-8" . "\r\n";
         $headers .= "From: Synergy ITC <$usermail>" . "\r\n";
         $html_txt = '<html><head>  <title>Request For Report Generation</title></head>
-                                    <body>  <p>Request for correlation!</p>                                                           
+                                    <body>  <p>Request for correlation!</p>
                                    <table width="98%" cellpadding="10" cellspacing="0" border="2">';
 
         $getdetails = $ObjDB->QueryObject("SELECT a.fld_id AS id,a.fld_email AS usermail,a.fld_fname AS fname,a.fld_lname AS lname,
@@ -1914,9 +1914,9 @@ WHERE a.fld_id = '" . $uid . "' GROUP BY a.fld_id ");
         for ($i = 0; $i < sizeof($prd); $i++) {
             $productdetails = explode('_', $prd[$i]);
             $qryforproduct = $ObjDB->QueryObject("SELECT b.fld_prd_name AS productname
-                                                                            FROM itc_correlation_rpt_products a 
+                                                                            FROM itc_correlation_rpt_products a
                                                                             LEFT JOIN itc_correlation_products b ON b.fld_id = a.fld_prd_id
-                                                                                   WHERE a.fld_delstatus = '0' 
+                                                                                   WHERE a.fld_delstatus = '0'
                                             AND  b.fld_prd_sys_id='" . $productdetails[0] . "' AND b.fld_prd_type='" . $productdetails[1] . "' group by a.fld_prd_id");
             if ($qryforproduct->num_rows > 0) {
 
@@ -1930,7 +1930,7 @@ WHERE a.fld_id = '" . $uid . "' GROUP BY a.fld_id ");
         $html_txt.='</td></tr><tr><td>StandardName</td><td>';
         ///StandardName
         for ($s = 0; $s < sizeof($docid); $s++) {
-            $qryforstandards = $ObjDB->QueryObject("SELECT 
+            $qryforstandards = $ObjDB->QueryObject("SELECT
                                                                                a.fld_doc_title AS documenttitle,b.fld_sub_title AS subjectname,b.fld_sub_year AS year
                                                                               FROM
                                                                                itc_correlation_documents a
@@ -1962,7 +1962,7 @@ WHERE a.fld_id = '" . $uid . "' GROUP BY a.fld_id ");
 
         $html_txt.='</td></tr><tr><td>Comments</td><td>' . $requestcomments . '</td></tr>';
         $html_txt.='</table></body></html>';
-        $param = array('SiteID' => '30', 'fromAddress' => $usermail, 'fromName' => 'Synergy ITC', 'toAddress' => 'correlationsrequest@pitsco.com', 'subject' => $subj, 'plainTex' => '', 'html' => $html_txt, 'options' => '', 'groupID' => '805014', 'log' => 'True');
+        $param = array('SiteID' => '30', 'fromAddress' => $usermail, 'fromName' => 'Synergy ITC', 'toAddress' => 'correlationsrequest@nolaedu.net', 'subject' => $subj, 'plainTex' => '', 'html' => $html_txt, 'options' => '', 'groupID' => '805014', 'log' => 'True');
         $client = new nusoap_client(PAPI_URL . '/msgg/msgg.asmx?wsdl', 'wsdl');
         if ($client->call('SendJangoMailTransactional', $param, '', '', false, true)) {
             echo "success";
@@ -1972,7 +1972,7 @@ WHERE a.fld_id = '" . $uid . "' GROUP BY a.fld_id ");
     }
 }
 
-//request form 
+//request form
 if ($oper == "showdocuments1" and $oper != " ") {
     $stid = isset($method['stid']) ? $method['stid'] : '';
     $rptid = isset($method['rptid']) ? $method['rptid'] : '';
@@ -2064,7 +2064,7 @@ if ($oper == "showdocuments1" and $oper != " ") {
             <?php
         }
     }
-    ?>    
+    ?>
                 </div>
             </div>
             <div class="dragAllLink" onclick="fn_movealllistitems1('list55', 'list66', 0);"  style="cursor: pointer;cursor:hand;width: 160px;float: right;">add all documents</div>
@@ -2090,7 +2090,7 @@ if ($oper == "showdocuments1" and $oper != " ") {
         }
     }
     ?>
-                </div>	
+                </div>
             </div>
             <div class="dragAllLink" onclick="fn_movealllistitems1('list66', 'list55', 0);" style="cursor: pointer;cursor:hand;width: 160px;float:right; ">remove all documents</div>
         </div>
@@ -2108,7 +2108,7 @@ if ($oper == "showgrades1" and $oper != " ") {
     $stddocsdb = array();
     $grdguidqry = $ObjDB->QueryObject("SELECT a.fld_guid AS grdguids, a.fld_grade AS grdnames,fn_shortname(a.fld_grade,1) as shortgrdname,fn_shortname(b.fld_sub_title,1) as shortsubjname,
                                                 b.fld_sub_title AS subjectname,b.fld_sub_year AS year
-                                                FROM itc_correlation_rpt_std_grades AS a 
+                                                FROM itc_correlation_rpt_std_grades AS a
                                                 left join itc_correlation_doc_subject AS b ON a.fld_sub_id=b.fld_id
                                                 WHERE a.fld_rpt_data_id='" . $rptid . "' AND a.fld_delstatus='0'");
 
@@ -2120,10 +2120,10 @@ if ($oper == "showgrades1" and $oper != " ") {
     }
 
 
-    $grdqry = $ObjDB->QueryObject("SELECT a.fld_grade_guid AS gguid, a.fld_grade_name AS gradename 
+    $grdqry = $ObjDB->QueryObject("SELECT a.fld_grade_guid AS gguid, a.fld_grade_name AS gradename
                                                 ,fn_shortname(a.fld_grade_name,1) as shortgrdname,fn_shortname(b.fld_sub_title,1) as shortsubjname,
                                                 b.fld_sub_title AS subjectname,b.fld_sub_year AS year,a.fld_gradeout_flag as gradeoutflag
-                                                FROM itc_correlation_grades as a 
+                                                FROM itc_correlation_grades as a
                                                 left join itc_correlation_doc_subject AS b ON a.fld_sub_id=b.fld_id
                                                 WHERE a.fld_gradeout_flag='1' AND b.fld_sub_guid IN (" . $stdid . ")  ");
 
@@ -2243,7 +2243,7 @@ if ($oper == "showgrades1" and $oper != " ") {
         }
     }
     ?>
-                </div>	
+                </div>
             </div>
             <div class="dragAllLink" onclick="fn_movealllistitems1('list18', 'list17', 0);
                             fn_validategrade();"  style="cursor: pointer;cursor:hand;width: 160px;float: right;">remove all grades</div>
@@ -2258,13 +2258,13 @@ if ($oper == "showgrades1" and $oper != " ") {
                     $rptid = isset($method['rptid']) ? $method['rptid'] : 0;
                     $selectproducts = isset($method['selectproducts']) ? $method['selectproducts'] : 0;
                     $selectproducts = explode(',', $selectproducts);
-                    $qryipls = "SELECT a.fld_id AS id, CONCAT(a.fld_ipl_name,' ',b.fld_version) AS nam,fn_shortname	(a.fld_ipl_name,2) AS shortname, 
+                    $qryipls = "SELECT a.fld_id AS id, CONCAT(a.fld_ipl_name,' ',b.fld_version) AS nam,fn_shortname	(a.fld_ipl_name,2) AS shortname,
 				1 AS typ, a.fld_asset_id AS assetid
 				FROM itc_ipl_master AS a
 				LEFT JOIN itc_ipl_version_track AS b ON b.fld_ipl_id=a.fld_id
 				WHERE a.fld_access='1' AND a.fld_delstatus='0' AND b.fld_delstatus='0' AND b.fld_zip_type='1'";
 
-                    $qryunits = "SELECT a.fld_id AS id, a.fld_unit_name AS nam,fn_shortname(a.fld_unit_name,2) AS shortname, 
+                    $qryunits = "SELECT a.fld_id AS id, a.fld_unit_name AS nam,fn_shortname(a.fld_unit_name,2) AS shortname,
 				2 AS typ, a.fld_asset_id as assetid
 	  			FROM itc_unit_master as a
 				WHERE a.fld_delstatus='0'";
@@ -2272,12 +2272,12 @@ if ($oper == "showgrades1" and $oper != " ") {
 
                     $qrymodules = "SELECT a.fld_id AS id, CONCAT(a.fld_module_name,' ',b.fld_version) AS nam,fn_shortname(a.fld_module_name,2) AS shortname,
  					3 AS typ, a.fld_asset_id AS assetid
-						FROM itc_module_master AS a 
+						FROM itc_module_master AS a
 					LEFT JOIN itc_module_version_track AS b ON b.fld_mod_id=a.fld_id
 					WHERE a.fld_delstatus='0' AND b.fld_delstatus='0'";
 
-                    $qrymathmodules = "SELECT a.fld_id AS id, CONCAT(a.fld_mathmodule_name,' ',b.fld_version) AS nam,fn_shortname(a.fld_mathmodule_name,2) AS shortname, 4 AS typ, 					a.fld_asset_id AS assetid 
-							FROM itc_mathmodule_master AS a 
+                    $qrymathmodules = "SELECT a.fld_id AS id, CONCAT(a.fld_mathmodule_name,' ',b.fld_version) AS nam,fn_shortname(a.fld_mathmodule_name,2) AS shortname, 4 AS typ, 					a.fld_asset_id AS assetid
+							FROM itc_mathmodule_master AS a
 						LEFT JOIN itc_module_version_track AS b ON b.fld_mod_id=a.fld_module_id
 						WHERE a.fld_delstatus='0' AND b.fld_delstatus='0'";
 
@@ -2364,12 +2364,12 @@ if ($oper == "showgrades1" and $oper != " ") {
                 }
             });
         });
-    </script>    	
+    </script>
 
     <div class="dragndropcol">
-        <div class="dragtitle">Products</div>    
+        <div class="dragtitle">Products</div>
         <div class="dragWell" id="testrailvisible131" >
-            <div id="list20" class="dragleftinner droptrue3">            
+            <div id="list20" class="dragleftinner droptrue3">
                 <div class="draglinkleftSearch" id="s_list20" >
                     <dl class='field row'>
                         <dt class='text'>

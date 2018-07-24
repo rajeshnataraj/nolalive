@@ -1,4 +1,4 @@
-<?php 
+<?php
 	@include("sessioncheck.php");
 	$method=$_REQUEST;
 	$questionid=isset($method['id']) ? $method['id'] : '0';
@@ -8,9 +8,9 @@
 <script language="javascript" type="text/javascript" src="../../tiny_mce/tiny_mce.js"></script>
 <script language="javascript" type="text/javascript" src="../../tiny_mce/plugins/pdw/editor_plugin_src.js"></script>
 <script language="javascript" type="text/javascript" src="../../tiny_mce/plugins/asciimath/js/ASCIIMathMLwFallbackSmall.js"></script>
-<script language="javascript" type="text/javascript" src="../../tiny_mce/plugins/asciisvg/js/ASCIIsvg.js"></script>    
+<script language="javascript" type="text/javascript" src="../../tiny_mce/plugins/asciisvg/js/ASCIIsvg.js"></script>
 <script type="text/javascript">
-document.domain = 'pitsco.com';
+document.domain = 'nolaedu.net';
 	var AScgiloc = '../../tiny_mce/php/svgimg.php';
 	var AMTcgiloc = "../../cgi-bin/mathtex.cgi";
 </script>
@@ -18,20 +18,20 @@ document.domain = 'pitsco.com';
 <link href='../../css/question.css' rel='stylesheet' type="text/css" />
 <style type="text/css">
 body {
-	background-color:transparent;	
+	background-color:transparent;
 	height:100%;
 	width:100%;
 	overflow:hidden;
 }
 p {
 	margin: 0;
-	float: left;		
+	float: left;
 }
 </style>
-<?php 
-	$qryquesdetails = $ObjDB->QueryObject("SELECT fld_question as question, fld_answer_type as answertypeid 
+<?php
+	$qryquesdetails = $ObjDB->QueryObject("SELECT fld_question as question, fld_answer_type as answertypeid
 	                                       FROM itc_question_details WHERE fld_id='".$questionid."'");
-	
+
 	if($qryquesdetails->num_rows>0){
 		$rowquesdetails = $qryquesdetails->fetch_assoc();
 		extract($rowquesdetails);
@@ -41,18 +41,18 @@ p {
         <div class='twelve columns'>
             <?php echo $question; ?>
         </div>
-    </div>    
-    
+    </div>
+
     <div class='row rowspacer'>
         <div class='twelve columns'>
 			<?php
-            if($answertypeid == 1) // Multiple Choice 
+            if($answertypeid == 1) // Multiple Choice
             {
-                $qry = $ObjDB->QueryObject("SELECT GROUP_CONCAT(IF(fld_attr_id = '1', fld_answer, NULL) SEPARATOR '~') AS 'choice', 
-				                           GROUP_CONCAT(IF(fld_attr_id = '2', fld_answer, NULL) SEPARATOR '~') AS 'correct' 
-										   FROM itc_question_answer_mapping WHERE fld_quesid='".$questionid."' 
+                $qry = $ObjDB->QueryObject("SELECT GROUP_CONCAT(IF(fld_attr_id = '1', fld_answer, NULL) SEPARATOR '~') AS 'choice',
+				                           GROUP_CONCAT(IF(fld_attr_id = '2', fld_answer, NULL) SEPARATOR '~') AS 'correct'
+										   FROM itc_question_answer_mapping WHERE fld_quesid='".$questionid."'
 										   AND fld_ans_type='".$answertypeid."' AND fld_answer<>'' AND fld_flag='1'");
-                
+
                 $alphabet = array('A','B','C','D','E','F','G','H');
                 $anscnt = 0;
                 while($row = $qry->fetch_assoc())
@@ -61,7 +61,7 @@ p {
                     $anschoices = explode("~",$choice);
                     $correctans = explode("~",$correct);
                 }
-                
+
                 for($i=0;$i<sizeof($anschoices);$i++){
                 ?>
                 <div class="row rowspacer">
@@ -72,15 +72,15 @@ p {
                 </div>
                 <?php
                 } // end answer choice for
-                
+
                 $correctanswer = '';
-				
+
                 for($i=0;$i<sizeof($correctans);$i++){
                     if($correctanswer == '') {
-                        $correctanswer .= $alphabet[$correctans[$i]-1]; 
+                        $correctanswer .= $alphabet[$correctans[$i]-1];
                     }
                     else {
-                        $correctanswer .= ", ".$alphabet[$correctans[$i]-1]; 
+                        $correctanswer .= ", ".$alphabet[$correctans[$i]-1];
                     }
                 }
             	?>
@@ -89,15 +89,15 @@ p {
                         Correct Answer: <strong><?php echo $correctanswer;?></strong>
                     </div>
                 </div>
-            <?php  
+            <?php
             } // Multiple Choice  if ends
-			
-			if($answertypeid == 2) // Single Answer 
+
+			if($answertypeid == 2) // Single Answer
 			{
-				$qry = $ObjDB->QueryObject("SELECT GROUP_CONCAT(IF(fld_attr_id = '1', fld_answer, NULL) SEPARATOR ', ') AS 'choice', 
-				                          GROUP_CONCAT(IF(fld_attr_id = '3', fld_answer, NULL) SEPARATOR '~') AS 'prefix', 
-										  GROUP_CONCAT(IF(fld_attr_id = '4', fld_answer, NULL) SEPARATOR '~') AS 'suffix' 
-										  FROM itc_question_answer_mapping WHERE fld_quesid='".$questionid."' 
+				$qry = $ObjDB->QueryObject("SELECT GROUP_CONCAT(IF(fld_attr_id = '1', fld_answer, NULL) SEPARATOR ', ') AS 'choice',
+				                          GROUP_CONCAT(IF(fld_attr_id = '3', fld_answer, NULL) SEPARATOR '~') AS 'prefix',
+										  GROUP_CONCAT(IF(fld_attr_id = '4', fld_answer, NULL) SEPARATOR '~') AS 'suffix'
+										  FROM itc_question_answer_mapping WHERE fld_quesid='".$questionid."'
 										  AND fld_ans_type='".$answertypeid."' AND fld_answer<>'' AND fld_flag='1'");
 				$i=0;
 				while($row=$qry->fetch_assoc())
@@ -118,14 +118,14 @@ p {
                     	Correct: &nbsp; <?php echo $choice; ?>
                		</div>
                 </div>
-			<?php	
+			<?php
 			} // Single Answer if ends
-			
+
 			if($answertypeid == 3 ) // Match the following
-			{				
-				$qrypresuf = $ObjDB->QueryObject("SELECT GROUP_CONCAT(IF(fld_attr_id = '3', fld_answer, NULL) SEPARATOR '~') AS 'prefix', 
-				                                 GROUP_CONCAT(IF(fld_attr_id = '4', fld_answer, NULL) SEPARATOR '~') AS 'suffix' 
-												 FROM itc_question_answer_mapping WHERE fld_quesid='".$questionid."' 
+			{
+				$qrypresuf = $ObjDB->QueryObject("SELECT GROUP_CONCAT(IF(fld_attr_id = '3', fld_answer, NULL) SEPARATOR '~') AS 'prefix',
+				                                 GROUP_CONCAT(IF(fld_attr_id = '4', fld_answer, NULL) SEPARATOR '~') AS 'suffix'
+												 FROM itc_question_answer_mapping WHERE fld_quesid='".$questionid."'
 												 AND fld_ans_type='".$answertypeid."' AND fld_answer<>'' AND fld_flag='1'");
 				$prefixarray=array();
 				$suffixarray=array();
@@ -135,54 +135,54 @@ p {
 					extract($row);
 					$prefixarray = explode("~",$prefix);
 					$suffixarray = explode("~",$suffix);
-				}			
-				
-				for($i=0;$i<sizeof($prefixarray);$i++){ 
+				}
+
+				for($i=0;$i<sizeof($prefixarray);$i++){
 				?>
                 	<div class="row">
-	                	<div class='eight columns'>	
+	                	<div class='eight columns'>
 							<div class="outer-input-sym"><span class="ques-symbol" style="font-size: 20px;margin-right: 20px;"><?php echo $prefixarray[$i]; ?></span></div>
                     		<div class="outer-input-txt"><input type="text" class="ques-input qit-medium" id="ans<?php echo $i;?>" value="<?php echo $suffixarray[$i]; ?>" placeholder="Answer" readonly /></div>
                         </div>
 					</div>
-				<?php 	
+				<?php
 				}
 				echo '<div class="rowspacer"></div>';
 			}	// Match the following if ends
-			
+
 			if($answertypeid == 4) // Custom Answer Type
 			{
-				$answer = $ObjDB->SelectSingleValue("SELECT fld_answer 
-													FROM itc_question_answer_mapping 
-													WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."' AND fld_attr_id='6' AND fld_flag='1'");			
-				$answer = explode(',',$answer);	
-				$values = $ObjDB->SelectSingleValue("SELECT fld_answer 
-													FROM itc_question_answer_mapping 
+				$answer = $ObjDB->SelectSingleValue("SELECT fld_answer
+													FROM itc_question_answer_mapping
+													WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."' AND fld_attr_id='6' AND fld_flag='1'");
+				$answer = explode(',',$answer);
+				$values = $ObjDB->SelectSingleValue("SELECT fld_answer
+													FROM itc_question_answer_mapping
 													WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."' AND fld_attr_id='7' AND fld_flag='1'");
-				$values = explode(',',$values);			
+				$values = explode(',',$values);
 			?>
             	<div class="row rowspacer">
                 	<div class="twelve columns">
-					<?php     
+					<?php
                      $j=0;
                      $anspattern = '';
 					 $tmparray = array();
 					 $tmpans = array();
-                     
+
 					 for($i=0;$i<sizeof($answer);$i++){
 						if($answer[$i] == 5){
                             echo '<div class="outer-label"><span id="lab_'.$values[$j].'">'.$values[$j].'</span></div>';
 							$tmparray[]=$values[$j];
                         }
                         else {
-                            echo $ObjDB->SelectSingleValue("SELECT fld_html_code 
-															FROM itc_question_answer_pattern_master 
-															WHERE fld_id='".$answer[$i]."'");								
-						}                       
-                        if($answer[$i] == 5 or $answer[$i]==4 or $answer[$i]==20 or $answer[$i]==21 or $answer[$i]==22 or $answer[$i]==23 or $answer[$i]==24){ 						
+                            echo $ObjDB->SelectSingleValue("SELECT fld_html_code
+															FROM itc_question_answer_pattern_master
+															WHERE fld_id='".$answer[$i]."'");
+						}
+                        if($answer[$i] == 5 or $answer[$i]==4 or $answer[$i]==20 or $answer[$i]==21 or $answer[$i]==22 or $answer[$i]==23 or $answer[$i]==24){
 							if($answer[$i]!=5)
 								$tmpans[] = $values[$j];
-                            $j++;	
+                            $j++;
                         }
                         else if($answer[$i]==17){
 							$tmpans[] = $values[$j];
@@ -196,21 +196,21 @@ p {
 							$j = $j + 3;
                         }
                      }
-					 $result = array_values(array_diff($values, $tmparray));					 
+					 $result = array_values(array_diff($values, $tmparray));
 					?>
-					<script>					
+					<script>
 						var i=0;
-						var answer = <?php echo json_encode($tmpans);?>;										
+						var answer = <?php echo json_encode($tmpans);?>;
 						$("input[id='txt']").each(function(){
 						   $(this).val(answer[i]);
-						   i++;					   
+						   i++;
 						});
-                                                
+
                                                 var oldlen=4;
 						$("input[type='text']").each(function(){
 							var newlen = ($(this).val().length) + 1;
 							if(oldlen < newlen){
-								$('.dfrac-small').css({'width':newlen+'rem'});	
+								$('.dfrac-small').css({'width':newlen+'rem'});
 								oldlen = newlen;
 							}
 						});
@@ -219,12 +219,12 @@ p {
                 </div>
                 <?php
 			} // Custom Answer Type if ends
-			
+
 			if($answertypeid == 5) // Answer Choice
 			{
-				$qry = $ObjDB->QueryObject("SELECT GROUP_CONCAT(IF(fld_attr_id = '1', fld_answer, NULL) SEPARATOR '~') AS 'choice', 
-				                           GROUP_CONCAT(IF(fld_attr_id = '2', fld_answer, NULL) SEPARATOR '~') AS 'correct' 
-										   FROM itc_question_answer_mapping WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."' 
+				$qry = $ObjDB->QueryObject("SELECT GROUP_CONCAT(IF(fld_attr_id = '1', fld_answer, NULL) SEPARATOR '~') AS 'choice',
+				                           GROUP_CONCAT(IF(fld_attr_id = '2', fld_answer, NULL) SEPARATOR '~') AS 'correct'
+										   FROM itc_question_answer_mapping WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."'
 										   AND fld_answer<>'' AND fld_flag='1'");
 				$answerarray = array();
 				while($row=$qry->fetch_assoc())
@@ -255,11 +255,11 @@ p {
                 </div>
 			<?php
 			} // Answer Choice if ends
-			
-			if($answertypeid == 6) // Means and Extremes  
+
+			if($answertypeid == 6) // Means and Extremes
 			{
-				$qry = $ObjDB->QueryObject("SELECT fld_answer AS answer 
-				                            FROM itc_question_answer_mapping 
+				$qry = $ObjDB->QueryObject("SELECT fld_answer AS answer
+				                            FROM itc_question_answer_mapping
 											WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."' AND fld_flag='1'");
 				$answerarray=array();
 				$i=0;
@@ -268,7 +268,7 @@ p {
 					extract($row);
 					$answerarray[$i]=$answer;
 					$i++;
-				}				
+				}
 				?>
                 <div class="twelve columns">
                     <div class="means" align="center" style="width:50%; float:left" >
@@ -282,7 +282,7 @@ p {
                         <input type="text" name="ext2" id="ext2" value="" class="mix-input" readonly />
                     </div>
                 </div>
-                
+
                 <div class="row rowspacer">
                 	<div class="six columns">
                     	Correct: <br /><br />
@@ -291,16 +291,16 @@ p {
                     </div>
                     <div class="six columns"></div>
                 </div>
-                
+
 			<?php
 			} // Means and Extremes if ends
-			
+
 			if($answertypeid == 7 ) // Single Range
 			{
-				$qry = $ObjDB->QueryObject("SELECT GROUP_CONCAT(IF(fld_attr_id = '1', fld_answer, NULL) SEPARATOR '~') AS 'choice', 
-				                          GROUP_CONCAT(IF(fld_attr_id = '3', fld_answer, NULL) SEPARATOR '~') AS 'prefix', 
-										  GROUP_CONCAT(IF(fld_attr_id = '4', fld_answer, NULL) SEPARATOR '~') AS 'suffix' 
-										  FROM itc_question_answer_mapping WHERE fld_quesid='".$questionid."' 
+				$qry = $ObjDB->QueryObject("SELECT GROUP_CONCAT(IF(fld_attr_id = '1', fld_answer, NULL) SEPARATOR '~') AS 'choice',
+				                          GROUP_CONCAT(IF(fld_attr_id = '3', fld_answer, NULL) SEPARATOR '~') AS 'prefix',
+										  GROUP_CONCAT(IF(fld_attr_id = '4', fld_answer, NULL) SEPARATOR '~') AS 'suffix'
+										  FROM itc_question_answer_mapping WHERE fld_quesid='".$questionid."'
 										  AND fld_ans_type='".$answertypeid."' AND fld_answer<>'' AND fld_flag='1'");
 				$answerarray=array();
 				$i=0;
@@ -323,16 +323,16 @@ p {
                     	Correct: &nbsp;&nbsp;<?php echo $answerarray[0]; ?>&nbsp;to&nbsp; <?php echo $answerarray[1]; ?>
                		</div>
                 </div>
-				<?php	
+				<?php
 			}	// Single Range if ends
-			
-			if($answertypeid==8) // Multiple Image 
+
+			if($answertypeid==8) // Multiple Image
 			{
-				$qry = $ObjDB->QueryObject("SELECT GROUP_CONCAT(IF(fld_attr_id = '1', fld_answer, NULL) SEPARATOR '~') AS 'choice', 
-				                          GROUP_CONCAT(IF(fld_attr_id = '2', fld_answer, NULL) SEPARATOR '~') AS 'correct' 
-										   FROM itc_question_answer_mapping WHERE fld_quesid='".$questionid."' 
+				$qry = $ObjDB->QueryObject("SELECT GROUP_CONCAT(IF(fld_attr_id = '1', fld_answer, NULL) SEPARATOR '~') AS 'choice',
+				                          GROUP_CONCAT(IF(fld_attr_id = '2', fld_answer, NULL) SEPARATOR '~') AS 'correct'
+										   FROM itc_question_answer_mapping WHERE fld_quesid='".$questionid."'
 										   AND fld_ans_type='".$answertypeid."' AND fld_answer<>'' AND fld_flag='1'");
-                
+
                 $alphabet = array('A','B','C','D','E','F','G','H');
                 $anscnt = 0;
                 while($row = $qry->fetch_assoc())
@@ -341,9 +341,9 @@ p {
                     $anschoices = explode("~",$choice);
                     $correctans = explode("~",$correct);
                 }
-                
+
 				echo '<div class="row rowspacer">';
-				
+
                 for($i=0;$i<sizeof($anschoices);$i++){
 					$imgid = $i + 1;
 					if($anschoices[$i]!='' && $anschoices[$i]!='no-image.png')
@@ -353,24 +353,24 @@ p {
 							<div style="width:15px;float: left;"><?php echo $alphabet[$i]; ?>.</div>
 							<div style="width:95%;float: left;margin-left:1%;">
                                                             <?php //Get image width
-                                                                list($width,$height) = getimagesize( __CNTANSIMGPATH__.$anschoices[$i]);							
+                                                                list($width,$height) = getimagesize( __CNTANSIMGPATH__.$anschoices[$i]);
                                                             ?>
-                                                            <img name="txtimageans<?php echo $imgid; ?>" id="txtimageans<?php echo $imgid; ?>" src="../../thumb.php?src=<?php echo __CNTANSIMGPATH__.$anschoices[$i]; if($width > 400){?>&w=400&h=400&zc=2<?php }else{ echo "&w=".$width."&h=".$height."&zc=2"; } ?>" />						
+                                                            <img name="txtimageans<?php echo $imgid; ?>" id="txtimageans<?php echo $imgid; ?>" src="../../thumb.php?src=<?php echo __CNTANSIMGPATH__.$anschoices[$i]; if($width > 400){?>&w=400&h=400&zc=2<?php }else{ echo "&w=".$width."&h=".$height."&zc=2"; } ?>" />
 							</div>
 						</div>
 						<?php
 					}
                 } // end answer choice for
-				
+
                 echo '</div>';
-				                
+
                 $correctanswer = '';
                 for($i=0;$i<sizeof($correctans);$i++){
                     if($correctanswer == '') {
-                        $correctanswer .= $alphabet[$correctans[$i]-1]; 
+                        $correctanswer .= $alphabet[$correctans[$i]-1];
                     }
                     else {
-                        $correctanswer .= ", ".$alphabet[$correctans[$i]-1]; 
+                        $correctanswer .= ", ".$alphabet[$correctans[$i]-1];
                     }
                 }
             ?>
@@ -379,15 +379,15 @@ p {
                         Correct Answer: <strong><?php echo $correctanswer;?></strong>
                     </div>
                 </div>
-            <?php 
+            <?php
 			} // Multiple Image if ends
-			
+
 			if($answertypeid == 9) // Single Multiple
 			{
-				$qry = $ObjDB->QueryObject("SELECT GROUP_CONCAT(IF(fld_attr_id = '1', fld_answer, NULL) SEPARATOR ', ') AS 'choice', 
-				                           GROUP_CONCAT(IF(fld_attr_id = '3', fld_answer, NULL) SEPARATOR '~') AS 'prefix', 
-										   GROUP_CONCAT(IF(fld_attr_id = '4', fld_answer, NULL) SEPARATOR '~') AS 'suffix' 
-										   FROM itc_question_answer_mapping WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."' 
+				$qry = $ObjDB->QueryObject("SELECT GROUP_CONCAT(IF(fld_attr_id = '1', fld_answer, NULL) SEPARATOR ', ') AS 'choice',
+				                           GROUP_CONCAT(IF(fld_attr_id = '3', fld_answer, NULL) SEPARATOR '~') AS 'prefix',
+										   GROUP_CONCAT(IF(fld_attr_id = '4', fld_answer, NULL) SEPARATOR '~') AS 'suffix'
+										   FROM itc_question_answer_mapping WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."'
 										   AND fld_answer<>'' AND fld_flag='1'");
 				while($row = $qry->fetch_assoc())
 				{
@@ -403,18 +403,18 @@ p {
               	</div>
                 <div class="row rowspacer">
                 	<div class="eight columns">
-                    	Correct: &nbsp; 
+                    	Correct: &nbsp;
 						<?php echo $choice; ?>
                		</div>
                 </div>
-            <?php    
+            <?php
 			}	// Single Multiple if ends
-			
+
 			if($answertypeid == 10)
 			{
 				$dropqus=$ObjDB->QueryObject("SELECT fld_answer AS answer FROM itc_question_answer_mapping WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."'AND fld_attr_id='10' AND fld_flag='1'");
 				$dropans=$ObjDB->QueryObject("SELECT fld_answer AS answer FROM itc_question_answer_mapping WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."'AND fld_attr_id='2' AND fld_flag='1'");
-				
+
 				$i=0;$j=0;
 				while($qus=$dropqus->fetch_assoc())
 				{
@@ -430,26 +430,26 @@ p {
 					$j++;
 				}
 				?>
-				<div class="eleven columns">   
-                	<div class='row'>                
-					<?php for ($i=0;$i<sizeof($questionarray);$i++){ ?>                        
-							<span class="ques-symbol"><?php echo $questionarray[$i]; ?></span>                           
-					<?php } ?> 
+				<div class="eleven columns">
+                	<div class='row'>
+					<?php for ($i=0;$i<sizeof($questionarray);$i++){ ?>
+							<span class="ques-symbol"><?php echo $questionarray[$i]; ?></span>
+					<?php } ?>
                     </div>
 				</div>
-                <div class="eleven columns"> 
+                <div class="eleven columns">
                 	<?php for($i=0;$i<sizeof($answerarray);$i++){ ?>
-                		<input type="text" class="ques-input" id="ans<?php echo $i+1;?>" style="width:10%; margin:5px;" value="<?php echo $answerarray[$i]; ?>" placeholder="Answer" readonly />&nbsp;                        
-                	<?php } ?> 
+                		<input type="text" class="ques-input" id="ans<?php echo $i+1;?>" style="width:10%; margin:5px;" value="<?php echo $answerarray[$i]; ?>" placeholder="Answer" readonly />&nbsp;
+                	<?php } ?>
                 </div>
                 <?php
 			} // Drag & Drop if ends
-			
+
 			if($answertypeid == 11) // Pull down
-			{				            
-				$pullqus=$ObjDB->QueryObject("SELECT fld_answer AS answer FROM itc_question_answer_mapping 
+			{
+				$pullqus=$ObjDB->QueryObject("SELECT fld_answer AS answer FROM itc_question_answer_mapping
 				                             WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."'AND fld_attr_id='1' AND fld_flag='1'");
-				$pullans=$ObjDB->QueryObject("SELECT fld_answer AS answer FROM itc_question_answer_mapping 
+				$pullans=$ObjDB->QueryObject("SELECT fld_answer AS answer FROM itc_question_answer_mapping
 				                              WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."'AND fld_attr_id='2' AND fld_flag='1'");
 				$i=0;$j=0;
 				while($qus=$pullqus->fetch_assoc())
@@ -465,25 +465,25 @@ p {
 					$boxarray[$j]=$boxid;
 					$j++;
 				}?>
-				<div class="eleven columns">                   
-					<?php for ($i=0;$i<sizeof($questionarray);$i++){ ?>                        
+				<div class="eleven columns">
+					<?php for ($i=0;$i<sizeof($questionarray);$i++){ ?>
 							<div class='row rowspacer'>
 								<div class="outer-input-sym" style="padding:1px; float:left">
 									<span class="ques-symbol" style="font-size:16px;"><?php echo $questionarray[$i]; ?></span>
-								</div>                       
+								</div>
 								<input class="ques-input " style="width:25%" type="text" id="txtsingleanswer" name="txtsingleanswer" value="<?php echo $answerarray[$i]; ?>" readonly />
 							</div>
-					<?php } ?> 
+					<?php } ?>
 				</div>
-            	<?php 
-			} 
-			
+            	<?php
+			}
+
 			if($answertypeid == 12) // Drag & Drop - Type 2
 			{
-				$ansopt = $ObjDB->QueryObject("SELECT fld_ball_color, fld_inner_ball, fld_outer_ball, fld_correct, fld_ano_correct 
-				                              FROM itc_question_drag_drop WHERE fld_quesid='".$questionid."' 
+				$ansopt = $ObjDB->QueryObject("SELECT fld_ball_color, fld_inner_ball, fld_outer_ball, fld_correct, fld_ano_correct
+				                              FROM itc_question_drag_drop WHERE fld_quesid='".$questionid."'
 											  AND fld_ans_type='".$answertypeid."' AND fld_flag='1'");
-				
+
 				$ballcolor=array();
 				$insideballcolor=array();
 				$outsideballcolor=array();
@@ -579,7 +579,7 @@ p {
 						}?>
                     </div>
                 </div>
-                
+
                 <div class="row rowspacer">
                 	<table class='table table-hover table-striped table-bordered'>
                         <thead class='tableHeadText'>
@@ -614,7 +614,7 @@ p {
 				</script>
                 <?php
 			} // Drag & Drop - Type 2
-			
+
 			if($answertypeid == 13 )
 			{
                             ?>
@@ -632,14 +632,14 @@ p {
 				</style>
 					  <?php
 				$ansimage = $ObjDB->SelectSingleValue("SELECT fld_answer AS answer FROM itc_question_answer_mapping
-				                                     WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."' 
+				                                     WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."'
 													 AND fld_attr_id='1' AND fld_flag='1'");
-													 
-				$qryimagepos = $ObjDB->QueryObject("SELECT fld_answer AS answer FROM itc_question_answer_mapping 
-				                                    WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."' 
+
+				$qryimagepos = $ObjDB->QueryObject("SELECT fld_answer AS answer FROM itc_question_answer_mapping
+				                                    WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."'
 													AND fld_attr_id='2' AND fld_flag='1'");
-				
-				$imagepos=array();				
+
+				$imagepos=array();
 				$l=0;
 				while($rowqryimagepos=$qryimagepos->fetch_assoc())
 				{
@@ -651,11 +651,11 @@ p {
 				{
 					$imageballposition[$k] = explode(',',$imagepos[$k]);
 				}
-				
+
 				$ansimage1 = ($ansimage != '') ? "../../thumb.php?src=".__CNTANSIMGPATH__.$ansimage."&w=800&h=200&zc=3" : '';
 				?>
 				<div class="rowspacer">&nbsp;</div>
-			   
+
 				<div class="twelve columns rowspacer" >
 					<div class="twelve columns" id="droppable" style="width:100%; pointer-events:none">
 						<div id="balldraggable1" class="rowspacer drag1" title="Drag this Point" style="display:none"></div>
@@ -663,11 +663,11 @@ p {
 						<div id="balldraggable3" class="rowspacer drag1" title="Drag this Point" style="display:none"></div>
 						<div id="balldraggable4" class="rowspacer drag1" title="Drag this Point" style="display:none"></div>
 						<div id="balldraggable5" class="rowspacer drag1" title="Drag this Point" style="display:none"></div>
-				
-						<img name="txtimage" id="txtimage" src="<?php echo $ansimage1; ?>"/>   
+
+						<img name="txtimage" id="txtimage" src="<?php echo $ansimage1; ?>"/>
 					</div>
 				</div>
-			   
+
 				<script language="javascript" type="text/javascript">
 					/******This is for dragable script******/
 					$('#balldraggable1,#balldraggable2,#balldraggable3,#balldraggable4,#balldraggable5').draggable({
@@ -691,20 +691,20 @@ p {
 						drop: function(event, ui) {
 							ballpost=('' + ui.draggable.css('top') + ',' + ui.draggable.css('left'));
 							var id = ui.draggable.attr('id').replace('balldraggable','');
-							$('#hideimagedragpos'+id).val(ballpost);							
+							$('#hideimagedragpos'+id).val(ballpost);
 						}
 					});
 				</script>
-				<?php 
+				<?php
 			}  // Drag & Drop - Type 3
-			
+
 			if($answertypeid == 14)
 			{
-				$ansimage = $ObjDB->SelectSingleValue("SELECT fld_answer AS answer FROM itc_question_answer_mapping 
-				                                      WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."' 
+				$ansimage = $ObjDB->SelectSingleValue("SELECT fld_answer AS answer FROM itc_question_answer_mapping
+				                                      WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."'
 													  AND fld_attr_id='1' AND fld_flag='1'");
-				$imagepos = $ObjDB->SelectSingleValue("SELECT fld_answer AS answer FROM itc_question_answer_mapping 
-				                                       WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."' 
+				$imagepos = $ObjDB->SelectSingleValue("SELECT fld_answer AS answer FROM itc_question_answer_mapping
+				                                       WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."'
 													   AND fld_attr_id='2' AND fld_flag='1'");
 				?>
 				<div class="six columns" >
@@ -713,65 +713,65 @@ p {
 						<script>
 							<?php if($imagepos!='') {?>
 								$('#iframegraphline').attr('src','<?php echo $domainame;?>test/testassign/line.php?img=<?php echo $ansimage;?>&val=<?php echo $imagepos;?>');
-								$("#hideimagename").val('<?php echo $ansimage;?>'); 
+								$("#hideimagename").val('<?php echo $ansimage;?>');
 							<?php }?>
 						</script>
 					</div>
 					<div id="debug" ></div>
 				</div>
 				<input type="hidden" id="hideimagename" name="hideimagename" value="<?php echo $ansimage; ?>" />
-				<?php 
+				<?php
 			}
-                        
+
                         /************Custom Materices Code End Here Developed by Mohan M 30-7-2015************/
                         if($answertypeid == 16){
-                            
+
                             $qry = $ObjDB->QueryObject("SELECT fld_boxid AS txtboxval, fld_answer AS aswer, fld_attr_id AS columnsval
-                                                                          FROM itc_question_answer_mapping 
+                                                                          FROM itc_question_answer_mapping
                                                                           WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."' AND fld_flag='1'");
-                            if($qry->num_rows > 0) 
+                            if($qry->num_rows > 0)
                             {
                                 while($row = $qry->fetch_assoc())
                                 {
-                                    extract($row); 
+                                    extract($row);
                                     $rowsval = explode("~",$columnsval);
                                 }
                             }
                         if($rowsval[1]=='2'){ ?>
 <div style="border-left:4px solid #b4b4b4; border-right:4px solid #b4b4b4; border-radius: 25px;  padding: 10px; width:149px;">
-<?php }else if($rowsval[1]=='3'){ ?> 
+<?php }else if($rowsval[1]=='3'){ ?>
 <div style="border-left:4px solid #b4b4b4; border-right:4px solid #b4b4b4; border-radius: 25px;  padding: 10px; width:224px;">
-<?php }else if($rowsval[1]=='4'){ ?> 
+<?php }else if($rowsval[1]=='4'){ ?>
 <div style="border-left:4px solid #b4b4b4; border-right:4px solid #b4b4b4; border-radius: 25px;  padding: 10px; width:301px;">
-<?php }else if($rowsval[1]=='5'){ ?> 
-<div style="border-left:4px solid #b4b4b4; border-right:4px solid #b4b4b4; border-radius: 25px;  padding: 10px; width:377px;">                
+<?php }else if($rowsval[1]=='5'){ ?>
+<div style="border-left:4px solid #b4b4b4; border-right:4px solid #b4b4b4; border-radius: 25px;  padding: 10px; width:377px;">
 <?php } ?>
                             <br>
                             <?php
                             for($i=1;$i<=$rowsval[0];$i++)
                             {
-                              
+
                                 for($j=0;$j<$rowsval[1];$j++)
                                 {
 			?>
                                            <input id="txt_<?php echo $i."_".$j;?>" type='text' class="mix-input" size='2' maxlength="2">&nbsp;
                                     <?php
                                 } ?>
-                               <br> 
-                                  <br> 
-                               
+                               <br>
+                                  <br>
+
                                 <?php
-                                
+
                             }
                             ?>
         </div>
                                     <?php
-                               
-                                
+
+
                         $qry = $ObjDB->QueryObject("SELECT fld_boxid AS txtboxval, fld_answer AS answer
-                                                  FROM itc_question_answer_mapping 
+                                                  FROM itc_question_answer_mapping
                                                   WHERE fld_quesid='".$questionid."' AND fld_ans_type='".$answertypeid."' AND fld_flag='1'");
-                        if($qry->num_rows > 0) 
+                        if($qry->num_rows > 0)
                         {
                             while($row = $qry->fetch_assoc())
                             {
@@ -780,14 +780,14 @@ p {
                                     $('#<?php echo $txtboxval;?>').val('<?php echo $answer;?>');
                                 </script> <?php
                             }
-                        } 
-                               
-                                
-                            
+                        }
+
+
+
                             }
                         /************Custom Materices Code End Here Developed by Mohan M 30-7-2015************/
                             ?>
     </div>
     </div>
 <?php
-	@include("footer.php");    
+	@include("footer.php");

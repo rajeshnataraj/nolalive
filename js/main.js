@@ -949,7 +949,7 @@ function getscreenheight(){
  */
 
 function showfullscreenmodule(fldrname,type){
-    document.domain = 'pitsco.com';
+    document.domain = 'nolaedu.net';
     $('html, body').animate({scrollTop: '0px'}, 0);
 
     $('body').css('overflow','hidden');
